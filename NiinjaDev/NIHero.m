@@ -63,7 +63,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)walkLeft {
-    SKAction *incrementLeft = [SKAction moveByX:-10 y:0 duration:0];
+    SKAction *incrementLeft = [SKAction moveByX:-20 y:0 duration:0];
     [hero runAction:incrementLeft];
     
     return;
@@ -74,7 +74,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)jumpLeft {
-    [self.physicsBody applyImpulse:CGVectorMake(30, 100)];
+    [self.physicsBody applyImpulse:CGVectorMake(-30, 100)];
 }
 
 
