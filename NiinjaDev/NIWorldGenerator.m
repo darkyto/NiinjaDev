@@ -22,6 +22,7 @@ static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
+
 +(id)generatorWithWorld:(SKNode *)world {
     NIWorldGenerator *generator = [NIWorldGenerator node];
     generator.currentGroundX = 0;
@@ -70,6 +71,7 @@ static const uint32_t backgroundCategory = 0x1 << 3;
             [self.world addChild:ground];
             
             self.currentGroundX += ground.frame.size.width;
+            
         } else {
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithColor:[UIColor redColor]
@@ -82,16 +84,22 @@ static const uint32_t backgroundCategory = 0x1 << 3;
             [self.world addChild:fireObstacle];
         }
         
-//        if ((i % 7 == 0)) {
-//            SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-//            SKSpriteNode *snakeObstacle = [SKSpriteNode spriteNodeWithImageNamed:@"snake-1"];
-//            snakeObstacle.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height);
-//            snakeObstacle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:snakeObstacle.frame.size];
-//            snakeObstacle.physicsBody.dynamic = NO;
-//            snakeObstacle.name = @"snakeObstacle";
-//
-//            [self.world addChild:snakeObstacle];
-//        }
+        if (i % 3 != 1 & i % 2 != 1) {
+            
+            SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+            SKSpriteNode *bonusPointsRune = [SKSpriteNode spriteNodeWithImageNamed:@"7_gf_set_3"];
+            bonusPointsRune.xScale = 0.2;
+            bonusPointsRune.yScale = 0.2;
+            bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
+                                                   -ground.frame.size.height + bonusPointsRune.frame.size.height * 3);
+            bonusPointsRune.name = @"pointsBonusRune";
+            bonusPointsRune.physicsBody.dynamic = NO;
+            bonusPointsRune.physicsBody.categoryBitMask = groundCategory;
+            
+            [self.world addChild:bonusPointsRune];
+        }
     }
+    
+
 }
 @end

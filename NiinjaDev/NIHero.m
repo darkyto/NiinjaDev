@@ -15,6 +15,7 @@ static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
+
 NIHero *hero;
 NSArray *heroWalkingFrames;
 
@@ -39,7 +40,9 @@ NSArray *heroWalkingFrames;
                                            restore:YES]] withKey:@"walkingInPlaceHero"];
     hero.name = @"hero";
     hero.physicsBody.categoryBitMask = heroCategory;
-    hero.physicsBody.contactTestBitMask = obstacleCategory | (-groundCategory & -backgroundCategory);
+    hero.physicsBody.contactTestBitMask = obstacleCategory |
+                                          (-groundCategory & -backgroundCategory );
+
     
     
     return hero;

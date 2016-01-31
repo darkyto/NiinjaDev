@@ -29,12 +29,8 @@
     NIWorldGenerator *generator;
 }
 
-static NSString *GAME_FONT = @"AmericanTypewriter-Bold";
+static NSString *GAME_FONT = @"Chalkduster";
 
-//NSTimeInterval _lastUpdateTime;
-//NSTimeInterval _dt;
-//CGPoint _velocity;
-//CGPoint _currentPosition;
 int _actionDirectionCriticalPoint = 200;
 int _heroAligment = 100;
 
@@ -44,16 +40,16 @@ int _heroAligment = 100;
         
         self.anchorPoint = CGPointMake(0.5, 0.5);
         
-        // to call the method for collides within two bodis
+        // to call the method for collides within two bodies
         self.physicsWorld.contactDelegate = self;
         
         [self createContent];
         
         // available fonts listed in xcode output
-        for (id familyName in [UIFont familyNames]) {
-            NSLog(@"%@", familyName);
-            for (id fontName in [UIFont fontNamesForFamilyName:familyName]) NSLog(@"  %@", fontName);
-        }
+//        for (id familyName in [UIFont familyNames]) {
+//            NSLog(@"%@", familyName);
+//            for (id fontName in [UIFont fontNamesForFamilyName:familyName]) NSLog(@"  %@", fontName);
+//        }
     }
     
     return self;
@@ -90,6 +86,7 @@ int _heroAligment = 100;
     [self addChild:tapToBeginLabel];
     
     [self animateWithPulse:tapToBeginLabel];
+    
 }
 
 -(void)start {
@@ -144,6 +141,13 @@ int _heroAligment = 100;
             [pointsLabel increment];
         }
     }];
+    
+    [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if (node.position.x < hero.position.x) {
+            pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
+            [pointsLabel increment];
+        }
+    }];
 }
 
 -(void) handleGeneration {
@@ -155,6 +159,13 @@ int _heroAligment = 100;
         // NSLog(@"HERE obstacle marked for cancelation!");
      }
  }];
+    
+    [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if (node.position.x < hero.position.x) {
+            node.name = @"pointsBonusRuneCanceled";
+            NSLog(@"RUNE marked for cancelation!");
+        }
+    }];
     
 }
 
@@ -172,6 +183,12 @@ int _heroAligment = 100;
     
     [world enumerateChildNodesWithName:@"fireObstacleCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
+            [node removeFromParent];
+        }
+    }];
+    
+    [world enumerateChildNodesWithName:@"pointsBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if (node.position.x < hero.position.x) {
             [node removeFromParent];
         }
     }];
@@ -229,11 +246,17 @@ int _heroAligment = 100;
 }
 
 -(void) animateWithPulse:(SKNode *)node {
-    SKAction *disappear = [SKAction fadeAlphaTo:0.0 duration:0.6];
-    SKAction *appear = [SKAction fadeAlphaTo:1.0 duration:0.6];
+    SKAction *disappear = [SKAction fadeAlphaTo:0.0 duration:1];
+    SKAction *appear = [SKAction fadeAlphaTo:1.0 duration:1];
+    
+    SKAction *scaleTo = [SKAction scaleTo:0.7 duration:1];
+    SKAction *scaleFrom = [SKAction scaleTo:1 duration:1];
+    
     SKAction *pulse = [SKAction sequence:@[disappear, appear]];
+    SKAction *scale = [SKAction sequence:@[scaleTo, scaleFrom]];
     
     [node runAction:[SKAction repeatActionForever:pulse]];
+    [node runAction:[SKAction repeatActionForever:scale]];
 }
 
 @end
