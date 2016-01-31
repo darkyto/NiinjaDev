@@ -25,16 +25,20 @@
     SKNode *world;
     SKSpriteNode *ground;
     NIPointsLabel *pointsLabel;
-    NIScoreMenuImage * pointsImage;
-    NIScoreMenuImage * firePointsLabel;
-    NIScoreMenuImage * fireImage;
+    NIScoreMenuImage *pointsImage;
+    NIScoreMenuImage *firePointsLabel;
+    NIScoreMenuImage *fireImage;
     NIWorldGenerator *generator;
+    NIScoreMenuImage *lifesRemainingImage;
 }
 
 static NSString *GAME_FONT = @"Chalkduster";
 
+static int HERO_LIFES = 3;
+
 int _actionDirectionCriticalPoint = 200;
 int _heroAligment = 100;
+int _initialHeroFails = 0;
 
 
 -(id)initWithSize:(CGSize)size {
@@ -42,7 +46,7 @@ int _heroAligment = 100;
         
         self.anchorPoint = CGPointMake(0.5, 0.5);
         
-        // to call the method for collides within two bodies
+        // to call the method that handles contacts  within two bodies
         self.physicsWorld.contactDelegate = self;
         
         [self createContent];
@@ -58,7 +62,24 @@ int _heroAligment = 100;
 }
 
 -(void)didBeginContact:(SKPhysicsContact *)contact {
-    [self gameOver];
+    if (HERO_LIFES >= _initialHeroFails) {
+        _initialHeroFails++;
+        NSString *lifeImageString = [NSString stringWithFormat:@"Life-%i", _initialHeroFails];
+        NIScoreMenuImage *lifeBurned = (NIScoreMenuImage *) [self childNodeWithName:lifeImageString];
+        [lifeBurned removeFromParent];
+        
+        // this can reset hero ot its inital position after each fail
+//        [hero removeFromParent];
+//        hero = [NIHero hero];
+//        [world addChild:hero];
+        
+
+    }
+
+    if (_initialHeroFails >= HERO_LIFES) {
+        // All Lifes burned
+        [self gameOver];
+    }
 }
 
 -(void)createContent {
@@ -94,6 +115,27 @@ int _heroAligment = 100;
     fireImage.xScale = 0.3;
     fireImage.yScale = 0.3;
     [self addChild:fireImage];
+    
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage.position = CGPointMake(10, 90);
+    lifesRemainingImage.xScale = 0.2;
+    lifesRemainingImage.yScale = 0.2;
+    lifesRemainingImage.name = @"Life-1";
+    [self addChild:lifesRemainingImage];
+    
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage.position = CGPointMake(30, 90);
+    lifesRemainingImage.xScale = 0.2;
+    lifesRemainingImage.yScale = 0.2;
+    lifesRemainingImage.name = @"Life-2";
+    [self addChild:lifesRemainingImage];
+    
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage.position = CGPointMake(50, 90);
+    lifesRemainingImage.xScale = 0.2;
+    lifesRemainingImage.yScale = 0.2;
+    lifesRemainingImage.name = @"Life-3";
+    [self addChild:lifesRemainingImage];
     
     SKLabelNode *tapToBeginLabel = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
     tapToBeginLabel.text = @"Tap to Start!";
