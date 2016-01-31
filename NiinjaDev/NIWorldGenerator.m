@@ -22,21 +22,24 @@ static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
+NSArray *fireFrames;
+SKSpriteNode *fireAnimation ;
 
 +(id)generatorWithWorld:(SKNode *)world {
     NIWorldGenerator *generator = [NIWorldGenerator node];
     generator.currentGroundX = 0;
     generator.currentObstacleX = 400;
     generator.world = world;
+    
+    NSMutableArray *fireObstacleFrames = [NSMutableArray array];
+    fireFrames = [self createFireFrames: fireObstacleFrames];
+    
     [generator generate];
     return generator;
 }
 
 -(void)populate {
-    // not what i espected here
-//    for (int i = 0; i < 4; i++) {
-//        [self generate];
-//    }
+
 }
 
 -(void)generate {
@@ -74,19 +77,31 @@ static const uint32_t backgroundCategory = 0x1 << 3;
             
         } else {
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-            SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithColor:[UIColor redColor]
-                                                                      size:CGSizeMake(40, 70)];
-            fireObstacle.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + 10);
-            fireObstacle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:fireObstacle.frame.size];
-            fireObstacle.physicsBody.dynamic = NO;
-            fireObstacle.name = @"fireObstacle";
-            fireObstacle.physicsBody.categoryBitMask = obstacleCategory;
-            [self.world addChild:fireObstacle];
+//            SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithColor:[UIColor redColor]
+//                                                                      size:CGSizeMake(40, 70)];
+            // SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithImageNamed:@"Fire-1"];
+            SKTexture *fireTexture = fireFrames[0];
+            fireAnimation = [SKSpriteNode spriteNodeWithTexture:fireTexture];
+            fireAnimation.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + fireAnimation.frame.size.height/2);
+            fireAnimation.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fireAnimation.frame.size.width/2, fireAnimation.frame.size.width/2)];
+            fireAnimation.physicsBody.dynamic = NO;
+            fireAnimation.name = @"fireObstacle";
+            fireAnimation.physicsBody.categoryBitMask = obstacleCategory;
+            
+            [fireAnimation runAction:[SKAction repeatActionForever:
+                             [SKAction animateWithTextures:fireFrames
+                                              timePerFrame:0.1f
+                                                    resize:YES
+                                                   restore:YES]] withKey:@"fireObstacle"];
+            
+            [self.world addChild:fireAnimation];
         }
         
         if (i % 3 != 1 & i % 2 != 1) {
             
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+        
+            
             SKSpriteNode *bonusPointsRune = [SKSpriteNode spriteNodeWithImageNamed:@"7_gf_set_3"];
             bonusPointsRune.xScale = 0.2;
             bonusPointsRune.yScale = 0.2;
@@ -100,6 +115,18 @@ static const uint32_t backgroundCategory = 0x1 << 3;
         }
     }
     
-
 }
+
++(NSMutableArray *)createFireFrames: fireFrames {
+    SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"Fire"];
+    
+    for (int i=0; i <= 3; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"Fire-%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [fireFrames addObject:temp];
+    }
+    
+    return fireFrames;
+}
+
 @end
