@@ -70,11 +70,11 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)jumpRight {
-    [self.physicsBody applyImpulse:CGVectorMake(50, 80)];
+    [self.physicsBody applyImpulse:CGVectorMake(30, 100)];
 }
 
 -(void)jumpLeft {
-    [self.physicsBody applyImpulse:CGVectorMake(-50, 80)];
+    [self.physicsBody applyImpulse:CGVectorMake(30, 100)];
 }
 
 

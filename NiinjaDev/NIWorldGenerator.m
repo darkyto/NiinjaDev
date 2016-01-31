@@ -74,7 +74,7 @@ static const uint32_t backgroundCategory = 0x1 << 3;
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithColor:[UIColor redColor]
                                                                       size:CGSizeMake(40, 70)];
-            fireObstacle.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + 20);
+            fireObstacle.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + 10);
             fireObstacle.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:fireObstacle.frame.size];
             fireObstacle.physicsBody.dynamic = NO;
             fireObstacle.name = @"fireObstacle";
