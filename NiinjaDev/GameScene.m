@@ -11,7 +11,7 @@
 #import <UIKit/UIGestureRecognizerSubclass.h>
 #import "NIWorldGenerator.h"
 #import "NIPointsLabel.h"
-#import "NIPointsImage.h"
+#import "NIScoreMenuImage.h"
 
 @interface GameScene()
 
@@ -25,7 +25,9 @@
     SKNode *world;
     SKSpriteNode *ground;
     NIPointsLabel *pointsLabel;
-    NIPointsImage * pointsImage;
+    NIScoreMenuImage * pointsImage;
+    NIScoreMenuImage * firePointsLabel;
+    NIScoreMenuImage * fireImage;
     NIWorldGenerator *generator;
 }
 
@@ -72,12 +74,26 @@ int _heroAligment = 100;
     [world addChild:hero];
     
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    pointsLabel.position = CGPointMake(150, 85);
+    pointsLabel.position = CGPointMake(140, 80);
+    pointsLabel.name = @"pointsLabel";
     [self addChild:pointsLabel];
     
-    pointsImage = [NIPointsImage pointsImageWithNamedImage:@"7_gf_set_3"];
+    pointsImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"7_gf_set_3"];
     pointsImage.position = CGPointMake(170, 90);
+    pointsImage.xScale = 0.2;
+    pointsImage.yScale = 0.2;
     [self addChild:pointsImage];
+    
+    firePointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    firePointsLabel.position = CGPointMake(140, 60);
+    firePointsLabel.name = @"firePointsLabel";
+    [self addChild:firePointsLabel];
+    
+    fireImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"Fire-1"];
+    fireImage.position = CGPointMake(170, 70);
+    fireImage.xScale = 0.3;
+    fireImage.yScale = 0.3;
+    [self addChild:fireImage];
     
     SKLabelNode *tapToBeginLabel = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
     tapToBeginLabel.text = @"Tap to Start!";
@@ -137,10 +153,12 @@ int _heroAligment = 100;
     // MARK: Add the bonus artefacts and collect points through them
     [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {
-            pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
+            pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
             [pointsLabel increment];
         }
     }];
+    
+    
     
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {

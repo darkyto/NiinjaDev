@@ -30,7 +30,7 @@ NSArray *heroWalkingFrames;
     hero  = [NIHero spriteNodeWithTexture:heroFrames];
     hero.xScale = 0.8;
     hero.yScale = 0.8;
-    CGSize smallerPhysicalSize = CGSizeMake( hero.frame.size.height - 40 , hero.frame.size.width - 35);
+    CGSize smallerPhysicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
     hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:smallerPhysicalSize];
 
     [hero runAction:[SKAction repeatActionForever:
@@ -73,11 +73,11 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)jumpRight {
-    [self.physicsBody applyImpulse:CGVectorMake(30, 100)];
+    [self.physicsBody applyImpulse:CGVectorMake(30, 70)];
 }
 
 -(void)jumpLeft {
-    [self.physicsBody applyImpulse:CGVectorMake(-30, 100)];
+    [self.physicsBody applyImpulse:CGVectorMake(-30, 70)];
 }
 
 

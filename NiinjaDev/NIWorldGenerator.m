@@ -23,7 +23,7 @@ static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
 NSArray *fireFrames;
-SKSpriteNode *fireAnimation ;
+
 
 +(id)generatorWithWorld:(SKNode *)world {
     NIWorldGenerator *generator = [NIWorldGenerator node];
@@ -63,10 +63,26 @@ SKSpriteNode *fireAnimation ;
     
     for (int i=0; i<60; i++)
     {
-        if ((i % 4 != 1)) {
+        if ((i % 5 != 1)) {
+            
+//            if (i % 7 == 1) {
+//                SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+//                ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+//                ground.xScale = 0.3;
+//                ground.yScale = 0.3;
+//                ground.position = CGPointMake((i * ground.frame.size.width),  -ground.frame.size.height * 2);
+//                ground.zPosition = 1;
+//                ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(ground.frame.size.width/2, ground.frame.size.height/2)];
+//                ground.physicsBody.dynamic = NO;
+//                ground.name = @"back";
+//                ground.physicsBody.categoryBitMask = groundCategory;
+//                [self.world addChild:ground];
+//            }
+            
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             ground.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height - 15);
+            ground.zPosition = 2;
             ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ground.frame.size];
             ground.physicsBody.dynamic = NO;
             ground.name = @"back";
@@ -77,11 +93,9 @@ SKSpriteNode *fireAnimation ;
             
         } else {
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-//            SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithColor:[UIColor redColor]
-//                                                                      size:CGSizeMake(40, 70)];
-            // SKSpriteNode *fireObstacle = [SKSpriteNode spriteNodeWithImageNamed:@"Fire-1"];
+
             SKTexture *fireTexture = fireFrames[0];
-            fireAnimation = [SKSpriteNode spriteNodeWithTexture:fireTexture];
+            SKSpriteNode *fireAnimation = [SKSpriteNode spriteNodeWithTexture:fireTexture];
             fireAnimation.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + fireAnimation.frame.size.height/2);
             fireAnimation.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fireAnimation.frame.size.width/2, fireAnimation.frame.size.width/2)];
             fireAnimation.physicsBody.dynamic = NO;
@@ -97,7 +111,7 @@ SKSpriteNode *fireAnimation ;
             [self.world addChild:fireAnimation];
         }
         
-        if (i % 3 != 1 & i % 2 != 1) {
+        if (i % 5 != 1 & i % 2 != 1) {
             
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
         

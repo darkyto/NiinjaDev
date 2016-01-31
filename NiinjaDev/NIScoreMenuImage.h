@@ -8,8 +8,8 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface NIPointsImage : SKSpriteNode
+@interface NIScoreMenuImage : SKSpriteNode
 
-+(id)pointsImageWithNamedImage:(NSString*) imageName;
++(id)scoreMenuImageWithNamedImage:(NSString*) imageName;
 
 @end

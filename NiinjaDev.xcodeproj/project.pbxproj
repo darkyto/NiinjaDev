@@ -12,7 +12,7 @@
 		661FCE411C5E480B005939C0 /* Fire.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 661FCE401C5E480B005939C0 /* Fire.atlas */; };
 		664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */; };
 		664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD121C5D32F0000636C8 /* NIPointsLabel.m */; };
-		664BCD161C5D3C71000636C8 /* NIPointsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD151C5D3C71000636C8 /* NIPointsImage.m */; };
+		664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */; };
 		6659C5771C5B92E1003C40B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5761C5B92E1003C40B1 /* main.m */; };
 		6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5791C5B92E1003C40B1 /* AppDelegate.m */; };
 		6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C57C1C5B92E1003C40B1 /* GameScene.m */; };
@@ -31,8 +31,8 @@
 		664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIWorldGenerator.m; sourceTree = "<group>"; };
 		664BCD111C5D32F0000636C8 /* NIPointsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPointsLabel.h; sourceTree = "<group>"; };
 		664BCD121C5D32F0000636C8 /* NIPointsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIPointsLabel.m; sourceTree = "<group>"; };
-		664BCD141C5D3C71000636C8 /* NIPointsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPointsImage.h; sourceTree = "<group>"; };
-		664BCD151C5D3C71000636C8 /* NIPointsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIPointsImage.m; sourceTree = "<group>"; };
+		664BCD141C5D3C71000636C8 /* NIScoreMenuImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIScoreMenuImage.h; sourceTree = "<group>"; };
+		664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIScoreMenuImage.m; sourceTree = "<group>"; };
 		6659C5721C5B92E1003C40B1 /* NiinjaDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiinjaDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6659C5761C5B92E1003C40B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6659C5781C5B92E1003C40B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -96,8 +96,8 @@
 				664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */,
 				664BCD111C5D32F0000636C8 /* NIPointsLabel.h */,
 				664BCD121C5D32F0000636C8 /* NIPointsLabel.m */,
-				664BCD141C5D3C71000636C8 /* NIPointsImage.h */,
-				664BCD151C5D3C71000636C8 /* NIPointsImage.m */,
+				664BCD141C5D3C71000636C8 /* NIScoreMenuImage.h */,
+				664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */,
 			);
 			path = NiinjaDev;
 			sourceTree = "<group>";
@@ -183,7 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
-				664BCD161C5D3C71000636C8 /* NIPointsImage.m in Sources */,
+				664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */,
 				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
 				6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */,
 				6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */,
