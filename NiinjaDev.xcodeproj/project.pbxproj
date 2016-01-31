@@ -1,0 +1,340 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		661F88B81C5BB64C00AB6C41 /* NIHero.m in Sources */ = {isa = PBXBuildFile; fileRef = 661F88B71C5BB64C00AB6C41 /* NIHero.m */; };
+		661F88F81C5C062900AB6C41 /* GreenMan.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 661F88F71C5C062900AB6C41 /* GreenMan.atlas */; };
+		664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */; };
+		664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD121C5D32F0000636C8 /* NIPointsLabel.m */; };
+		664BCD161C5D3C71000636C8 /* NIPointsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD151C5D3C71000636C8 /* NIPointsImage.m */; };
+		6659C5771C5B92E1003C40B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5761C5B92E1003C40B1 /* main.m */; };
+		6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5791C5B92E1003C40B1 /* AppDelegate.m */; };
+		6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C57C1C5B92E1003C40B1 /* GameScene.m */; };
+		6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5811C5B92E1003C40B1 /* GameViewController.m */; };
+		6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5831C5B92E1003C40B1 /* Main.storyboard */; };
+		6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5861C5B92E1003C40B1 /* Assets.xcassets */; };
+		6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		661F88B61C5BB64C00AB6C41 /* NIHero.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIHero.h; sourceTree = "<group>"; };
+		661F88B71C5BB64C00AB6C41 /* NIHero.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIHero.m; sourceTree = "<group>"; };
+		661F88F71C5C062900AB6C41 /* GreenMan.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GreenMan.atlas; sourceTree = "<group>"; };
+		664BCD0E1C5D1137000636C8 /* NIWorldGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIWorldGenerator.h; sourceTree = "<group>"; };
+		664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIWorldGenerator.m; sourceTree = "<group>"; };
+		664BCD111C5D32F0000636C8 /* NIPointsLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPointsLabel.h; sourceTree = "<group>"; };
+		664BCD121C5D32F0000636C8 /* NIPointsLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIPointsLabel.m; sourceTree = "<group>"; };
+		664BCD141C5D3C71000636C8 /* NIPointsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIPointsImage.h; sourceTree = "<group>"; };
+		664BCD151C5D3C71000636C8 /* NIPointsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIPointsImage.m; sourceTree = "<group>"; };
+		6659C5721C5B92E1003C40B1 /* NiinjaDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiinjaDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6659C5761C5B92E1003C40B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6659C5781C5B92E1003C40B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6659C5791C5B92E1003C40B1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6659C57B1C5B92E1003C40B1 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		6659C57C1C5B92E1003C40B1 /* GameScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		6659C5801C5B92E1003C40B1 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		6659C5811C5B92E1003C40B1 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		6659C5841C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6659C5861C5B92E1003C40B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6659C5891C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6659C58B1C5B92E1003C40B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6659C56F1C5B92E0003C40B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6659C5691C5B92E0003C40B1 = {
+			isa = PBXGroup;
+			children = (
+				6659C5741C5B92E1003C40B1 /* NiinjaDev */,
+				6659C5731C5B92E1003C40B1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6659C5731C5B92E1003C40B1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6659C5721C5B92E1003C40B1 /* NiinjaDev.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
+			isa = PBXGroup;
+			children = (
+				661F88F71C5C062900AB6C41 /* GreenMan.atlas */,
+				6659C5781C5B92E1003C40B1 /* AppDelegate.h */,
+				6659C5791C5B92E1003C40B1 /* AppDelegate.m */,
+				6659C57B1C5B92E1003C40B1 /* GameScene.h */,
+				6659C57C1C5B92E1003C40B1 /* GameScene.m */,
+				6659C5801C5B92E1003C40B1 /* GameViewController.h */,
+				6659C5811C5B92E1003C40B1 /* GameViewController.m */,
+				6659C5831C5B92E1003C40B1 /* Main.storyboard */,
+				6659C5861C5B92E1003C40B1 /* Assets.xcassets */,
+				6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */,
+				6659C58B1C5B92E1003C40B1 /* Info.plist */,
+				6659C5751C5B92E1003C40B1 /* Supporting Files */,
+				661F88B61C5BB64C00AB6C41 /* NIHero.h */,
+				661F88B71C5BB64C00AB6C41 /* NIHero.m */,
+				664BCD0E1C5D1137000636C8 /* NIWorldGenerator.h */,
+				664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */,
+				664BCD111C5D32F0000636C8 /* NIPointsLabel.h */,
+				664BCD121C5D32F0000636C8 /* NIPointsLabel.m */,
+				664BCD141C5D3C71000636C8 /* NIPointsImage.h */,
+				664BCD151C5D3C71000636C8 /* NIPointsImage.m */,
+			);
+			path = NiinjaDev;
+			sourceTree = "<group>";
+		};
+		6659C5751C5B92E1003C40B1 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6659C5761C5B92E1003C40B1 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6659C5711C5B92E0003C40B1 /* NiinjaDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6659C58E1C5B92E1003C40B1 /* Build configuration list for PBXNativeTarget "NiinjaDev" */;
+			buildPhases = (
+				6659C56E1C5B92E0003C40B1 /* Sources */,
+				6659C56F1C5B92E0003C40B1 /* Frameworks */,
+				6659C5701C5B92E0003C40B1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NiinjaDev;
+			productName = NiinjaDev;
+			productReference = 6659C5721C5B92E1003C40B1 /* NiinjaDev.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6659C56A1C5B92E0003C40B1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "iNick Iliev";
+				TargetAttributes = {
+					6659C5711C5B92E0003C40B1 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = 6659C56D1C5B92E0003C40B1 /* Build configuration list for PBXProject "NiinjaDev" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6659C5691C5B92E0003C40B1;
+			productRefGroup = 6659C5731C5B92E1003C40B1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6659C5711C5B92E0003C40B1 /* NiinjaDev */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6659C5701C5B92E0003C40B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */,
+				6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */,
+				661F88F81C5C062900AB6C41 /* GreenMan.atlas in Resources */,
+				6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6659C56E1C5B92E0003C40B1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
+				664BCD161C5D3C71000636C8 /* NIPointsImage.m in Sources */,
+				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
+				6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */,
+				6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */,
+				664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */,
+				661F88B81C5BB64C00AB6C41 /* NIHero.m in Sources */,
+				6659C5771C5B92E1003C40B1 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6659C5831C5B92E1003C40B1 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6659C5841C5B92E1003C40B1 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6659C5891C5B92E1003C40B1 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6659C58C1C5B92E1003C40B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6659C58D1C5B92E1003C40B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6659C58F1C5B92E1003C40B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NiinjaDev/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iliev.nikana.NiinjaDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6659C5901C5B92E1003C40B1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = NiinjaDev/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iliev.nikana.NiinjaDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6659C56D1C5B92E0003C40B1 /* Build configuration list for PBXProject "NiinjaDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6659C58C1C5B92E1003C40B1 /* Debug */,
+				6659C58D1C5B92E1003C40B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6659C58E1C5B92E1003C40B1 /* Build configuration list for PBXNativeTarget "NiinjaDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6659C58F1C5B92E1003C40B1 /* Debug */,
+				6659C5901C5B92E1003C40B1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6659C56A1C5B92E0003C40B1 /* Project object */;
+}
