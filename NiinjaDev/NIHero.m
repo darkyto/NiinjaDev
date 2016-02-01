@@ -28,23 +28,26 @@ NSArray *heroWalkingFrames;
     heroWalkingFrames = [self createWalkingFrames: walkFrames];
     SKTexture *heroFrames = heroWalkingFrames[0];
     hero  = [NIHero spriteNodeWithTexture:heroFrames];
-    hero.xScale = 0.8;
-    hero.yScale = 0.8;
-    CGSize smallerPhysicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
-    hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:smallerPhysicalSize];
-
     [hero runAction:[SKAction repeatActionForever:
                      [SKAction animateWithTextures:heroWalkingFrames
                                       timePerFrame:0.1f
                                             resize:YES
                                            restore:YES]] withKey:@"walkingInPlaceHero"];
+    hero.xScale = 0.8;
+    hero.yScale = 0.8;
     hero.name = @"hero";
+    
+    
+    // TODO : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
+    // hero.physicsBody.density = 1;
+ 
+    CGSize smallerPhysicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
+    hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:smallerPhysicalSize];
     hero.physicsBody.categoryBitMask = heroCategory;
+    hero.physicsBody.allowsRotation = NO;
     hero.physicsBody.contactTestBitMask = obstacleCategory |
                                           (-groundCategory & -backgroundCategory );
 
-    
-    
     return hero;
 }
 
@@ -74,6 +77,8 @@ NSArray *heroWalkingFrames;
 
 -(void)jumpRight {
     [self.physicsBody applyImpulse:CGVectorMake(30, 70)];
+    
+    //
 }
 
 -(void)jumpLeft {

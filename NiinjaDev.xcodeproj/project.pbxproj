@@ -20,6 +20,7 @@
 		6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5831C5B92E1003C40B1 /* Main.storyboard */; };
 		6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5861C5B92E1003C40B1 /* Assets.xcassets */; };
 		6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */; };
+		66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		6659C5861C5B92E1003C40B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6659C5891C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6659C58B1C5B92E1003C40B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GreenManRed.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
+				66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */,
 				661FCE401C5E480B005939C0 /* Fire.atlas */,
 				661F88F71C5C062900AB6C41 /* GreenMan.atlas */,
 				6659C5781C5B92E1003C40B1 /* AppDelegate.h */,
@@ -169,6 +172,7 @@
 			files = (
 				661FCE411C5E480B005939C0 /* Fire.atlas in Resources */,
 				6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */,
+				66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */,
 				6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */,
 				661F88F81C5C062900AB6C41 /* GreenMan.atlas in Resources */,
 				6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */,

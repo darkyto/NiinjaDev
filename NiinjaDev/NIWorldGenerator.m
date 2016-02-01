@@ -43,23 +43,25 @@ NSArray *fireFrames;
 }
 
 -(void)generate {
-    for (int y = 0; y < 5; y++) {
-        SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"game-background-sprites-0"];
-        background.position = CGPointMake(y*background.frame.size.width, 30);
-        background.physicsBody.dynamic = NO;
-        background.name = @"background";
-        background.physicsBody.categoryBitMask = backgroundCategory;
-        [self.world addChild:background];
+    for (int y = 0; y < 8; y++) {
+        if (y % 2 == 0) {
+            SKSpriteNode *background = [SKSpriteNode spriteNodeWithImageNamed:@"video-game-background-0"];
+            background.position = CGPointMake(y * background.frame.size.width,30);
+            background.physicsBody.dynamic = NO;
+            background.name = @"background";
+            background.physicsBody.categoryBitMask = backgroundCategory;
+            [self.world addChild:background];
+        } else {
+            SKSpriteNode *background2 = [SKSpriteNode spriteNodeWithImageNamed:@"video-game-background-1"];
+            background2.position = CGPointMake(y * background2.size.width, 30);
+            background2.physicsBody.dynamic = NO;
+            background2.name = @"background2";
+            background2.physicsBody.categoryBitMask = backgroundCategory;
+            [self.world addChild:background2];
+        }
+
     }
-    
-    //        for (int z = 4; z < 8; z++) {
-    //            SKSpriteNode *background2 = [SKSpriteNode spriteNodeWithImageNamed:@"game-background-sprites-1"];
-    //            background2.position = CGPointMake(z*background2.size.width, 30);
-    //            background2.physicsBody.dynamic = NO;
-    //            background2.name = @"background2";
-    //            [world addChild:background2];
-    //        }
-    
+
     
     for (int i=0; i<60; i++)
     {

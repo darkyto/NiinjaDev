@@ -116,21 +116,21 @@ int _initialHeroFails = 0;
     fireImage.yScale = 0.3;
     [self addChild:fireImage];
     
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
     lifesRemainingImage.position = CGPointMake(10, 90);
     lifesRemainingImage.xScale = 0.2;
     lifesRemainingImage.yScale = 0.2;
     lifesRemainingImage.name = @"Life-1";
     [self addChild:lifesRemainingImage];
     
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
     lifesRemainingImage.position = CGPointMake(30, 90);
     lifesRemainingImage.xScale = 0.2;
     lifesRemainingImage.yScale = 0.2;
     lifesRemainingImage.name = @"Life-2";
     [self addChild:lifesRemainingImage];
     
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"greenman-1-0"];
+    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
     lifesRemainingImage.position = CGPointMake(50, 90);
     lifesRemainingImage.xScale = 0.2;
     lifesRemainingImage.yScale = 0.2;
@@ -190,6 +190,13 @@ int _initialHeroFails = 0;
 
 }
 
+-(void) centerOfNode:(SKNode *) node {
+    CGPoint positionInTheScne = [self convertPoint:node.position fromNode:node.parent];
+    world.position = CGPointMake(world.position.x - positionInTheScne.x - _heroAligment, world.position.y);
+    
+    // - positionInTheScne.y will added dynamic 
+}
+
 -(void) handlePoints {
     
     // MARK: Add the bonus artefacts and collect points through them
@@ -223,7 +230,7 @@ int _initialHeroFails = 0;
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {
             node.name = @"pointsBonusRuneCanceled";
-            NSLog(@"RUNE marked for cancelation!");
+
         }
     }];
     
@@ -258,11 +265,6 @@ int _initialHeroFails = 0;
             [node removeFromParent];
         }
     }];
-}
-
--(void) centerOfNode:(SKNode *) node {
-    CGPoint positionInTheScne = [self convertPoint:node.position fromNode:node.parent];
-    world.position = CGPointMake(world.position.x - positionInTheScne.x - _heroAligment, world.position.y);
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
