@@ -11,6 +11,8 @@
 
 @implementation GameViewController 
 
+@synthesize userChoiceHero;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -29,6 +31,8 @@
 
     // Present the scene.
     [skView presentScene:scene];
+    
+    NSLog(@"USER CHOICE HERE :  %@", userChoiceHero);
 
 }
 

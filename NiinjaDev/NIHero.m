@@ -92,7 +92,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)makeHeroLarger {
-    [self animateSizerWithScale:1];
+    [self animateSizerWithScale:0.8];
 }
 
 -(void) animateSizerWithScale:(double) scaleFactor {

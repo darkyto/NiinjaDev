@@ -11,4 +11,6 @@
 
 @interface GameViewController : UIViewController
 
+@property (strong, nonatomic) NSString *userChoiceHero;
+
 @end

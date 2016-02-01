@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="DTv-Pn-pww">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
@@ -21,7 +24,71 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="282" y="153"/>
+            <point key="canvasLocation" x="868" y="44"/>
+        </scene>
+        <!--Startup View Controller-->
+        <scene sceneID="0dB-wF-Yvk">
+            <objects>
+                <viewController id="DTv-Pn-pww" customClass="StartupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eiG-es-YfZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="LLS-pv-aEK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="18H-5I-sOT">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cpd-ry-nNA">
+                                <rect key="frame" x="20" y="20" width="280" height="315"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="1BX-MH-x4x"/>
+                                </constraints>
+                                <state key="normal" title="Play with GreenMan"/>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="show" identifier="GreenmanSegue" id="ULf-ed-Qo7"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brief game description and instructions to add here." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMs-O2-hbH">
+                                <rect key="frame" x="20" y="343" width="560" height="237"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfH-T3-OwM">
+                                <rect key="frame" x="300" y="20" width="280" height="315"/>
+                                <state key="normal" title="Play with Ninja"/>
+                                <connections>
+                                    <segue destination="BV1-FR-VrT" kind="show" identifier="NInjaSegue" id="JAZ-Dq-x38"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dfH-T3-OwM" firstAttribute="top" secondItem="Cpd-ry-nNA" secondAttribute="top" id="20Y-fY-as4"/>
+                            <constraint firstItem="Cpd-ry-nNA" firstAttribute="leading" secondItem="18H-5I-sOT" secondAttribute="leadingMargin" id="6Qo-nj-hAO"/>
+                            <constraint firstItem="dfH-T3-OwM" firstAttribute="baseline" secondItem="Cpd-ry-nNA" secondAttribute="firstBaseline" id="6sG-Rv-pnA"/>
+                            <constraint firstItem="Cpd-ry-nNA" firstAttribute="top" secondItem="18H-5I-sOT" secondAttribute="top" constant="20" symbolic="YES" id="8P0-ps-MZP"/>
+                            <constraint firstItem="pMs-O2-hbH" firstAttribute="leading" secondItem="Cpd-ry-nNA" secondAttribute="leading" id="9YY-Fi-eTt"/>
+                            <constraint firstItem="pMs-O2-hbH" firstAttribute="top" secondItem="Cpd-ry-nNA" secondAttribute="bottom" constant="8" symbolic="YES" id="AUJ-7w-Rbm"/>
+                            <constraint firstItem="LLS-pv-aEK" firstAttribute="top" secondItem="Cpd-ry-nNA" secondAttribute="bottom" constant="265" id="Cet-wg-nzg"/>
+                            <constraint firstItem="pMs-O2-hbH" firstAttribute="trailing" secondItem="dfH-T3-OwM" secondAttribute="trailing" id="I79-89-mUN"/>
+                            <constraint firstItem="Cpd-ry-nNA" firstAttribute="baseline" secondItem="dfH-T3-OwM" secondAttribute="firstBaseline" id="IZl-tl-OP3"/>
+                            <constraint firstAttribute="bottom" secondItem="pMs-O2-hbH" secondAttribute="bottom" constant="20" symbolic="YES" id="Ogl-Th-hc9"/>
+                            <constraint firstItem="dfH-T3-OwM" firstAttribute="trailing" secondItem="18H-5I-sOT" secondAttribute="trailingMargin" id="gc2-nt-Wbf"/>
+                            <constraint firstItem="dfH-T3-OwM" firstAttribute="leading" secondItem="Cpd-ry-nNA" secondAttribute="trailing" id="xyH-Lz-7dr"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C6E-DC-Xac" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="207" y="44"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="JAZ-Dq-x38"/>
+    </inferredMetricsTieBreakers>
 </document>
