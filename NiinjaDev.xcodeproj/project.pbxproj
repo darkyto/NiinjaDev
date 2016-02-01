@@ -21,6 +21,7 @@
 		6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5861C5B92E1003C40B1 /* Assets.xcassets */; };
 		6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */; };
 		66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */; };
+		66E1B9511C600569006325EB /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E1B9501C600569006325EB /* MenuViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,8 @@
 		6659C5891C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6659C58B1C5B92E1003C40B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GreenManRed.atlas; sourceTree = "<group>"; };
+		66E1B94F1C600569006325EB /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		66E1B9501C600569006325EB /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 				664BCD121C5D32F0000636C8 /* NIPointsLabel.m */,
 				664BCD141C5D3C71000636C8 /* NIScoreMenuImage.h */,
 				664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */,
+				66E1B94F1C600569006325EB /* MenuViewController.h */,
+				66E1B9501C600569006325EB /* MenuViewController.m */,
 			);
 			path = NiinjaDev;
 			sourceTree = "<group>";
@@ -187,6 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
+				66E1B9511C600569006325EB /* MenuViewController.m in Sources */,
 				664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */,
 				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
 				6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */,

@@ -67,19 +67,68 @@ NSArray *fireFrames;
     {
         if ((i % 5 != 1)) {
             
-//            if (i % 7 == 1) {
-//                SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-//                ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-//                ground.xScale = 0.3;
-//                ground.yScale = 0.3;
-//                ground.position = CGPointMake((i * ground.frame.size.width),  -ground.frame.size.height * 2);
-//                ground.zPosition = 1;
-//                ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(ground.frame.size.width/2, ground.frame.size.height/2)];
-//                ground.physicsBody.dynamic = NO;
-//                ground.name = @"back";
-//                ground.physicsBody.categoryBitMask = groundCategory;
-//                [self.world addChild:ground];
-//            }
+            if (i % 7 == 1) {
+                SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                ground.xScale = 0.3;
+                ground.yScale = 0.3;
+                ground.position = CGPointMake((i * ground.frame.size.width),  -ground.frame.size.height * 2 + 50);
+                ground.zPosition = 1;
+                ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(ground.frame.size.width/2, ground.frame.size.height)];
+                ground.physicsBody.dynamic = NO;
+                ground.name = @"back";
+                ground.physicsBody.categoryBitMask = groundCategory;
+                [self.world addChild:ground];
+            }
+            
+            
+            if (i == 25) {
+                for (int z = 0; z < 4; z++) {
+                    SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                    ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                    ground.xScale = 0.3;
+                    ground.yScale = 0.3;
+                    ground.position = CGPointMake((i + z )* 24, (z * 10 ) - 30);
+                    //  * ground.frame.size.width - 20)
+                    
+                    ground.zPosition = 1;
+                    ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(ground.frame.size.width/2, ground.frame.size.height)];
+                    ground.physicsBody.dynamic = NO;
+                    ground.name = @"back";
+                    ground.physicsBody.categoryBitMask = groundCategory;
+                    [self.world addChild:ground];
+                    
+                    if (z == 3) {
+                        SKSpriteNode *bonusPointsRune = [SKSpriteNode spriteNodeWithImageNamed:@"7_gf_set_3"];
+                        bonusPointsRune.xScale = 0.2;
+                        bonusPointsRune.yScale = 0.2;
+                        bonusPointsRune.position = CGPointMake((i + z )* 24, (z * 10 ) - 30);
+                        bonusPointsRune.name = @"pointsBonusRune";
+                        bonusPointsRune.physicsBody.dynamic = NO;
+                        bonusPointsRune.physicsBody.categoryBitMask = groundCategory;
+                        
+                        [self.world addChild:bonusPointsRune];
+                    }
+                }
+                
+                for (int w = 0; w < 4; w++) {
+                    SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                    ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                    ground.xScale = 0.3;
+                    ground.yScale = 0.3;
+                    ground.position = CGPointMake((i - w )* 32, (w * 10 ) - 30);
+                    //  * ground.frame.size.width - 20)
+                    
+                    
+                    ground.zPosition = 1;
+                    ground.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(ground.frame.size.width/2, ground.frame.size.height)];
+                    ground.physicsBody.dynamic = NO;
+                    ground.name = @"back";
+                    ground.physicsBody.categoryBitMask = groundCategory;
+                    [self.world addChild:ground];
+                }
+            
+            }
             
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];

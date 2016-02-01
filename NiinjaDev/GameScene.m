@@ -7,77 +7,140 @@
 //
 
 #import "GameScene.h"
-#import "NIHero.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
+
+#import "NIHero.h"
 #import "NIWorldGenerator.h"
 #import "NIPointsLabel.h"
 #import "NIScoreMenuImage.h"
 
-@interface GameScene()
+@interface GameScene()<UIGestureRecognizerDelegate> {
+    UISwipeGestureRecognizer *gestureRecognizerSwipeDown;
+    UISwipeGestureRecognizer *gestureRecognizerSwipeUp;
+    UITapGestureRecognizer *gestureRecognizerDoubleTap;
+}
 
 @property BOOL isStarted;
 @property BOOL isGameOver;
+@property BOOL isHeroSmaller;
 
 @end
 
-@implementation GameScene {
+@implementation GameScene{
+    
     NIHero *hero;
     SKNode *world;
     SKSpriteNode *ground;
+    NIWorldGenerator *generator;
+    
     NIPointsLabel *pointsLabel;
     NIScoreMenuImage *pointsImage;
-    NIScoreMenuImage *firePointsLabel;
+    
+    NIPointsLabel *firePointsLabel;
     NIScoreMenuImage *fireImage;
-    NIWorldGenerator *generator;
+
     NIScoreMenuImage *lifesRemainingImage;
 }
 
 static NSString *GAME_FONT = @"Chalkduster";
 
-static int HERO_LIFES = 3;
-
-int _actionDirectionCriticalPoint = 200;
-int _heroAligment = 100;
+int _heroLifes = 4;
 int _initialHeroFails = 0;
-
+double _changeDirectionCriticalPoint;
 
 -(id)initWithSize:(CGSize)size {
     if (self = [super initWithSize:size]) {
         
         self.anchorPoint = CGPointMake(0.5, 0.5);
         
-        // to call the method that handles contacts  within two bodies
+        // to call the method that handles contacts within two bodies
         self.physicsWorld.contactDelegate = self;
         
         [self createContent];
-        
-        // available fonts listed in xcode output
-//        for (id familyName in [UIFont familyNames]) {
-//            NSLog(@"%@", familyName);
-//            for (id fontName in [UIFont fontNamesForFamilyName:familyName]) NSLog(@"  %@", fontName);
-//        }
     }
     
     return self;
 }
 
+-(void)didMoveToView:(SKView *)view {
+    
+    gestureRecognizerSwipeDown = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeHandlerDown:)];
+    [gestureRecognizerSwipeDown setDirection:UISwipeGestureRecognizerDirectionDown];
+    [view addGestureRecognizer:gestureRecognizerSwipeDown];
+    
+    gestureRecognizerSwipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandlerUp:)];
+    [gestureRecognizerSwipeUp setDirection:(UISwipeGestureRecognizerDirectionUp)];
+    [view addGestureRecognizer:gestureRecognizerSwipeUp];
+
+    gestureRecognizerDoubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTap:)];
+    [gestureRecognizerDoubleTap setNumberOfTapsRequired:2];
+    [view addGestureRecognizer:gestureRecognizerDoubleTap];
+    
+    _changeDirectionCriticalPoint = self.frame.size.height/6;
+}
+
+-(void)willMoveFromView:(SKView *)view {
+    [self.view removeGestureRecognizer: gestureRecognizerSwipeDown];
+    [self.view removeGestureRecognizer: gestureRecognizerSwipeUp];
+}
+
+-(void)swipeHandlerDown:(UISwipeGestureRecognizer *)recognizer {
+    [hero makeHeroSmaller];
+    self.isHeroSmaller = NO;
+    
+}
+
+-(void)swipeHandlerUp:(UISwipeGestureRecognizer *)recognizer {
+    [hero makeHeroLarger];
+    self.isHeroSmaller = YES;
+    
+}
+
+-(void)tapTap:(UITapGestureRecognizer *)recognizer {
+    CGPoint tapPoint = [recognizer locationInView:self.view];
+
+    if (tapPoint.x <= _changeDirectionCriticalPoint) {
+        [hero jumpLeft];
+    } else if (tapPoint.x > _changeDirectionCriticalPoint)  {
+        [hero jumpRight];
+    }
+}
+
 -(void)didBeginContact:(SKPhysicsContact *)contact {
-    if (HERO_LIFES >= _initialHeroFails) {
+    
+    if (_heroLifes > _initialHeroFails) {
         _initialHeroFails++;
         NSString *lifeImageString = [NSString stringWithFormat:@"Life-%i", _initialHeroFails];
         NIScoreMenuImage *lifeBurned = (NIScoreMenuImage *) [self childNodeWithName:lifeImageString];
         [lifeBurned removeFromParent];
         
-        // this can reset hero ot its inital position after each fail
+        SKLabelNode *fireBurnMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
+        fireBurnMessage.position = CGPointMake(hero.position.x + hero.frame.size.width/3,
+                                                      hero.position.y + hero.frame.size.height/2);
+        fireBurnMessage.text = @"Ouch! It burns!";
+        fireBurnMessage.fontSize = 14;
+        fireBurnMessage.fontColor = [UIColor redColor];
+        fireBurnMessage.name = @"fireBurnMessage";
+        [world addChild:fireBurnMessage];
+        [self animateWithScale:fireBurnMessage];
+        
+        // this can reset hero ot its inital level position after each fail - too user unfriendly!?
 //        [hero removeFromParent];
 //        hero = [NIHero hero];
 //        [world addChild:hero];
-        
-
     }
 
-    if (_initialHeroFails >= HERO_LIFES) {
-        // All Lifes burned
+    if (_initialHeroFails >= _heroLifes) {
+        SKLabelNode *fireBurnMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
+        fireBurnMessage.position = CGPointMake(hero.position.x + hero.frame.size.width/3,
+                                               hero.position.y + hero.frame.size.height/2);
+        fireBurnMessage.text = @"I'll be back!!!";
+        fireBurnMessage.fontSize = 14;
+        fireBurnMessage.fontColor = [UIColor redColor];
+        fireBurnMessage.name = @"fireBurnMessage";
+        [world addChild:fireBurnMessage];
+        [self animateWithScale:fireBurnMessage];
+        
         [self gameOver];
     }
 }
@@ -116,26 +179,15 @@ int _initialHeroFails = 0;
     fireImage.yScale = 0.3;
     [self addChild:fireImage];
     
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
-    lifesRemainingImage.position = CGPointMake(10, 90);
-    lifesRemainingImage.xScale = 0.2;
-    lifesRemainingImage.yScale = 0.2;
-    lifesRemainingImage.name = @"Life-1";
-    [self addChild:lifesRemainingImage];
-    
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
-    lifesRemainingImage.position = CGPointMake(30, 90);
-    lifesRemainingImage.xScale = 0.2;
-    lifesRemainingImage.yScale = 0.2;
-    lifesRemainingImage.name = @"Life-2";
-    [self addChild:lifesRemainingImage];
-    
-    lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
-    lifesRemainingImage.position = CGPointMake(50, 90);
-    lifesRemainingImage.xScale = 0.2;
-    lifesRemainingImage.yScale = 0.2;
-    lifesRemainingImage.name = @"Life-3";
-    [self addChild:lifesRemainingImage];
+    // TODO: OK now add a special RUNE to add extra-life
+    for (int i = 1; i <= _heroLifes; i++) {
+        lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
+        lifesRemainingImage.position = CGPointMake(i * 20, 90);
+        lifesRemainingImage.xScale = 0.2;
+        lifesRemainingImage.yScale = 0.2;
+        lifesRemainingImage.name = [NSString stringWithFormat:@"Life-%i", i];
+        [self addChild:lifesRemainingImage];
+    }
     
     SKLabelNode *tapToBeginLabel = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
     tapToBeginLabel.text = @"Tap to Start!";
@@ -144,7 +196,7 @@ int _initialHeroFails = 0;
     [self addChild:tapToBeginLabel];
     
     [self animateWithPulse:tapToBeginLabel];
-    
+
 }
 
 -(void)start {
@@ -167,7 +219,6 @@ int _initialHeroFails = 0;
     gameOverLabel.text = @"Game Over";
     gameOverLabel.fontSize = 20;
     gameOverLabel.position = CGPointMake(0, 50);
-    //NSLog(@"gameOver is called");
     [self addChild:gameOverLabel];
     
     SKLabelNode *tapToRestLabel = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
@@ -180,6 +231,7 @@ int _initialHeroFails = 0;
 }
 
 -(void)didSimulatePhysics {
+    
     [self centerOfNode:hero];
     
     [self handlePoints];
@@ -192,27 +244,38 @@ int _initialHeroFails = 0;
 
 -(void) centerOfNode:(SKNode *) node {
     CGPoint positionInTheScne = [self convertPoint:node.position fromNode:node.parent];
-    world.position = CGPointMake(world.position.x - positionInTheScne.x - _heroAligment, world.position.y);
+    world.position = CGPointMake(world.position.x - positionInTheScne.x - _changeDirectionCriticalPoint,
+                                 world.position.y - positionInTheScne.y - self.frame.size.width/10);
     
-    // - positionInTheScne.y will added dynamic 
+    // - positionInTheScne.y (delete it to remove screen dynamic movement by y)
 }
 
 -(void) handlePoints {
     
-    // MARK: Add the bonus artefacts and collect points through them
     [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {
-            pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
-            [pointsLabel increment];
+            firePointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
+            [firePointsLabel increment];
         }
     }];
     
     
-    
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x < hero.position.x) {
+        if ( (node.position.x < hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
+            
+            SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
+            pointsCollectedMessage.position = CGPointMake(node.position.x + hero.frame.size.width/3,
+                                                          node.position.y + hero.frame.size.height/2);
+            pointsCollectedMessage.text = @"My Precious!";
+            pointsCollectedMessage.fontSize = 14;
+            pointsCollectedMessage.fontColor = [UIColor redColor];
+            pointsCollectedMessage.name = @"pointsCollectedMessage";
+            [world addChild:pointsCollectedMessage];
+            [self animateWithScale:pointsCollectedMessage];
+
         }
     }];
 }
@@ -222,17 +285,14 @@ int _initialHeroFails = 0;
  [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
      if (node.position.x < hero.position.x) {
          node.name = @"fireObstacleCanceled";
-        // [generator generate]; // i am calling this in NIWorldGenerator so.. fix the ground/obstacles and then call here
-        // NSLog(@"HERE obstacle marked for cancelation!");
      }
  }];
     
-    [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x < hero.position.x) {
-            node.name = @"pointsBonusRuneCanceled";
-
-        }
-    }];
+ [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+    if (node.position.x < hero.position.x) {
+        node.name = @"pointsBonusRuneCanceled";
+    }
+ }];
     
 }
 
@@ -253,9 +313,10 @@ int _initialHeroFails = 0;
             [node removeFromParent];
         }
     }];
-    
+
     [world enumerateChildNodesWithName:@"pointsBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x < hero.position.x) {
+        if ( (node.position.x <= hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
             [node removeFromParent];
         }
     }];
@@ -265,6 +326,20 @@ int _initialHeroFails = 0;
             [node removeFromParent];
         }
     }];
+    
+    [world enumerateChildNodesWithName:@"pointsCollectedMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( node.position.x <= hero.position.x - 100) {
+            [node removeFromParent];
+        }
+    }];
+    
+    [world enumerateChildNodesWithName:@"fireBurnMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( node.position.x <= hero.position.x - 50) {
+            [node removeFromParent];
+        }
+    }];
+    
+
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -274,37 +349,14 @@ int _initialHeroFails = 0;
         [self clear];
     }
     
-    // MARK : for testing - remove later
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint location = [touch locationInView:touch.view];
     
-    // MARK : Remove walkRight (mybe auto movement!?) and make better jump & speed
-    for (UITouch *aTouch in touches) {
-        if (aTouch.tapCount == 2) {
-            if (location.x <= _actionDirectionCriticalPoint) {
-                [hero jumpLeft];
-            } else {
-                [hero jumpRight];
-            }
-            return;
-        }
-        NSLog(@"HERO position X : %f", hero.position.x);
-        NSLog(@"TAP position X : %f", location.x);
-        NSLog(@"GROUND position X : %f", ground.position.x);
-        NSLog(@"WORLD position X: %f", world.position.x);
-        
-        // NOT GOOD ENOUGH - Fix this to make hero move back when the tap is behind him
-        // Fixed!? Test some more - test with fire object obstacle and add physics constraints
-        if (location.x <= _actionDirectionCriticalPoint) {
-            [hero walkLeft];
-        } else {
-            [hero walkRight];
-        }
-
+    if (location.x <= _changeDirectionCriticalPoint) {
+        [hero walkLeft];
+    } else if (location.x > _changeDirectionCriticalPoint) {
+        [hero walkRight];
     }
-}
-
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
 }
 
 -(void) animateWithPulse:(SKNode *)node {
@@ -319,6 +371,15 @@ int _initialHeroFails = 0;
     
     [node runAction:[SKAction repeatActionForever:pulse]];
     [node runAction:[SKAction repeatActionForever:scale]];
+}
+
+-(void) animateWithScale:(SKNode *)node {
+
+    SKAction *scaleTo = [SKAction scaleTo:0 duration:1];
+    SKAction *scaleFrom = [SKAction scaleTo:1 duration:1];
+    SKAction *scale = [SKAction sequence:@[scaleFrom, scaleTo]];
+    
+    [node runAction:scale];
 }
 
 @end

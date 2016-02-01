@@ -15,7 +15,6 @@ static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
-
 NIHero *hero;
 NSArray *heroWalkingFrames;
 
@@ -39,6 +38,7 @@ NSArray *heroWalkingFrames;
     
     
     // TODO : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
+    // TODO : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
     // hero.physicsBody.density = 1;
  
     CGSize smallerPhysicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
@@ -52,7 +52,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)start  {
-    SKAction *incrementRight = [SKAction moveByX:0.5 y:0 duration:0.02];
+    SKAction *incrementRight = [SKAction moveByX:0.6 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
@@ -76,15 +76,31 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)jumpRight {
-    [self.physicsBody applyImpulse:CGVectorMake(30, 70)];
+    [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
     
-    //
+    return;
 }
 
 -(void)jumpLeft {
-    [self.physicsBody applyImpulse:CGVectorMake(-30, 70)];
+    [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
+    
+    return;
 }
 
+-(void)makeHeroSmaller {
+    [self animateSizerWithScale:0.4];
+}
+
+-(void)makeHeroLarger {
+    [self animateSizerWithScale:1];
+}
+
+-(void) animateSizerWithScale:(double) scaleFactor {
+    
+    SKAction *scaleTo = [SKAction scaleTo:scaleFactor duration:1];
+
+    [self runAction:scaleTo];
+}
 
 +(NSMutableArray *)createWalkingFrames: walkFrames {
     SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"GreenMan"];

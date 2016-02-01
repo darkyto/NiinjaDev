@@ -11,12 +11,17 @@
 @interface NIHero : SKSpriteNode
 
 +(id) hero;
--(void) walkRight;
--(void) walkLeft;
--(void) jumpRight;
--(void) jumpLeft;
--(void)start;
--(void)stop;
+
+-(void) walkRight; // tap right of hero
+-(void) walkLeft;  // tap left of hero
+-(void) jumpRight; // double-tap right of hero
+-(void) jumpLeft;  // double-tap left of hero
+-(void) makeHeroSmaller; // swipe up-down
+-(void) makeHeroLarger;  // swipe down-up
+
+-(void) start;
+-(void) stop;
+
 +(NSMutableArray *) createWalkingFrames:walkFrames;
 
 @end

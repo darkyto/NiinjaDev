@@ -9,7 +9,7 @@
 #import "GameViewController.h"
 #import "GameScene.h"
 
-@implementation GameViewController
+@implementation GameViewController 
 
 - (void)viewDidLoad
 {
@@ -29,6 +29,7 @@
 
     // Present the scene.
     [skView presentScene:scene];
+
 }
 
 - (BOOL)shouldAutorotate
