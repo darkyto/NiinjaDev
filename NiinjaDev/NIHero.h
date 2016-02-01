@@ -10,7 +10,7 @@
 
 @interface NIHero : SKSpriteNode
 
-+(id) hero;
++(id) hero: (NSString *) heroType;
 
 -(void) walkRight; // tap right of hero
 -(void) walkLeft;  // tap left of hero

@@ -18,13 +18,17 @@ static const uint32_t backgroundCategory = 0x1 << 3;
 NIHero *hero;
 NSArray *heroWalkingFrames;
 
-+ (id)hero {    
++ (id)hero:(NSString *)heroType{
     
     // MLHero *hero = [MLHero spriteNodeWithColor:[UIColor blackColor] size:CGSizeMake(30, 30)];
     
     // Making hero with sprite atlas to walk, smaller pphysical size, assigning name
     NSMutableArray *walkFrames = [NSMutableArray array];
-    heroWalkingFrames = [self createWalkingFrames: walkFrames];
+    if ([heroType  isEqual: @"greenman"]) {
+        heroWalkingFrames = [self createWalkingFramesGreenMan: walkFrames];
+    } else if ([heroType  isEqual: @"ninja"]) {
+        heroWalkingFrames = [self createWalkingFramesNinja: walkFrames];
+    }
     SKTexture *heroFrames = heroWalkingFrames[0];
     hero  = [NIHero spriteNodeWithTexture:heroFrames];
     [hero runAction:[SKAction repeatActionForever:
@@ -102,7 +106,7 @@ NSArray *heroWalkingFrames;
     [self runAction:scaleTo];
 }
 
-+(NSMutableArray *)createWalkingFrames: walkFrames {
++(NSMutableArray *)createWalkingFramesGreenMan: walkFrames {
     SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"GreenMan"];
     
     for (int i=0; i <= 3; i++) {
@@ -128,5 +132,33 @@ NSArray *heroWalkingFrames;
     
     return walkFrames;
 }
+
++(NSMutableArray *)createWalkingFramesNinja: walkFrames {
+    SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"GreenManRed"];
+    
+    for (int i=0; i <= 3; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"red-greenman-0-%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [walkFrames addObject:temp];
+    }
+    for (int i=0; i <= 3; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"red-greenman-1-%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [walkFrames addObject:temp];
+    }
+    for (int i=0; i <= 3; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"red-greenman-2-%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [walkFrames addObject:temp];
+    }
+    for (int i=0; i <= 2; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"red-greenman-3-%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [walkFrames addObject:temp];
+    }
+    
+    return walkFrames;
+}
+
 
 @end

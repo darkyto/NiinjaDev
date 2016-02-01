@@ -48,7 +48,21 @@ int _heroLifes = 4;
 int _initialHeroFails = 0;
 double _changeDirectionCriticalPoint;
 
--(id)initWithSize:(CGSize)size {
+//-(id)initWithSize:(CGSize)size {
+//    if (self = [super initWithSize:size]) {
+//        
+//        self.anchorPoint = CGPointMake(0.5, 0.5);
+//        
+//        // to call the method that handles contacts within two bodies
+//        self.physicsWorld.contactDelegate = self;
+//        
+//        [self createContent];
+//    }
+//    
+//    return self;
+//}
+
+-(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero {
     if (self = [super initWithSize:size]) {
         
         self.anchorPoint = CGPointMake(0.5, 0.5);
@@ -56,10 +70,20 @@ double _changeDirectionCriticalPoint;
         // to call the method that handles contacts within two bodies
         self.physicsWorld.contactDelegate = self;
         
-        [self createContent];
+        if ([userChoiceHero  isEqual: @"greenman"]) {
+            [self createContent : @"greenman"];
+        } else if ([userChoiceHero isEqualToString:@"ninja"]) {
+            [self createContent : @"ninja"];
+        }
+
     }
     
     return self;
+}
+
++(id)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero {
+    return [[GameScene alloc] initWithSize:size
+                         andUserChoiceHero:userChoiceHero];
 }
 
 -(void)didMoveToView:(SKView *)view {
@@ -145,7 +169,7 @@ double _changeDirectionCriticalPoint;
     }
 }
 
--(void)createContent {
+-(void)createContent:(NSString *) userChoiceHero {
     self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:0.9];
     
     world = [SKNode node];
@@ -154,7 +178,7 @@ double _changeDirectionCriticalPoint;
     generator = [NIWorldGenerator generatorWithWorld:world];
     [self addChild:generator];
     
-    hero = [NIHero hero];
+    hero = [NIHero hero:userChoiceHero];
     [world addChild:hero];
     
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];

@@ -26,9 +26,12 @@
     // skView.ignoresSiblingOrder = YES;
     
     // Create and configure the scene.
-    SKScene *scene = [GameScene sceneWithSize:CGSizeMake(skView.frame.size.height, skView.frame.size.width)];
-    scene.scaleMode = SKSceneScaleModeAspectFill;
 
+    GameScene *scene = [GameScene initWithSize:CGSizeMake(skView.frame.size.height, skView.frame.size.width) andUserChoiceHero:userChoiceHero];
+    
+    // SKScene *scene = [GameScene sceneWithSize:CGSizeMake(skView.frame.size.height, skView.frame.size.width)];
+    scene.scaleMode = SKSceneScaleModeAspectFill;
+    
     // Present the scene.
     [skView presentScene:scene];
     

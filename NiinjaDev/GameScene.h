@@ -10,7 +10,8 @@
 
 @interface GameScene : SKScene <SKPhysicsContactDelegate>
 
--(instancetype) initWithSize:(CGSize)size
-                  andHero: (NSString *) userChoiceHero;
+-(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;
+
++(id)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;
 
 @end
