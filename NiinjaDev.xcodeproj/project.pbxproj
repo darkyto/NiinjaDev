@@ -21,6 +21,7 @@
 		6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5861C5B92E1003C40B1 /* Assets.xcassets */; };
 		6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */; };
 		668C0F8C1C60CA59003AA207 /* AlienNinja.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */; };
+		668C0F8E1C60D3BC003AA207 /* Snake.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8D1C60D3BC003AA207 /* Snake.atlas */; };
 		66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */; };
 		66E1B9541C60072D006325EB /* StartupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E1B9531C60072D006325EB /* StartupViewController.m */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		6659C5891C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6659C58B1C5B92E1003C40B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AlienNinja.atlas; sourceTree = "<group>"; };
+		668C0F8D1C60D3BC003AA207 /* Snake.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Snake.atlas; sourceTree = "<group>"; };
 		66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GreenManRed.atlas; sourceTree = "<group>"; };
 		66E1B9521C60072D006325EB /* StartupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartupViewController.h; sourceTree = "<group>"; };
 		66E1B9531C60072D006325EB /* StartupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupViewController.m; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
+				668C0F8D1C60D3BC003AA207 /* Snake.atlas */,
 				668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */,
 				66E1B9581C6014A5006325EB /* Views */,
 				66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */,
@@ -186,6 +189,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				668C0F8E1C60D3BC003AA207 /* Snake.atlas in Resources */,
 				668C0F8C1C60CA59003AA207 /* AlienNinja.atlas in Resources */,
 				661FCE411C5E480B005939C0 /* Fire.atlas in Resources */,
 				6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */,

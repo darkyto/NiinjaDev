@@ -13,5 +13,11 @@
 +(id)generatorWithWorld:(SKNode *)world;
 -(void)populate;
 -(void)generate;
+
 +(NSMutableArray *) createFireFrames:fireFrames;
+
+-(SKSpriteNode *) setBonusRuneWithFilepath: (NSString *)filepath andName:(NSString *)nodeName;
+-(SKSpriteNode *) setBackgroundFilepath: (NSString *)filepath andName:(NSString *)nodeName;
+-(SKSpriteNode *) setSmallGroundBlockWithFilepath: (NSString *)filepath andName:(NSString *)nodeName;
+-(SKSpriteNode *) setBigGroundBlockWithFilepath: (NSString *)filepath andName:(NSString *)nodeName;
 @end

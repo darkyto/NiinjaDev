@@ -28,8 +28,8 @@ NSArray *heroWalkingFrames;
     if ([heroType  isEqual: @"greenman"]) {
         
         heroWalkingFrames = [self createWalkingFramesGreenMan: walkFrames];
-        SKTexture *heroFrames = heroWalkingFrames[0];
-        hero  = [NIHero spriteNodeWithTexture:heroFrames];
+        SKTexture *heroFrame = heroWalkingFrames[0];
+        hero  = [NIHero spriteNodeWithTexture:heroFrame];
         [hero runAction:[SKAction repeatActionForever:
                          [SKAction animateWithTextures:heroWalkingFrames
                                           timePerFrame:0.1f
