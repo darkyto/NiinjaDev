@@ -24,29 +24,46 @@ NSArray *heroWalkingFrames;
     
     // Making hero with sprite atlas to walk, smaller pphysical size, assigning name
     NSMutableArray *walkFrames = [NSMutableArray array];
-    if ([heroType  isEqual: @"greenman"]) {
-        heroWalkingFrames = [self createWalkingFramesGreenMan: walkFrames];
-    } else if ([heroType  isEqual: @"ninja"]) {
-        heroWalkingFrames = [self createWalkingFramesNinja: walkFrames];
-    }
-    SKTexture *heroFrames = heroWalkingFrames[0];
-    hero  = [NIHero spriteNodeWithTexture:heroFrames];
-    [hero runAction:[SKAction repeatActionForever:
-                     [SKAction animateWithTextures:heroWalkingFrames
-                                      timePerFrame:0.1f
-                                            resize:YES
-                                           restore:YES]] withKey:@"walkingInPlaceHero"];
-    hero.xScale = 0.8;
-    hero.yScale = 0.8;
-    hero.name = @"hero";
     
+    if ([heroType  isEqual: @"greenman"]) {
+        
+        heroWalkingFrames = [self createWalkingFramesGreenMan: walkFrames];
+        SKTexture *heroFrames = heroWalkingFrames[0];
+        hero  = [NIHero spriteNodeWithTexture:heroFrames];
+        [hero runAction:[SKAction repeatActionForever:
+                         [SKAction animateWithTextures:heroWalkingFrames
+                                          timePerFrame:0.1f
+                                                resize:YES
+                                               restore:YES]] withKey:@"walkingInPlaceHero"];
+        hero.xScale = 0.8;
+        hero.yScale = 0.8;
+        hero.name = @"greenman";
+        CGSize physicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
+        hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:physicalSize];
+        
+    } else if ([heroType  isEqual: @"ninja"]) {
+        
+        heroWalkingFrames = [self createWalkingFramesNinja: walkFrames];
+        SKTexture *heroFrames = heroWalkingFrames[0];
+        hero  = [NIHero spriteNodeWithTexture:heroFrames];
+        [hero runAction:[SKAction repeatActionForever:
+                         [SKAction animateWithTextures:heroWalkingFrames
+                                          timePerFrame:0.1f
+                                                resize:YES
+                                               restore:YES]] withKey:@"walkingInPlaceHero"];
+        hero.xScale = 0.4;
+        hero.yScale = 0.4;
+        hero.name = @"alienNinja";
+        CGSize physicalSize = CGSizeMake(hero.frame.size.width, hero.frame.size.height);
+        hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:physicalSize];
+        
+    }
+
     
     // TODO : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
     // TODO : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
     // hero.physicsBody.density = 1;
  
-    CGSize smallerPhysicalSize = CGSizeMake(hero.frame.size.width/2, hero.frame.size.height/1.5 );
-    hero.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:smallerPhysicalSize];
     hero.physicsBody.categoryBitMask = heroCategory;
     hero.physicsBody.allowsRotation = NO;
     hero.physicsBody.contactTestBitMask = obstacleCategory |
@@ -56,7 +73,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)start  {
-    SKAction *incrementRight = [SKAction moveByX:0.6 y:0 duration:0.02];
+    SKAction *incrementRight = [SKAction moveByX:0.8 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
@@ -73,30 +90,50 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)walkLeft {
-    SKAction *incrementLeft = [SKAction moveByX:-20 y:0 duration:0];
+    SKAction *incrementLeft = [SKAction moveByX:-25 y:0 duration:0];
     [hero runAction:incrementLeft];
     
     return;
 }
 
 -(void)jumpRight {
-    [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
+    
+    if ([hero.name  isEqual: @"greenman"]) {
+        [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
+    } else if ([hero.name  isEqual: @"alienNinja"])  {
+        [self.physicsBody applyImpulse:CGVectorMake(30, 50)];
+    }
+
     
     return;
 }
 
 -(void)jumpLeft {
-    [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
-    
+    if ([hero.name  isEqual: @"greenman"]) {
+        [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
+    } else if ([hero.name  isEqual: @"alienNinja"])  {
+        [self.physicsBody applyImpulse:CGVectorMake(-30, 50)];
+    }
+
     return;
 }
 
 -(void)makeHeroSmaller {
-    [self animateSizerWithScale:0.4];
+    if ([hero.name  isEqual: @"greenman"]) {
+        [self animateSizerWithScale:0.4];
+    } else if ([hero.name  isEqual: @"alienNinja"])  {
+        [self animateSizerWithScale:0.2];
+    }
+    
 }
 
 -(void)makeHeroLarger {
-    [self animateSizerWithScale:0.8];
+    if ([hero.name  isEqual: @"greenman"]) {
+        [self animateSizerWithScale:0.8];
+    } else if ([hero.name  isEqual: @"alienNinja"])  {
+        [self animateSizerWithScale:0.4];
+    }
+
 }
 
 -(void) animateSizerWithScale:(double) scaleFactor {
@@ -134,29 +171,19 @@ NSArray *heroWalkingFrames;
 }
 
 +(NSMutableArray *)createWalkingFramesNinja: walkFrames {
-    SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"GreenManRed"];
+    SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"AlienNinja"];
     
-    for (int i=0; i <= 3; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"red-greenman-0-%d", i];
+    for (int i=1; i <= 9; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"AllienNinja-00%d", i];
         SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
         [walkFrames addObject:temp];
     }
-    for (int i=0; i <= 3; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"red-greenman-1-%d", i];
+    for (int i=10; i <= 24; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"AllienNinja-0%d", i];
         SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
         [walkFrames addObject:temp];
     }
-    for (int i=0; i <= 3; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"red-greenman-2-%d", i];
-        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
-        [walkFrames addObject:temp];
-    }
-    for (int i=0; i <= 2; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"red-greenman-3-%d", i];
-        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
-        [walkFrames addObject:temp];
-    }
-    
+
     return walkFrames;
 }
 

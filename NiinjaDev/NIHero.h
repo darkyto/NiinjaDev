@@ -22,6 +22,4 @@
 -(void) start;
 -(void) stop;
 
-+(NSMutableArray *) createWalkingFrames:walkFrames;
-
 @end
