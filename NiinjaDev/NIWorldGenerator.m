@@ -22,12 +22,15 @@ static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 
 NSArray *fireFrames;
-
+NSArray *snakeFrames;
 
 +(id)generatorWithWorld:(SKNode *)world {
     
     NIWorldGenerator *generator = [NIWorldGenerator node];
     generator.world = world;
+    
+    NSMutableArray *snakeTempFrames = [NSMutableArray array];
+    snakeFrames = [self createSnakeFrames: snakeTempFrames];
     
     NSMutableArray *fireObstacleFrames = [NSMutableArray array];
     fireFrames = [self createFireFrames: fireObstacleFrames];
@@ -60,6 +63,28 @@ NSArray *fireFrames;
     {
         // opening holes
         if ((i % 5 != 1)) {
+            
+            if (i == 12) {
+                SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+                
+                // Fire obstacle in each hole where no ground is created
+                SKTexture *snakeTexture = snakeFrames[0];
+                SKSpriteNode *snake = [SKSpriteNode spriteNodeWithTexture:snakeTexture];
+                snake.position = CGPointMake(100,100); //(i * ground.frame.size.width),ground.frame.size.height
+                snake.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(snake.frame.size.width/2,
+                                                                                              snake.frame.size.width/2)];
+                snake.physicsBody.dynamic = YES;
+                snake.name = @"snakeObstacle";
+                snake.physicsBody.categoryBitMask = obstacleCategory;
+                
+                [snake runAction:[SKAction repeatActionForever:
+                                          [SKAction animateWithTextures:snakeFrames
+                                                           timePerFrame:0.1f
+                                                                 resize:YES
+                                                                restore:YES]] withKey:@"snakebstacle"];
+                
+                [self.world addChild:snake];
+            }
             
             // small blocks to crawl under
             if (i % 7 == 1) {
@@ -191,6 +216,18 @@ NSArray *fireFrames;
     }
     
     return fireFrames;
+}
+
++(NSMutableArray *)createSnakeFrames: snakeFrames {
+    SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"Snake"];
+    
+    for (int i=5; i <= 8; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"snake-00%d", i];
+        SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
+        [snakeFrames addObject:temp];
+    }
+    
+    return snakeFrames;
 }
 
 @end
