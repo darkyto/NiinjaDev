@@ -58,21 +58,38 @@ NSArray *snakeFrames;
 
     }
 
+    // secret catacombe to prevent hero from falling from the scene.. still gotta fix the NON-ending NON-dying thing
+    // still have to fix the falling down thing on the end of the elvel...
+    for (int k=0; k < 100; k++) {
+        SKSpriteNode *ground = [self setBigGroundBlockWithFilepath:@"back" andName:@"hellGround"];
+        ground.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height - ground.frame.size.height*2);
+        [self.world addChild:ground];
+        SKSpriteNode *secretPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
+        secretPointsRune.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height -ground.frame.size.height);
+        [self.world addChild:secretPointsRune];
+        // if i can shoot this can be used as a practice room
+    }
+    
+    
     // ground, blocks, bonuses and enemies creation
     for (int i=0; i<60; i++)
     {
-        // opening holes
+
+        // opening holes on every fifth block - all other is ground
         if ((i % 5 != 1)) {
             
             if (i == 12) {
                 SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
                 
-                // Fire obstacle in each hole where no ground is created
+                // test Snake obstacle
                 SKTexture *snakeTexture = snakeFrames[0];
                 SKSpriteNode *snake = [SKSpriteNode spriteNodeWithTexture:snakeTexture];
-                snake.position = CGPointMake(100,100); //(i * ground.frame.size.width),ground.frame.size.height
-                snake.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(snake.frame.size.width/2,
-                                                                                              snake.frame.size.width/2)];
+                snake.xScale = 0.5;
+                snake.yScale = 0.5;
+                snake.position = CGPointMake(400,50); //(i * ground.frame.size.width),ground.frame.size.height
+                snake.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(snake.frame.size.width/1.5 ,
+                                                                                              snake.frame.size.width/1.5)];
+                snake.zPosition = 3;
                 snake.physicsBody.dynamic = YES;
                 snake.name = @"snakeObstacle";
                 snake.physicsBody.categoryBitMask = obstacleCategory;

@@ -170,7 +170,7 @@ double _changeDirectionCriticalPoint;
 }
 
 -(void)createContent:(NSString *) userChoiceHero {
-    self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:0.9];
+    self.backgroundColor = [SKColor brownColor];
     
     world = [SKNode node];
     [self addChild:world];
@@ -226,12 +226,15 @@ double _changeDirectionCriticalPoint;
 -(void)start {
     self.isStarted = YES;
     [[self childNodeWithName:@"tapToBeginLabel"] removeFromParent];
+    
     [hero start];
 }
 
 -(void)clear {
-    // MARK: Maybe this will lead to current score and an option to RESTART from there !?
-    GameScene *scene = [[GameScene alloc] initWithSize:self.frame.size];
+
+    GameScene *scene = [GameScene initWithSize:CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) andUserChoiceHero:@"greenman"];
+    scene.scaleMode = SKSceneScaleModeAspectFill;
+    
     [self.view presentScene:scene];
 }
 
@@ -313,7 +316,7 @@ double _changeDirectionCriticalPoint;
  }];
     
  [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-    if (node.position.x < hero.position.x) {
+    if (node.position.x < hero.position.x + 100) {
         node.name = @"pointsBonusRuneCanceled";
     }
  }];
@@ -352,7 +355,7 @@ double _changeDirectionCriticalPoint;
     }];
     
     [world enumerateChildNodesWithName:@"pointsCollectedMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if ( node.position.x <= hero.position.x - 100) {
+        if ( node.position.x <= hero.position.x - 250) {
             [node removeFromParent];
         }
     }];
@@ -371,6 +374,8 @@ double _changeDirectionCriticalPoint;
         [self start];
     } else if (self.isGameOver) {
         [self clear];
+        _initialHeroFails = 0;
+        
     }
     
     UITouch *touch = [[event allTouches] anyObject];

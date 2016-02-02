@@ -73,7 +73,7 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)start  {
-    SKAction *incrementRight = [SKAction moveByX:0.8 y:0 duration:0.02];
+    SKAction *incrementRight = [SKAction moveByX:0.6 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
