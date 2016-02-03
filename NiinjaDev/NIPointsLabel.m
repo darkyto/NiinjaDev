@@ -24,6 +24,11 @@
     self.text = [NSString stringWithFormat:@"%i", self.number];
 }
 
+-(void)incrementWith:(int)points {
+    self.number += points;
+    self.text = [NSString stringWithFormat:@"%i", self.number];
+}
+
 -(void)setPoints:(int)points {
     self.number = points;
     self.text = [NSString stringWithFormat:@"%i", self.number];

@@ -15,5 +15,6 @@
 +(id)pointsLabelWithFontNamed:(NSString*) fontName;
 
 -(void)increment;
+-(void)incrementWith:(int)points;
 
 @end

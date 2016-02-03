@@ -42,6 +42,9 @@
     SKSpriteNode *ground;
     NIWorldGenerator *generator;
     
+    NIPointsLabel *scoreLabel;
+    NIPointsLabel *scoreLabelValue;
+    
     NIPointsLabel *pointsLabel;
     NIScoreMenuImage *pointsImage;
     
@@ -206,6 +209,19 @@ double _changeDirectionCriticalPoint;
     hero = [NIHero hero:userChoiceHero];
     [world addChild:hero];
     
+    
+    scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    scoreLabel.position = CGPointMake(-160, 80);
+    scoreLabel.name = @"scoreLabel";
+    scoreLabel.text = @"Score ";
+    scoreLabel.fontSize = 14;
+    [self addChild:scoreLabel];
+    
+    scoreLabelValue = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    scoreLabelValue.position = CGPointMake(-100, 80);
+    scoreLabelValue.name = @"scoreLabelValue";
+    [self addChild:scoreLabelValue];
+    
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
     pointsLabel.position = CGPointMake(140, 80);
     pointsLabel.name = @"pointsLabel";
@@ -310,8 +326,12 @@ double _changeDirectionCriticalPoint;
             // NSLog(@"I AM AT FIRE");
             firePointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
             [firePointsLabel increment];
+            scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            [scoreLabelValue incrementWith:15];
         }
     }];
+    
+    // scoreLabelValue
     
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x < hero.position.x) &
@@ -320,12 +340,15 @@ double _changeDirectionCriticalPoint;
             // NSLog(@"I AM AT POINTS");
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
+            scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            [scoreLabelValue incrementWith:50];
             
             SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
             pointsCollectedMessage.position = CGPointMake(node.position.x + hero.frame.size.width/3,
                                                           node.position.y + hero.frame.size.height/2);
-            pointsCollectedMessage.text = @"My Precious!";
+            pointsCollectedMessage.text = @"+20 Points!";
             pointsCollectedMessage.fontSize = 14;
+            pointsCollectedMessage.zPosition = 3;
             pointsCollectedMessage.fontColor = [UIColor redColor];
             pointsCollectedMessage.name = @"pointsCollectedMessage";
             [world addChild:pointsCollectedMessage];
@@ -399,7 +422,6 @@ double _changeDirectionCriticalPoint;
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
-    
     if (!self.isStarted) {
         [self start];
     } else if (self.isGameOver) {
@@ -410,7 +432,7 @@ double _changeDirectionCriticalPoint;
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint location = [touch locationInView:touch.view];
     CGFloat multiplierForDirection;
-
+    
     if (location.x <= _changeDirectionCriticalPoint) {
         [hero walkLeft];
         multiplierForDirection = -1;
@@ -420,6 +442,10 @@ double _changeDirectionCriticalPoint;
     }
     
     hero.xScale = fabs(hero.xScale) * multiplierForDirection;
+
+}
+
+-(void) touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
 
 }
 
@@ -534,6 +560,7 @@ double _changeDirectionCriticalPoint;
 {
     //Write a code you want to execute on buttons click event
     if ([[sender currentTitle]  isEqual: @"Bjarne Stroustrup"]) {
+        
         [world enumerateChildNodesWithName:@"snakeForCancelation" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
             [node removeFromParent];
         }];
@@ -550,6 +577,9 @@ double _changeDirectionCriticalPoint;
         rightAnswerMessage.name = @"wrongAnswerMessage";
         [world addChild:rightAnswerMessage];
         [self animateWithScale:rightAnswerMessage];
+        
+        scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+        [scoreLabelValue incrementWith:100];
 
     }
     else {
@@ -574,6 +604,9 @@ double _changeDirectionCriticalPoint;
         wrongAnswerMessage.name = @"wrongAnswerMessage";
         [world addChild:wrongAnswerMessage];
         [self animateWithScale:wrongAnswerMessage];
+        
+        scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+        [scoreLabelValue incrementWith:-30];
     }
 }
 
