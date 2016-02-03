@@ -15,27 +15,32 @@
 
 @implementation StartupViewController
 
-- (void)viewDidLoad {
+-(void) viewDidLoad {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
+-(void) didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Make sure your segue name in storyboard is the same as this line
     if ([[segue identifier] isEqualToString:@"GreenmanSegue"])
     {
+        
         GameViewController *destViewController = segue.destinationViewController;
         destViewController.userChoiceHero = @"greenman";
+        
     } else if ([[segue identifier] isEqualToString:@"NInjaSegue"])
     {
+        
         GameViewController *destViewController = segue.destinationViewController;
         destViewController.userChoiceHero = @"ninja";
+        
     }
     
 }
