@@ -131,6 +131,7 @@ double _changeDirectionCriticalPoint;
 }
 
 -(void)didBeginContact:(SKPhysicsContact *)contact {
+ 
     
     if (_heroLifes > _initialHeroFails) {
         _initialHeroFails++;
@@ -141,7 +142,7 @@ double _changeDirectionCriticalPoint;
         SKLabelNode *fireBurnMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
         fireBurnMessage.position = CGPointMake(hero.position.x + hero.frame.size.width/3,
                                                       hero.position.y + hero.frame.size.height/2);
-        fireBurnMessage.text = @"Ouch! It burns!";
+        fireBurnMessage.text = @"Ouch! It hurts!";
         fireBurnMessage.fontSize = 14;
         fireBurnMessage.fontColor = [UIColor redColor];
         fireBurnMessage.name = @"fireBurnMessage";
@@ -281,15 +282,18 @@ double _changeDirectionCriticalPoint;
     
     [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {
+            
+            // NSLog(@"I AM AT FIRE");
             firePointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
             [firePointsLabel increment];
         }
     }];
     
-    
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x < hero.position.x) &
             (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
+            
+            // NSLog(@"I AM AT POINTS");
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
             
@@ -316,7 +320,7 @@ double _changeDirectionCriticalPoint;
  }];
     
  [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-    if (node.position.x < hero.position.x + 100) {
+    if (node.position.x < hero.position.x) {
         node.name = @"pointsBonusRuneCanceled";
     }
  }];
@@ -375,7 +379,6 @@ double _changeDirectionCriticalPoint;
     } else if (self.isGameOver) {
         [self clear];
         _initialHeroFails = 0;
-        
     }
     
     UITouch *touch = [[event allTouches] anyObject];
@@ -410,5 +413,6 @@ double _changeDirectionCriticalPoint;
     
     [node runAction:scale];
 }
+
 
 @end

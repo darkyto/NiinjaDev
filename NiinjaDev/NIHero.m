@@ -14,6 +14,7 @@ static const uint32_t heroCategory = 0x1 << 0;
 static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
+static const uint32_t bonusCategory = 0x1 << 4;
 
 NIHero *hero;
 NSArray *heroWalkingFrames;
@@ -63,11 +64,12 @@ NSArray *heroWalkingFrames;
     // TODO : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
     // TODO : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
     // hero.physicsBody.density = 1;
- 
-    hero.physicsBody.categoryBitMask = heroCategory;
     hero.physicsBody.allowsRotation = NO;
-    hero.physicsBody.contactTestBitMask = obstacleCategory |
-                                          (-groundCategory & -backgroundCategory );
+    
+    hero.physicsBody.categoryBitMask = heroCategory;
+    // hero.physicsBody.contactTestBitMask = heroCategory | obstacleCategory;
+    hero.physicsBody.contactTestBitMask = obstacleCategory | (groundCategory & backgroundCategory & bonusCategory );
+
 
     return hero;
 }

@@ -36,7 +36,6 @@
     [skView presentScene:scene];
     
     NSLog(@"USER CHOICE HERE :  %@", userChoiceHero);
-
 }
 
 - (BOOL)shouldAutorotate
@@ -62,5 +61,6 @@
 - (BOOL)prefersStatusBarHidden {
     return YES;
 }
+
 
 @end

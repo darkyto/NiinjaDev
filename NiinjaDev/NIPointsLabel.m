@@ -15,6 +15,7 @@
     pointsLabel.text = @"0";
     pointsLabel.fontSize = 18;
     pointsLabel.number = 0;
+    pointsLabel.zPosition = 3;
     return  pointsLabel;
 }
 

@@ -13,6 +13,7 @@
     NIScoreMenuImage *pointsImage = [NIScoreMenuImage spriteNodeWithImageNamed:imageName];
     pointsImage.physicsBody.dynamic = NO;
     pointsImage.name = @"pointsImage";
+    pointsImage.zPosition = 3;
     return  pointsImage;
 }
 

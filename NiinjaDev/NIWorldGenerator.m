@@ -20,6 +20,7 @@
 static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
+static const uint32_t bonusCategory = 0x1 << 4;
 
 NSArray *fireFrames;
 NSArray *snakeFrames;
@@ -61,13 +62,21 @@ NSArray *snakeFrames;
     // secret catacombe to prevent hero from falling from the scene.. still gotta fix the NON-ending NON-dying thing
     // still have to fix the falling down thing on the end of the elvel...
     for (int k=0; k < 100; k++) {
+        
         SKSpriteNode *ground = [self setBigGroundBlockWithFilepath:@"back" andName:@"hellGround"];
         ground.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height - ground.frame.size.height*2);
         [self.world addChild:ground];
+        
         SKSpriteNode *secretPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
         secretPointsRune.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height -ground.frame.size.height);
         [self.world addChild:secretPointsRune];
         // if i can shoot this can be used as a practice room
+        
+        if (k % 3 == 1) {
+            SKSpriteNode *snake = [self setSnakeObstacleWithName:@"snakeObstacle"];
+            snake.position = CGPointMake(k * ground.frame.size.width, -ground.frame.size.height - ground.frame.size.height);
+            [self.world addChild:snake];
+        }
     }
     
     
@@ -78,28 +87,11 @@ NSArray *snakeFrames;
         // opening holes on every fifth block - all other is ground
         if ((i % 5 != 1)) {
             
-            if (i == 12) {
+            if (i % 11 == 1) {
                 SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
-                
-                // test Snake obstacle
-                SKTexture *snakeTexture = snakeFrames[0];
-                SKSpriteNode *snake = [SKSpriteNode spriteNodeWithTexture:snakeTexture];
-                snake.xScale = 0.5;
-                snake.yScale = 0.5;
-                snake.position = CGPointMake(400,50); //(i * ground.frame.size.width),ground.frame.size.height
-                snake.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(snake.frame.size.width/1.5 ,
-                                                                                              snake.frame.size.width/1.5)];
-                snake.zPosition = 3;
-                snake.physicsBody.dynamic = YES;
-                snake.name = @"snakeObstacle";
-                snake.physicsBody.categoryBitMask = obstacleCategory;
-                
-                [snake runAction:[SKAction repeatActionForever:
-                                          [SKAction animateWithTextures:snakeFrames
-                                                           timePerFrame:0.1f
-                                                                 resize:YES
-                                                                restore:YES]] withKey:@"snakebstacle"];
-                
+
+                SKSpriteNode *snake = [self setSnakeObstacleWithName:@"snakeObstacle"];
+                snake.position = CGPointMake(i * ground.frame.size.width, -ground.frame.size.height);
                 [self.world addChild:snake];
             }
             
@@ -140,28 +132,16 @@ NSArray *snakeFrames;
             // initial ground  setBigGroundBlockWithFilepath
             SKSpriteNode *ground = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
             ground.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height - 15);
+            
             [self.world addChild:ground];
             
         } else {
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
 
-            // Fire obstacle in each hole where no ground is created
-            SKTexture *fireTexture = fireFrames[0];
-            SKSpriteNode *fireAnimation = [SKSpriteNode spriteNodeWithTexture:fireTexture];
+            SKSpriteNode *fireAnimation = [self setFireObstacleWithName:@"fireObstacle"];
             fireAnimation.position = CGPointMake((i * ground.frame.size.width),
                                                  -ground.frame.size.height + fireAnimation.frame.size.height/2);
-            fireAnimation.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fireAnimation.frame.size.width/2,
-                                                                                          fireAnimation.frame.size.width/2)];
-            fireAnimation.physicsBody.dynamic = NO;
-            fireAnimation.name = @"fireObstacle";
-            fireAnimation.physicsBody.categoryBitMask = obstacleCategory;
-            
-            [fireAnimation runAction:[SKAction repeatActionForever:
-                             [SKAction animateWithTextures:fireFrames
-                                              timePerFrame:0.1f
-                                                    resize:YES
-                                                   restore:YES]] withKey:@"fireObstacle"];
-            
+
             [self.world addChild:fireAnimation];
         }
         
@@ -171,6 +151,7 @@ NSArray *snakeFrames;
             
             SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
             bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
+             
                                                    -ground.frame.size.height + bonusPointsRune.frame.size.height * 3);
             [self.world addChild:bonusPointsRune];
         }
@@ -179,14 +160,57 @@ NSArray *snakeFrames;
 }
 
 -(SKSpriteNode *) setBonusRuneWithFilepath: (NSString *)filepath andName:(NSString *)nodeName {
-    SKSpriteNode *node = [SKSpriteNode spriteNodeWithImageNamed:filepath];
-    node.xScale = 0.2;
-    node.yScale = 0.2;
-    node.name = nodeName;
-    node.physicsBody.dynamic = NO;
-    node.physicsBody.categoryBitMask = groundCategory;
+    SKSpriteNode *bonusRune = [SKSpriteNode spriteNodeWithImageNamed:filepath];
+    bonusRune.xScale = 0.2;
+    bonusRune.yScale = 0.2;
+    bonusRune.name = nodeName;
+    bonusRune.physicsBody.dynamic = NO;
+    bonusRune.physicsBody.categoryBitMask = bonusCategory;
     
-    return node;
+    return bonusRune;
+}
+
+// MARK:
+-(SKSpriteNode *) setSnakeObstacleWithName:(NSString *)nodeName {
+    
+    SKTexture *snakeTexture = snakeFrames[0];
+    SKSpriteNode *snake = [SKSpriteNode spriteNodeWithTexture:snakeTexture];
+    snake.xScale = 0.6;
+    snake.yScale = 0.6;
+    snake.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(snake.frame.size.width/1.5 ,
+                                                                          snake.frame.size.width/1.5)];
+    snake.physicsBody.dynamic = YES;
+    snake.physicsBody.allowsRotation = NO;
+    snake.physicsBody.categoryBitMask = obstacleCategory;
+    snake.zPosition = 3;
+    snake.name = nodeName;
+
+    [snake runAction:[SKAction repeatActionForever:
+                      [SKAction animateWithTextures:snakeFrames
+                                       timePerFrame:0.1f
+                                             resize:YES
+                                            restore:YES]] withKey:nodeName];
+    return snake;
+}
+
+-(SKSpriteNode *) setFireObstacleWithName:(NSString *)nodeName {
+    
+    SKTexture *fireTexture = fireFrames[0];
+    SKSpriteNode *fireAnimationNode = [SKSpriteNode spriteNodeWithTexture:fireTexture];
+    fireAnimationNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fireAnimationNode.frame.size.width/2,
+                                                                                  fireAnimationNode.frame.size.width/2)];
+    fireAnimationNode.physicsBody.dynamic = NO;
+    fireAnimationNode.physicsBody.allowsRotation = NO;
+    fireAnimationNode.physicsBody.categoryBitMask = obstacleCategory;
+    fireAnimationNode.name = nodeName;
+    
+    [fireAnimationNode runAction:[SKAction repeatActionForever:
+                              [SKAction animateWithTextures:fireFrames
+                                               timePerFrame:0.1f
+                                                     resize:YES
+                                                    restore:YES]] withKey:@"fireObstacle"];
+    
+    return fireAnimationNode;
 }
 
 -(SKSpriteNode *) setBackgroundFilepath: (NSString *)filepath andName:(NSString *)nodeName {
