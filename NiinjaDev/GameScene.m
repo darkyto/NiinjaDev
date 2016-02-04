@@ -45,6 +45,9 @@
     NIPointsLabel *scoreLabel;
     NIPointsLabel *scoreLabelValue;
     
+    NIPointsLabel *bestLabel;
+    NIPointsLabel *sbestLabelValue;
+    
     NIPointsLabel *pointsLabel;
     NIScoreMenuImage *pointsImage;
     
@@ -151,11 +154,17 @@ double _changeDirectionCriticalPoint;
         //[hero stop];
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
+        // MARK: implement the logic where the snake is askiing tricky questions with the price of a life taken
         [self generateQuiz];
-        
-        // POPUP with QUESTION HERE
 
-        // implement the logic where the snake is askiing tricky questions with the price of a life taken
+    } else if ([contact.bodyA.node.name isEqualToString:@"Teleport"]) {
+        // MARK: made the teleportation send the hero above ground...
+         // this can reset hero ot its inital level position after each fail - too user unfriendly!?
+        [hero removeFromParent];
+        hero = [NIHero hero:@"greenman"];
+        [hero start];
+        //hero.position = CGPointMake(contact.bodyA.node.position.x, contact.bodyA.node.position.y * 10);
+        [world addChild:hero];
     }
     else {
         if (_heroLifes > _initialHeroFails) {
@@ -177,6 +186,7 @@ double _changeDirectionCriticalPoint;
             // this can reset hero ot its inital level position after each fail - too user unfriendly!?
             //        [hero removeFromParent];
             //        hero = [NIHero hero];
+            //        [hero start];
             //        [world addChild:hero];
         }
     }
@@ -349,7 +359,7 @@ double _changeDirectionCriticalPoint;
             pointsCollectedMessage.text = @"+20 Points!";
             pointsCollectedMessage.fontSize = 14;
             pointsCollectedMessage.zPosition = 3;
-            pointsCollectedMessage.fontColor = [UIColor redColor];
+            pointsCollectedMessage.fontColor = [UIColor greenColor];
             pointsCollectedMessage.name = @"pointsCollectedMessage";
             [world addChild:pointsCollectedMessage];
             [self animateWithScale:pointsCollectedMessage];
@@ -380,31 +390,31 @@ double _changeDirectionCriticalPoint;
     // CAUTION: I will have to remove it if the hero will be reurning back in the scene...
     // for example if i made level to go upstaris i do not want to clean whats behind...
     
-    [world enumerateChildNodesWithName:@"back" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
-            [node removeFromParent];
-        }
-    }];
-    
-    [world enumerateChildNodesWithName:@"fireObstacleCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
-            [node removeFromParent];
-        }
-    }];
-
+//    [world enumerateChildNodesWithName:@"back" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+//        if (node.position.x < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
+//            [node removeFromParent];
+//        }
+//    }];
+//    
+//    [world enumerateChildNodesWithName:@"fireObstacleCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+//        if (node.position.x < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
+//            [node removeFromParent];
+//        }
+//    }];
+//
     [world enumerateChildNodesWithName:@"pointsBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x <= hero.position.x) &
             (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
             [node removeFromParent];
         }
     }];
-    
-    [world enumerateChildNodesWithName:@"background" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.position.x + node.frame.size.width < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
-            [node removeFromParent];
-        }
-    }];
-    
+//
+//    [world enumerateChildNodesWithName:@"background" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+//        if (node.position.x + node.frame.size.width < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
+//            [node removeFromParent];
+//        }
+//    }];
+//    
     [world enumerateChildNodesWithName:@"pointsCollectedMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( node.position.x <= hero.position.x - 250) {
             [node removeFromParent];
@@ -415,6 +425,10 @@ double _changeDirectionCriticalPoint;
         if ( node.position.x <= hero.position.x - 50) {
             [node removeFromParent];
         }
+    }];
+//
+    [world enumerateChildNodesWithName:@"snakeForCancelation" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        [node removeFromParent];
     }];
     
 
@@ -558,12 +572,10 @@ double _changeDirectionCriticalPoint;
 
 - (IBAction)answerClicked:(id)sender
 {
-    //Write a code you want to execute on buttons click event
+
+    // MARK: now push all questions and answers to CoreData sqllite and then pass here the right answer
+    // and also create buttons with answer atached through core data
     if ([[sender currentTitle]  isEqual: @"Bjarne Stroustrup"]) {
-        
-        [world enumerateChildNodesWithName:@"snakeForCancelation" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-            [node removeFromParent];
-        }];
         
         self.paused = NO;
         [self removeQuizElements];

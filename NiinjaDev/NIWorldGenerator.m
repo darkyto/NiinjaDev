@@ -24,6 +24,7 @@ static const uint32_t bonusCategory = 0x1 << 4;
 
 NSArray *fireFrames;
 NSArray *snakeFrames;
+NSArray *teleportFrames;
 
 +(id)generatorWithWorld:(SKNode *)world {
     
@@ -36,12 +37,11 @@ NSArray *snakeFrames;
     NSMutableArray *fireObstacleFrames = [NSMutableArray array];
     fireFrames = [self createFireFrames: fireObstacleFrames];
     
+    NSMutableArray *teleportTempFrames = [NSMutableArray array];
+    teleportFrames = [self createTeleportFrames:teleportTempFrames];
+    
     [generator generate];
     return generator;
-}
-
--(void)populate {
-
 }
 
 -(void)generate {
@@ -76,6 +76,13 @@ NSArray *snakeFrames;
             SKSpriteNode *snake = [self setSnakeObstacleWithName:@"snakeObstacle"];
             snake.position = CGPointMake(k * ground.frame.size.width, -ground.frame.size.height - ground.frame.size.height);
             [self.world addChild:snake];
+        }
+        
+        if (k % 6 == 1 & k > 10) {
+            // create teleport
+            SKSpriteNode *teleport = [self setTeleportDoorWithName:@"Teleport"];
+            teleport.position = CGPointMake(k * ground.frame.size.width, -ground.frame.size.height - ground.frame.size.height);
+            [self.world addChild:teleport];
         }
     }
     
@@ -193,6 +200,26 @@ NSArray *snakeFrames;
     return snake;
 }
 
+-(SKSpriteNode *) setTeleportDoorWithName:(NSString *)nodeName {
+    
+    SKTexture *fteleportexture = teleportFrames[0];
+    SKSpriteNode *fteleportAnimationNode = [SKSpriteNode spriteNodeWithTexture:fteleportexture];
+    fteleportAnimationNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fteleportAnimationNode.frame.size.width/2,
+                                                                                      fteleportAnimationNode.frame.size.width/2)];
+    fteleportAnimationNode.physicsBody.dynamic = YES;
+    fteleportAnimationNode.physicsBody.allowsRotation = NO;
+    fteleportAnimationNode.physicsBody.categoryBitMask = obstacleCategory;
+    fteleportAnimationNode.name = nodeName;
+    
+    [fteleportAnimationNode runAction:[SKAction repeatActionForever:
+                                  [SKAction animateWithTextures:teleportFrames
+                                                   timePerFrame:0.1f
+                                                         resize:YES
+                                                        restore:YES]] withKey:nodeName];
+    
+    return fteleportAnimationNode;
+}
+
 -(SKSpriteNode *) setFireObstacleWithName:(NSString *)nodeName {
     
     SKTexture *fireTexture = fireFrames[0];
@@ -251,7 +278,7 @@ NSArray *snakeFrames;
     SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"Fire"];
     
     for (int i=0; i <= 3; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"Fire-%d", i];
+        NSString *textureName = [NSString stringWithFormat:@"Fire-%i", i];
         SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
         [fireFrames addObject:temp];
     }
@@ -263,12 +290,24 @@ NSArray *snakeFrames;
     SKTextureAtlas *heroAnimatedAtlas = [SKTextureAtlas atlasNamed:@"Snake"];
     
     for (int i=5; i <= 8; i++) {
-        NSString *textureName = [NSString stringWithFormat:@"snake-00%d", i];
+        NSString *textureName = [NSString stringWithFormat:@"snake-00%i", i];
         SKTexture *temp = [heroAnimatedAtlas textureNamed:textureName];
         [snakeFrames addObject:temp];
     }
     
     return snakeFrames;
+}
+
++(NSMutableArray *)createTeleportFrames:teleportFrames {
+    SKTextureAtlas *teleportAnimatedAtlas = [SKTextureAtlas atlasNamed:@"Teleport"];
+    
+    for (int i=5; i <= 8; i++) {
+        NSString *textureName = [NSString stringWithFormat:@"Teleport-00%i", i];
+        SKTexture *temp = [teleportAnimatedAtlas textureNamed:textureName];
+        [teleportFrames addObject:temp];
+    }
+    
+    return teleportFrames;
 }
 
 @end

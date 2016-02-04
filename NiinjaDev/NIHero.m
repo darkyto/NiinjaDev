@@ -15,6 +15,8 @@ static const uint32_t obstacleCategory = 0x1 << 1;
 static const uint32_t groundCategory = 0x1 << 2;
 static const uint32_t backgroundCategory = 0x1 << 3;
 static const uint32_t bonusCategory = 0x1 << 4;
+static const NSString *_GREENMAN_NAME = @"greenman";
+static const NSString * _ALIENNINJA_NAME = @"alienNinja";
 
 NIHero *hero;
 NSArray *heroWalkingFrames;
@@ -26,7 +28,7 @@ NSArray *heroWalkingFrames;
     // Making hero with sprite atlas to walk, smaller pphysical size, assigning name
     NSMutableArray *walkFrames = [NSMutableArray array];
     
-    if ([heroType  isEqual: @"greenman"]) {
+    if ([heroType  isEqual: _GREENMAN_NAME]) {
         
         heroWalkingFrames = [self createWalkingFramesGreenMan: walkFrames];
         SKTexture *heroFrame = heroWalkingFrames[0];
@@ -61,8 +63,8 @@ NSArray *heroWalkingFrames;
     }
 
     
-    // TODO : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
-    // TODO : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
+    // MARK : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
+    // MARK : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
     // hero.physicsBody.density = 1;
     hero.physicsBody.allowsRotation = NO;
     
@@ -100,9 +102,9 @@ NSArray *heroWalkingFrames;
 
 -(void)jumpRight {
     
-    if ([hero.name  isEqual: @"greenman"]) {
+    if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
-    } else if ([hero.name  isEqual: @"alienNinja"])  {
+    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
         [self.physicsBody applyImpulse:CGVectorMake(30, 50)];
     }
 
@@ -111,9 +113,9 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)jumpLeft {
-    if ([hero.name  isEqual: @"greenman"]) {
+    if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
-    } else if ([hero.name  isEqual: @"alienNinja"])  {
+    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
         [self.physicsBody applyImpulse:CGVectorMake(-30, 50)];
     }
 
@@ -121,18 +123,18 @@ NSArray *heroWalkingFrames;
 }
 
 -(void)makeHeroSmaller {
-    if ([hero.name  isEqual: @"greenman"]) {
+    if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self animateSizerWithScale:0.4];
-    } else if ([hero.name  isEqual: @"alienNinja"])  {
+    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
         [self animateSizerWithScale:0.2];
     }
     
 }
 
 -(void)makeHeroLarger {
-    if ([hero.name  isEqual: @"greenman"]) {
+    if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self animateSizerWithScale:0.8];
-    } else if ([hero.name  isEqual: @"alienNinja"])  {
+    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
         [self animateSizerWithScale:0.4];
     }
 

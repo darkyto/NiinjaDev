@@ -11,7 +11,6 @@
 @interface NIWorldGenerator : SKNode
 
 +(id)generatorWithWorld:(SKNode *)world;
--(void)populate;
 -(void)generate;
 
 +(NSMutableArray *) createFireFrames:fireFrames;
