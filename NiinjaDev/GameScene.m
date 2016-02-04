@@ -8,6 +8,8 @@
 
 #import "GameScene.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
+#import <CoreData/CoreData.h>
+#import "NIGameData.h"
 
 #import "NIHero.h"
 #import "NIWorldGenerator.h"
@@ -17,6 +19,7 @@
 #import "StartupViewController.h"
 
 @interface GameScene()<UIGestureRecognizerDelegate> {
+    
     UISwipeGestureRecognizer *gestureRecognizerSwipeDown;
     UISwipeGestureRecognizer *gestureRecognizerSwipeUp;
     UITapGestureRecognizer *gestureRecognizerDoubleTap;
@@ -56,7 +59,10 @@
     NIScoreMenuImage *fireImage;
 
     NIScoreMenuImage *lifesRemainingImage;
+    
+    NIGameData *gameData;
 }
+
 
 static NSString *GAME_FONT = @"Chalkduster";
 
@@ -103,6 +109,7 @@ double _changeDirectionCriticalPoint;
     [view addGestureRecognizer:gestureRecognizerDoubleTap];
     
     _changeDirectionCriticalPoint = self.frame.size.height/6;
+
 }
 
 -(void) willMoveFromView:(SKView *)view {
@@ -208,11 +215,14 @@ double _changeDirectionCriticalPoint;
     hero = [NIHero hero:userChoiceHero];
     [world addChild:hero];
     
+    gameData = [NIGameData initData];
+    [gameData load];
     
     scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
     scoreLabel.position = CGPointMake(-160, 80);
     scoreLabel.name = @"scoreLabel";
     scoreLabel.text = @"Score ";
+    
     scoreLabel.fontSize = 14;
     [self addChild:scoreLabel];
     
@@ -233,6 +243,7 @@ double _changeDirectionCriticalPoint;
     bestLabelValue.position = CGPointMake(-100, 60);
     bestLabelValue.name = @"scoreLabelValue";
     bestLabelValue.fontColor =[UIColor orangeColor];
+    [bestLabelValue updatePoints:gameData.bestScore];
     [self addChild:bestLabelValue];
     
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
@@ -356,7 +367,7 @@ double _changeDirectionCriticalPoint;
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
             scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
-            [scoreLabelValue incrementWith:50];
+            [scoreLabelValue incrementWith:20];
             
             SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
             pointsCollectedMessage.position = CGPointMake(node.position.x + hero.frame.size.width/3,
@@ -376,6 +387,9 @@ double _changeDirectionCriticalPoint;
 -(void) setBestScore {
     if (scoreLabelValue.number > bestLabelValue.number) {
         [bestLabelValue updatePoints:scoreLabelValue.number];
+        
+        gameData.bestScore = bestLabelValue.number;
+        [gameData save];
     }
 }
 
@@ -459,11 +473,9 @@ double _changeDirectionCriticalPoint;
     }
   
     if (location.x <= _changeDirectionCriticalPoint) {
-
         [hero walkLeft];
         multiplierForDirection = -1;
     } else if (location.x > _changeDirectionCriticalPoint) {
-
         [hero walkRight];
         multiplierForDirection = 1;
     }
@@ -643,7 +655,7 @@ double _changeDirectionCriticalPoint;
     }
 }
 
--(void) removeQuizElements {
+- (void)removeQuizElements {
     [quizView removeFromSuperview];
     [intro removeFromSuperview];
     [question removeFromSuperview];
@@ -652,5 +664,6 @@ double _changeDirectionCriticalPoint;
     [answerThree removeFromSuperview];
     [answerFour removeFromSuperview];
 }
+
 
 @end

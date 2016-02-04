@@ -8,6 +8,7 @@
 
 #import "GameViewController.h"
 #import "GameScene.h"
+#import <CoreData/CoreData.h>
 
 @implementation GameViewController 
 
@@ -21,14 +22,14 @@
     SKView * skView = (SKView *)self.view;
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
-
+    
     GameScene *scene = [GameScene initWithSize:CGSizeMake(skView.frame.size.height, skView.frame.size.width) andUserChoiceHero:userChoiceHero];
+    
 
     scene.scaleMode = SKSceneScaleModeAspectFill;
 
     [skView presentScene:scene];
-    
-    NSLog(@"USER CHOICE HERE :  %@", userChoiceHero);
+
 }
 
 - (BOOL)shouldAutorotate

@@ -23,6 +23,9 @@
 		668C0F8C1C60CA59003AA207 /* AlienNinja.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */; };
 		668C0F8E1C60D3BC003AA207 /* Snake.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8D1C60D3BC003AA207 /* Snake.atlas */; };
 		668E11C11C62C9D200D0D052 /* Teleport.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668E11C01C62C9D200D0D052 /* Teleport.atlas */; };
+		66CFE2F11C639CED00EC4B6C /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66CFE2F01C639CED00EC4B6C /* CoreData.framework */; };
+		66CFE31B1C639E3800EC4B6C /* NiinjaDev.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 66CFE31A1C639E3800EC4B6C /* NiinjaDev.xcdatamodel */; };
+		66CFE3221C63A4C200EC4B6C /* NIGameData.m in Sources */ = {isa = PBXBuildFile; fileRef = 66CFE3211C63A4C200EC4B6C /* NIGameData.m */; };
 		66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */; };
 		66E1B9541C60072D006325EB /* StartupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E1B9531C60072D006325EB /* StartupViewController.m */; };
 /* End PBXBuildFile section */
@@ -53,6 +56,10 @@
 		668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AlienNinja.atlas; sourceTree = "<group>"; };
 		668C0F8D1C60D3BC003AA207 /* Snake.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Snake.atlas; sourceTree = "<group>"; };
 		668E11C01C62C9D200D0D052 /* Teleport.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Teleport.atlas; sourceTree = "<group>"; };
+		66CFE2F01C639CED00EC4B6C /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		66CFE31A1C639E3800EC4B6C /* NiinjaDev.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = NiinjaDev.xcdatamodel; sourceTree = "<group>"; };
+		66CFE3201C63A4C200EC4B6C /* NIGameData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIGameData.h; sourceTree = "<group>"; };
+		66CFE3211C63A4C200EC4B6C /* NIGameData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIGameData.m; sourceTree = "<group>"; };
 		66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = GreenManRed.atlas; sourceTree = "<group>"; };
 		66E1B9521C60072D006325EB /* StartupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartupViewController.h; sourceTree = "<group>"; };
 		66E1B9531C60072D006325EB /* StartupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartupViewController.m; sourceTree = "<group>"; };
@@ -63,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66CFE2F11C639CED00EC4B6C /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +80,7 @@
 		6659C5691C5B92E0003C40B1 = {
 			isa = PBXGroup;
 			children = (
+				66CFE2F01C639CED00EC4B6C /* CoreData.framework */,
 				6659C5741C5B92E1003C40B1 /* NiinjaDev */,
 				6659C5731C5B92E1003C40B1 /* Products */,
 			);
@@ -88,6 +97,8 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
+				66CFE31C1C63A3F500EC4B6C /* Data */,
+				66CFE31A1C639E3800EC4B6C /* NiinjaDev.xcdatamodel */,
 				668E11C01C62C9D200D0D052 /* Teleport.atlas */,
 				668C0F8D1C60D3BC003AA207 /* Snake.atlas */,
 				668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */,
@@ -122,6 +133,15 @@
 				6659C5761C5B92E1003C40B1 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		66CFE31C1C63A3F500EC4B6C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				66CFE3201C63A4C200EC4B6C /* NIGameData.h */,
+				66CFE3211C63A4C200EC4B6C /* NIGameData.m */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		66E1B9581C6014A5006325EB /* ViewControllers */ = {
@@ -211,6 +231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66CFE3221C63A4C200EC4B6C /* NIGameData.m in Sources */,
 				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
 				664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */,
 				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
@@ -219,6 +240,7 @@
 				664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */,
 				661F88B81C5BB64C00AB6C41 /* NIHero.m in Sources */,
 				6659C5771C5B92E1003C40B1 /* main.m in Sources */,
+				66CFE31B1C639E3800EC4B6C /* NiinjaDev.xcdatamodel in Sources */,
 				66E1B9541C60072D006325EB /* StartupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
