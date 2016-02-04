@@ -20,6 +20,7 @@
     UISwipeGestureRecognizer *gestureRecognizerSwipeDown;
     UISwipeGestureRecognizer *gestureRecognizerSwipeUp;
     UITapGestureRecognizer *gestureRecognizerDoubleTap;
+    
     UIView *quizView;
     UILabel *intro;
     UILabel *question;
@@ -63,20 +64,6 @@ int _heroLifes = 4;
 int _initialHeroFails = 0;
 double _changeDirectionCriticalPoint;
 
-//-(id)initWithSize:(CGSize)size {
-//    if (self = [super initWithSize:size]) {
-//        
-//        self.anchorPoint = CGPointMake(0.5, 0.5);
-//        
-//        // to call the method that handles contacts within two bodies
-//        self.physicsWorld.contactDelegate = self;
-//        
-//        [self createContent];
-//    }
-//    
-//    return self;
-//}
-
 -(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero {
     if (self = [super initWithSize:size]) {
         
@@ -118,21 +105,20 @@ double _changeDirectionCriticalPoint;
     _changeDirectionCriticalPoint = self.frame.size.height/6;
 }
 
--(void)willMoveFromView:(SKView *)view {
+-(void) willMoveFromView:(SKView *)view {
     [self.view removeGestureRecognizer: gestureRecognizerSwipeDown];
     [self.view removeGestureRecognizer: gestureRecognizerSwipeUp];
 }
 
--(void)swipeHandlerDown:(UISwipeGestureRecognizer *)recognizer {
+-(void) swipeHandlerDown:(UISwipeGestureRecognizer *)recognizer {
     [hero makeHeroSmaller];
     self.isHeroSmaller = NO;
     
 }
 
--(void)swipeHandlerUp:(UISwipeGestureRecognizer *)recognizer {
+-(void) swipeHandlerUp:(UISwipeGestureRecognizer *)recognizer {
     [hero makeHeroLarger];
     self.isHeroSmaller = YES;
-    
 }
 
 -(void)tapTap:(UITapGestureRecognizer *)recognizer {
@@ -160,10 +146,13 @@ double _changeDirectionCriticalPoint;
     } else if ([contact.bodyA.node.name isEqualToString:@"Teleport"]) {
         // MARK: made the teleportation send the hero above ground...
          // this can reset hero ot its inital level position after each fail - too user unfriendly!?
+        
         [hero removeFromParent];
         hero = [NIHero hero:@"greenman"];
+        hero.alpha = 0.0;
+        [self animateWithAlpha:hero];
         [hero start];
-        //hero.position = CGPointMake(contact.bodyA.node.position.x, contact.bodyA.node.position.y * 10);
+        hero.position = CGPointMake(contact.bodyA.node.position.x, contact.bodyA.node.position.y + 300);
         [world addChild:hero];
     }
     else {
@@ -281,6 +270,7 @@ double _changeDirectionCriticalPoint;
     [hero start];
 }
 
+
 -(void)clear {
 
     GameScene *scene = [GameScene initWithSize:CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) andUserChoiceHero:@"greenman"];
@@ -317,7 +307,6 @@ double _changeDirectionCriticalPoint;
     [self handleGeneration];
     
     [self handleCleanup];
-
 }
 
 -(void) centerOfNode:(SKNode *) node {
@@ -436,21 +425,23 @@ double _changeDirectionCriticalPoint;
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint location = [touch locationInView:touch.view];
+    CGFloat multiplierForDirection;
+    
     if (!self.isStarted) {
         [self start];
     } else if (self.isGameOver) {
         [self clear];
         _initialHeroFails = 0;
     }
-    
-    UITouch *touch = [[event allTouches] anyObject];
-    CGPoint location = [touch locationInView:touch.view];
-    CGFloat multiplierForDirection;
-    
+  
     if (location.x <= _changeDirectionCriticalPoint) {
+
         [hero walkLeft];
         multiplierForDirection = -1;
     } else if (location.x > _changeDirectionCriticalPoint) {
+
         [hero walkRight];
         multiplierForDirection = 1;
     }
@@ -482,6 +473,15 @@ double _changeDirectionCriticalPoint;
     SKAction *scaleTo = [SKAction scaleTo:0 duration:1];
     SKAction *scaleFrom = [SKAction scaleTo:1 duration:1];
     SKAction *scale = [SKAction sequence:@[scaleFrom, scaleTo]];
+    
+    [node runAction:scale];
+}
+
+-(void) animateWithAlpha:(SKNode *)node {
+    
+    SKAction *appear = [SKAction fadeAlphaTo:1.5 duration:1];
+    SKAction *normalize = [SKAction fadeAlphaTo:1.0 duration:1];
+    SKAction *scale = [SKAction sequence:@[appear, normalize]];
     
     [node runAction:scale];
 }
@@ -572,7 +572,6 @@ double _changeDirectionCriticalPoint;
 
 - (IBAction)answerClicked:(id)sender
 {
-
     // MARK: now push all questions and answers to CoreData sqllite and then pass here the right answer
     // and also create buttons with answer atached through core data
     if ([[sender currentTitle]  isEqual: @"Bjarne Stroustrup"]) {

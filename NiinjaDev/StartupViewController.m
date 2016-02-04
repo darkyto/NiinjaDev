@@ -11,13 +11,27 @@
 
 @interface StartupViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *DescriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *GreenManButton;
+@property (weak, nonatomic) IBOutlet UIButton *AlienNinjaButton;
 @end
 
 @implementation StartupViewController
 
+static NSString *GAME_FONT = @"Chalkduster";
+
 -(void) viewDidLoad {
     [super viewDidLoad];
 
+    [self.GreenManButton setImage:[UIImage imageNamed:@"greenman-0-1"] forState:UIControlStateNormal];
+    self.GreenManButton.titleLabel.font = [UIFont fontWithName:GAME_FONT size:12];
+
+    [self.AlienNinjaButton setImage:[UIImage imageNamed:@"AllienNinja-5"] forState:UIControlStateNormal];
+    self.AlienNinjaButton.titleLabel.font = [UIFont fontWithName:GAME_FONT size:12];
+    
+    self.DescriptionLabel.font = [UIFont fontWithName:GAME_FONT size:24];
+    self.DescriptionLabel.lineBreakMode = YES;
+    self.DescriptionLabel.text = @"Alien Troubles";
     // Do any additional setup after loading the view.
 }
 
@@ -35,7 +49,7 @@
         GameViewController *destViewController = segue.destinationViewController;
         destViewController.userChoiceHero = @"greenman";
         
-    } else if ([[segue identifier] isEqualToString:@"NInjaSegue"])
+    } else if ([[segue identifier] isEqualToString:@"NinjaSegue"])
     {
         
         GameViewController *destViewController = segue.destinationViewController;

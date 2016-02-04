@@ -20,6 +20,8 @@
 -(void) makeHeroLarger;  // swipe down-up
 
 -(void) start;
+-(void) startRight;
+-(void) startLeft;
 -(void) stop;
 
 @end
