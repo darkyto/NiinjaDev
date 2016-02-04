@@ -47,7 +47,7 @@
     NIPointsLabel *scoreLabelValue;
     
     NIPointsLabel *bestLabel;
-    NIPointsLabel *sbestLabelValue;
+    NIPointsLabel *bestLabelValue;
     
     NIPointsLabel *pointsLabel;
     NIScoreMenuImage *pointsImage;
@@ -221,6 +221,20 @@ double _changeDirectionCriticalPoint;
     scoreLabelValue.name = @"scoreLabelValue";
     [self addChild:scoreLabelValue];
     
+    bestLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    bestLabel.position = CGPointMake(-160, 60);
+    bestLabel.name = @"bestScoreLabel";
+    bestLabel.text = @"Best ";
+    bestLabel.fontSize = 14;
+    bestLabel.fontColor = [UIColor orangeColor];
+    [self addChild:bestLabel];
+    
+    bestLabelValue = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    bestLabelValue.position = CGPointMake(-100, 60);
+    bestLabelValue.name = @"scoreLabelValue";
+    bestLabelValue.fontColor =[UIColor orangeColor];
+    [self addChild:bestLabelValue];
+    
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
     pointsLabel.position = CGPointMake(140, 80);
     pointsLabel.name = @"pointsLabel";
@@ -296,6 +310,8 @@ double _changeDirectionCriticalPoint;
     [self addChild:tapToRestLabel];
     
     [self animateWithPulse:tapToRestLabel];
+    
+    [self setBestScore];
 }
 
 -(void)didSimulatePhysics {
@@ -355,6 +371,12 @@ double _changeDirectionCriticalPoint;
 
         }
     }];
+}
+
+-(void) setBestScore {
+    if (scoreLabelValue.number > bestLabelValue.number) {
+        [bestLabelValue updatePoints:scoreLabelValue.number];
+    }
 }
 
 -(void) handleGeneration {

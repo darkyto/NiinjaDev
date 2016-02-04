@@ -29,7 +29,7 @@
     self.text = [NSString stringWithFormat:@"%i", self.number];
 }
 
--(void)setPoints:(int)points {
+-(void)updatePoints:(int)points {
     self.number = points;
     self.text = [NSString stringWithFormat:@"%i", self.number];
 }
