@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
+#import "Player.h"
+#import "Score.h"
+#import "GameScene.h"
 
 
 @interface AppDelegate ()
@@ -20,13 +23,13 @@
     // Override point for customization after application launch.
     
     NSManagedObjectContext *context = [self managedObjectContext];
-    NSManagedObject *username = [NSEntityDescription
+    Player *username = [NSEntityDescription
                                        insertNewObjectForEntityForName:@"Player"
                                        inManagedObjectContext:context];
-    [username setValue:@"John Smith" forKey:@"name"];
-    [username setValue:[NSNumber numberWithInt:555] forKey:@"bestScore"];
+    [username setValue:@"Jane Doe" forKey:@"name"];
+    [username setValue:[NSNumber numberWithInt:1111] forKey:@"bestScore"];
     
-    NSManagedObject *score = [NSEntityDescription
+    Score *score = [NSEntityDescription
                                           insertNewObjectForEntityForName:@"Score"
                                           inManagedObjectContext:context];
     [score setValue:[NSNumber numberWithInt:255] forKey:@"scoreValue"];
@@ -36,6 +39,21 @@
     if (![context save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"Player" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    NSLog(@"Players count from AppDelegate :  %i", (int)fetchedObjects.count);
+//    for (NSManagedObject *info in fetchedObjects) {
+//        NSLog(@"Name: %@", [info valueForKey:@"name"]);
+//        NSLog(@"Best Score: %@", [info valueForKey:@"bestScore"]);
+//    }
+//    
+    GameScene *scene = [[GameScene alloc] init];
+    scene.managedObjectContext = self.managedObjectContext;
     
     return YES;
 }

@@ -7,8 +7,14 @@
 //
 
 #import <SpriteKit/SpriteKit.h>
+#import <CoreData/CoreData.h>
 
 @interface GameScene : SKScene <SKPhysicsContactDelegate>
+
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
+@property (nonatomic, strong) NSArray *players;
 
 -(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;
 

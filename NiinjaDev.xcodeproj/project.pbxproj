@@ -14,6 +14,10 @@
 		664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD121C5D32F0000636C8 /* NIPointsLabel.m */; };
 		664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */; };
 		6653933B1C64D73C00D82F8A /* Scoreboard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 665393391C64D73C00D82F8A /* Scoreboard.xcdatamodeld */; };
+		665393511C65056700D82F8A /* Player+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653934A1C65056700D82F8A /* Player+CoreDataProperties.m */; };
+		665393521C65056700D82F8A /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653934C1C65056700D82F8A /* Player.m */; };
+		665393531C65056700D82F8A /* Score+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653934E1C65056700D82F8A /* Score+CoreDataProperties.m */; };
+		665393541C65056700D82F8A /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 665393501C65056700D82F8A /* Score.m */; };
 		6659C5771C5B92E1003C40B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5761C5B92E1003C40B1 /* main.m */; };
 		6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5791C5B92E1003C40B1 /* AppDelegate.m */; };
 		6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C57C1C5B92E1003C40B1 /* GameScene.m */; };
@@ -42,6 +46,14 @@
 		664BCD141C5D3C71000636C8 /* NIScoreMenuImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIScoreMenuImage.h; sourceTree = "<group>"; };
 		664BCD151C5D3C71000636C8 /* NIScoreMenuImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIScoreMenuImage.m; sourceTree = "<group>"; };
 		6653933A1C64D73C00D82F8A /* Scoreboard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Scoreboard.xcdatamodel; sourceTree = "<group>"; };
+		665393491C65056700D82F8A /* Player+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Player+CoreDataProperties.h"; path = "../Player+CoreDataProperties.h"; sourceTree = "<group>"; };
+		6653934A1C65056700D82F8A /* Player+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Player+CoreDataProperties.m"; path = "../Player+CoreDataProperties.m"; sourceTree = "<group>"; };
+		6653934B1C65056700D82F8A /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../Player.h; sourceTree = "<group>"; };
+		6653934C1C65056700D82F8A /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = ../Player.m; sourceTree = "<group>"; };
+		6653934D1C65056700D82F8A /* Score+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Score+CoreDataProperties.h"; path = "../Score+CoreDataProperties.h"; sourceTree = "<group>"; };
+		6653934E1C65056700D82F8A /* Score+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Score+CoreDataProperties.m"; path = "../Score+CoreDataProperties.m"; sourceTree = "<group>"; };
+		6653934F1C65056700D82F8A /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Score.h; path = ../Score.h; sourceTree = "<group>"; };
+		665393501C65056700D82F8A /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Score.m; path = ../Score.m; sourceTree = "<group>"; };
 		6659C5721C5B92E1003C40B1 /* NiinjaDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiinjaDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6659C5761C5B92E1003C40B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6659C5781C5B92E1003C40B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -77,6 +89,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6653933C1C65043B00D82F8A /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				665393491C65056700D82F8A /* Player+CoreDataProperties.h */,
+				6653934A1C65056700D82F8A /* Player+CoreDataProperties.m */,
+				6653934B1C65056700D82F8A /* Player.h */,
+				6653934C1C65056700D82F8A /* Player.m */,
+				6653934D1C65056700D82F8A /* Score+CoreDataProperties.h */,
+				6653934E1C65056700D82F8A /* Score+CoreDataProperties.m */,
+				6653934F1C65056700D82F8A /* Score.h */,
+				665393501C65056700D82F8A /* Score.m */,
+				665393391C64D73C00D82F8A /* Scoreboard.xcdatamodeld */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
 		6659C5691C5B92E0003C40B1 = {
 			isa = PBXGroup;
 			children = (
@@ -97,7 +125,7 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
-				665393391C64D73C00D82F8A /* Scoreboard.xcdatamodeld */,
+				6653933C1C65043B00D82F8A /* Entities */,
 				66CFE31C1C63A3F500EC4B6C /* Data */,
 				668E11C01C62C9D200D0D052 /* Teleport.atlas */,
 				668C0F8D1C60D3BC003AA207 /* Snake.atlas */,
@@ -234,13 +262,17 @@
 				66CFE3221C63A4C200EC4B6C /* NIGameData.m in Sources */,
 				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
 				664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */,
+				665393521C65056700D82F8A /* Player.m in Sources */,
 				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
 				6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */,
 				6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */,
 				664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */,
+				665393531C65056700D82F8A /* Score+CoreDataProperties.m in Sources */,
 				661F88B81C5BB64C00AB6C41 /* NIHero.m in Sources */,
 				6659C5771C5B92E1003C40B1 /* main.m in Sources */,
 				66E1B9541C60072D006325EB /* StartupViewController.m in Sources */,
+				665393541C65056700D82F8A /* Score.m in Sources */,
+				665393511C65056700D82F8A /* Player+CoreDataProperties.m in Sources */,
 				6653933B1C64D73C00D82F8A /* Scoreboard.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

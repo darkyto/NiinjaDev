@@ -9,6 +9,8 @@
 #import "GameScene.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
 #import <CoreData/CoreData.h>
+#import "AppDelegate.h"
+
 #import "NIGameData.h"
 
 #import "NIHero.h"
@@ -63,6 +65,8 @@
     NIGameData *gameData;
 }
 
+@synthesize fetchedResultsController, managedObjectContext;
+@synthesize players;
 
 static NSString *GAME_FONT = @"Chalkduster";
 
@@ -83,9 +87,7 @@ double _changeDirectionCriticalPoint;
         } else if ([userChoiceHero isEqualToString:@"ninja"]) {
             [self createContent : @"ninja"];
         }
-        
-            
-
+      
     }
     
     return self;
@@ -111,7 +113,19 @@ double _changeDirectionCriticalPoint;
     [view addGestureRecognizer:gestureRecognizerDoubleTap];
     
     _changeDirectionCriticalPoint = self.frame.size.height/6;
-
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    managedObjectContext = [appDelegate managedObjectContext];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"Player" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    self.players = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSLog(@"Players count from GameScene : %i", (int)self.players.count);
+    
+    
 }
 
 -(void) willMoveFromView:(SKView *)view {

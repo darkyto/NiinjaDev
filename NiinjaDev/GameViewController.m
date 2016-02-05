@@ -9,15 +9,16 @@
 #import "GameViewController.h"
 #import "GameScene.h"
 #import <CoreData/CoreData.h>
+#import "AppDelegate.h"
 
 @implementation GameViewController 
 
 @synthesize userChoiceHero;
 
-@synthesize managedObjectContext = _managedObjectContext;
+@synthesize managedObjectContext;
 @synthesize fetchedResultsController;
 
- // @synthesize fetchedResultsController, managedObjectContext;
+@synthesize players;
 
 - (void)viewDidLoad
 {
