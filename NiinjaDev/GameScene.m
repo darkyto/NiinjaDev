@@ -5,7 +5,7 @@
 //  Created by Nikolay Plamenov Iliev on 1/29/16.
 //  Copyright (c) 2016 iNick Iliev. All rights reserved.
 //
-
+#import <stdlib.h>
 #import "GameScene.h"
 #import <UIKit/UIGestureRecognizerSubclass.h>
 #import <CoreData/CoreData.h>
@@ -83,6 +83,8 @@ double _changeDirectionCriticalPoint;
         } else if ([userChoiceHero isEqualToString:@"ninja"]) {
             [self createContent : @"ninja"];
         }
+        
+            
 
     }
     
@@ -148,7 +150,10 @@ double _changeDirectionCriticalPoint;
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
         // MARK: implement the logic where the snake is askiing tricky questions with the price of a life taken
-        [self generateQuiz];
+        // MARK: questions and answers added via NSData - now make global variable for times the snake has been
+        // encountared and increse it with 1 to change the question every time;
+        int rand = arc4random_uniform(8);
+        [self generateQuiz:rand];
 
     } else if ([contact.bodyA.node.name isEqualToString:@"Teleport"]) {
         // MARK: made the teleportation send the hero above ground...
@@ -217,34 +222,35 @@ double _changeDirectionCriticalPoint;
     
     gameData = [NIGameData initData];
     [gameData load];
-    
-    scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    scoreLabel.position = CGPointMake(-160, 80);
-    scoreLabel.name = @"scoreLabel";
-    scoreLabel.text = @"Score ";
-    
-    scoreLabel.fontSize = 14;
-    [self addChild:scoreLabel];
-    
-    scoreLabelValue = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    scoreLabelValue.position = CGPointMake(-100, 80);
-    scoreLabelValue.name = @"scoreLabelValue";
-    [self addChild:scoreLabelValue];
+    // NSLog(@"GAME-DATA-LOAD : BEST SCORE is : %i", gameData.bestScore);
     
     bestLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    bestLabel.position = CGPointMake(-160, 60);
+    bestLabel.position = CGPointMake(-160, 85);
     bestLabel.name = @"bestScoreLabel";
     bestLabel.text = @"Best ";
-    bestLabel.fontSize = 14;
+    bestLabel.fontSize = 10;
     bestLabel.fontColor = [UIColor orangeColor];
     [self addChild:bestLabel];
     
     bestLabelValue = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    bestLabelValue.position = CGPointMake(-100, 60);
-    bestLabelValue.name = @"scoreLabelValue";
+    bestLabelValue.position = CGPointMake(-100, 85);
+    bestLabelValue.name = @"bestScoreLabelValue";
     bestLabelValue.fontColor =[UIColor orangeColor];
+    bestLabelValue.fontSize = 10;
     [bestLabelValue updatePoints:gameData.bestScore];
     [self addChild:bestLabelValue];
+    
+    scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    scoreLabel.position = CGPointMake(-155, 65);
+    scoreLabel.name = @"scoreLabel";
+    scoreLabel.text = @"Score ";
+    scoreLabel.fontSize = 14;
+    [self addChild:scoreLabel];
+    
+    scoreLabelValue = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    scoreLabelValue.position = CGPointMake(-100, 65);
+    scoreLabelValue.name = @"scoreLabelValue";
+    [self addChild:scoreLabelValue];
     
     pointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
     pointsLabel.position = CGPointMake(140, 80);
@@ -352,8 +358,11 @@ double _changeDirectionCriticalPoint;
             // NSLog(@"I AM AT FIRE");
             firePointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
             [firePointsLabel increment];
-            scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            NSLog(@"IS FirePointLabel.number good!? Lets see : %i", firePointsLabel.number);
+            
+            scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
             [scoreLabelValue incrementWith:15];
+            NSLog(@"IS scoreLabelValue.number good!? Lets see : %i", scoreLabelValue.number);
         }
     }];
     
@@ -366,7 +375,8 @@ double _changeDirectionCriticalPoint;
             // NSLog(@"I AM AT POINTS");
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
-            scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            
+            scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
             [scoreLabelValue incrementWith:20];
             
             SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
@@ -520,7 +530,7 @@ double _changeDirectionCriticalPoint;
     [node runAction:scale];
 }
 
--(void) generateQuiz {
+-(void) generateQuiz: (int) index {
     
     quizView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
                                                                 self.view.frame.size.height/8,
@@ -546,7 +556,9 @@ double _changeDirectionCriticalPoint;
                                                                   self.view.frame.size.height/8 + intro.frame.size.height,
                                                                   self.view.frame.size.width/1.5,
                                                                   self.view.frame.size.height/10)];
-    question.text = @" Who's the founder of C++!?";
+    //@" Who's the founder of C++!?"
+    NSLog(@"Question from NSData : %@",gameData.questions[index]);
+    question.text = gameData.questions[index];
     question.backgroundColor = [UIColor redColor];
     question.adjustsFontSizeToFitWidth = NO;
     question.numberOfLines = 0;
@@ -558,7 +570,8 @@ double _changeDirectionCriticalPoint;
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
-    [answerOne setTitle:@"Bjarne Stroustrup" forState:UIControlStateNormal];
+    // @"Bjarne Stroustrup"
+    [answerOne setTitle: gameData.answers[index+3] forState:UIControlStateNormal];
     [answerOne addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerOne.backgroundColor = [UIColor redColor];
@@ -568,7 +581,9 @@ double _changeDirectionCriticalPoint;
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height + 10,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
-    [answerTwo setTitle:@"Mmm.. Bill gates I guess?!" forState:UIControlStateNormal];
+    
+    //@"Mmm.. Bill gates I guess?!"
+    [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal];
     [answerTwo addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerTwo.backgroundColor = [UIColor redColor];
@@ -579,7 +594,9 @@ double _changeDirectionCriticalPoint;
                                                                        self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*2 + 20,
                                                                        self.view.frame.size.width/2,
                                                                        self.view.frame.size.height/12)];
-    [answerThree setTitle:@"C++ .. is that Citroen!?" forState:UIControlStateNormal];
+    
+    //@"C++ .. is that Citroen!?"
+    [answerThree setTitle:gameData.answers[index+5] forState:UIControlStateNormal];
     [answerThree addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerThree.backgroundColor = [UIColor redColor];
@@ -589,7 +606,8 @@ double _changeDirectionCriticalPoint;
                                                                       self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*3 + 30,
                                                                       self.view.frame.size.width/2,
                                                                       self.view.frame.size.height/12)];
-    [answerFour setTitle:@"Just take my Life.. OK!" forState:UIControlStateNormal];
+    // @"Just take my Life.. OK!"
+    [answerFour setTitle:gameData.answers[index+6] forState:UIControlStateNormal];
     [answerFour addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerFour.backgroundColor = [UIColor redColor];
@@ -608,7 +626,7 @@ double _changeDirectionCriticalPoint;
 {
     // MARK: now push all questions and answers to CoreData sqllite and then pass here the right answer
     // and also create buttons with answer atached through core data
-    if ([[sender currentTitle]  isEqual: @"Bjarne Stroustrup"]) {
+    if ([[sender currentTitle]  isEqual: @"All of the above"]) {
         
         self.paused = NO;
         [self removeQuizElements];

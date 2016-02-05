@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import <SpriteKit/SpriteKit.h>
+#import "CoreData/CoreData.h"
 
-@interface GameViewController : UIViewController
+@interface GameViewController : UIViewController <NSFetchedResultsControllerDelegate> {
+    NSFetchedResultsController *fetchedResultsController;
+    NSManagedObjectContext *managedObjectContext;
+}
 
 @property (strong, nonatomic) NSString *userChoiceHero;
 
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @end

@@ -1,8 +1,8 @@
+
 //
 //  GameScene.h
 //  NiinjaDev
 //
-
 //  Copyright (c) 2016 iNick Iliev. All rights reserved.
 //
 

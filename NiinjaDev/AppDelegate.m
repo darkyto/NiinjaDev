@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import <CoreData/CoreData.h>
+
 
 @interface AppDelegate ()
 
@@ -16,6 +18,24 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSManagedObject *username = [NSEntityDescription
+                                       insertNewObjectForEntityForName:@"Player"
+                                       inManagedObjectContext:context];
+    [username setValue:@"John Smith" forKey:@"name"];
+    [username setValue:[NSNumber numberWithInt:555] forKey:@"bestScore"];
+    
+    NSManagedObject *score = [NSEntityDescription
+                                          insertNewObjectForEntityForName:@"Score"
+                                          inManagedObjectContext:context];
+    [score setValue:[NSNumber numberWithInt:255] forKey:@"scoreValue"];
+    [score setValue:username forKey:@"owner"];
+
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
     
     return YES;
 }
@@ -49,7 +69,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (NSURL *)applicationDocumentsDirectory {
-    // The directory the application uses to store the Core Data store file. This code uses a directory named "com.iliev.nikana.CoreDataDummy" in the application's documents directory.
+    // The directory the application uses to store the Core Data store file. This code uses a directory named "com.iliev.nikana.CoreNew" in the application's documents directory.
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
@@ -58,7 +78,7 @@
     if (_managedObjectModel != nil) {
         return _managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"NiinjaDev" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Scoreboard" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
 }
@@ -72,7 +92,7 @@
     // Create the coordinator and store
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"NiinjaDev.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Scoreboard.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {

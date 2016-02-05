@@ -14,6 +14,11 @@
 
 @synthesize userChoiceHero;
 
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize fetchedResultsController;
+
+ // @synthesize fetchedResultsController, managedObjectContext;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -24,7 +29,6 @@
     skView.showsNodeCount = YES;
     
     GameScene *scene = [GameScene initWithSize:CGSizeMake(skView.frame.size.height, skView.frame.size.width) andUserChoiceHero:userChoiceHero];
-    
 
     scene.scaleMode = SKSceneScaleModeAspectFill;
 

@@ -11,6 +11,8 @@
 @interface NIGameData : NSObject
 
 @property int bestScore;
+@property NSMutableArray *questions;
+@property NSMutableArray *answers;
 
 + (id)initData;
 - (void)save;

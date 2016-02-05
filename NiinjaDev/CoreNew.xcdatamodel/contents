@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15A284" minimumToolsVersion="Automatic">
+    <entity name="Score" syncable="YES">
+        <attribute name="scoreValue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Username" syncable="YES"/>
+    </entity>
+    <entity name="Username" syncable="YES">
+        <attribute name="bestScore" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" defaultValueString="Player" syncable="YES"/>
+        <relationship name="userScores" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Score" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Username" positionX="-272" positionY="36" width="128" height="88"/>
+        <element name="Score" positionX="7" positionY="72" width="128" height="73"/>
+    </elements>
+</model>
