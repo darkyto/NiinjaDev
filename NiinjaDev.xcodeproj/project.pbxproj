@@ -18,6 +18,11 @@
 		665393521C65056700D82F8A /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653934C1C65056700D82F8A /* Player.m */; };
 		665393531C65056700D82F8A /* Score+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653934E1C65056700D82F8A /* Score+CoreDataProperties.m */; };
 		665393541C65056700D82F8A /* Score.m in Sources */ = {isa = PBXBuildFile; fileRef = 665393501C65056700D82F8A /* Score.m */; };
+		665393611C6523FC00D82F8A /* Question+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653935C1C6523FC00D82F8A /* Question+CoreDataProperties.m */; };
+		665393621C6523FC00D82F8A /* Question.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653935E1C6523FC00D82F8A /* Question.m */; };
+		665393671C6528EE00D82F8A /* Answer+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 665393641C6528EE00D82F8A /* Answer+CoreDataProperties.m */; };
+		665393681C6528EE00D82F8A /* Answer.m in Sources */ = {isa = PBXBuildFile; fileRef = 665393661C6528EE00D82F8A /* Answer.m */; };
+		6653936B1C653B5800D82F8A /* NIQuizButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6653936A1C653B5800D82F8A /* NIQuizButton.m */; };
 		6659C5771C5B92E1003C40B1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5761C5B92E1003C40B1 /* main.m */; };
 		6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C5791C5B92E1003C40B1 /* AppDelegate.m */; };
 		6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 6659C57C1C5B92E1003C40B1 /* GameScene.m */; };
@@ -54,6 +59,16 @@
 		6653934E1C65056700D82F8A /* Score+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Score+CoreDataProperties.m"; path = "../Score+CoreDataProperties.m"; sourceTree = "<group>"; };
 		6653934F1C65056700D82F8A /* Score.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Score.h; path = ../Score.h; sourceTree = "<group>"; };
 		665393501C65056700D82F8A /* Score.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Score.m; path = ../Score.m; sourceTree = "<group>"; };
+		6653935B1C6523FC00D82F8A /* Question+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Question+CoreDataProperties.h"; sourceTree = "<group>"; };
+		6653935C1C6523FC00D82F8A /* Question+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Question+CoreDataProperties.m"; sourceTree = "<group>"; };
+		6653935D1C6523FC00D82F8A /* Question.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Question.h; sourceTree = "<group>"; };
+		6653935E1C6523FC00D82F8A /* Question.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Question.m; sourceTree = "<group>"; };
+		665393631C6528EE00D82F8A /* Answer+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Answer+CoreDataProperties.h"; path = "../Answer+CoreDataProperties.h"; sourceTree = "<group>"; };
+		665393641C6528EE00D82F8A /* Answer+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Answer+CoreDataProperties.m"; path = "../Answer+CoreDataProperties.m"; sourceTree = "<group>"; };
+		665393651C6528EE00D82F8A /* Answer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Answer.h; path = ../Answer.h; sourceTree = "<group>"; };
+		665393661C6528EE00D82F8A /* Answer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Answer.m; path = ../Answer.m; sourceTree = "<group>"; };
+		665393691C653B5800D82F8A /* NIQuizButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIQuizButton.h; sourceTree = "<group>"; };
+		6653936A1C653B5800D82F8A /* NIQuizButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIQuizButton.m; sourceTree = "<group>"; };
 		6659C5721C5B92E1003C40B1 /* NiinjaDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NiinjaDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6659C5761C5B92E1003C40B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6659C5781C5B92E1003C40B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -92,6 +107,10 @@
 		6653933C1C65043B00D82F8A /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				665393631C6528EE00D82F8A /* Answer+CoreDataProperties.h */,
+				665393641C6528EE00D82F8A /* Answer+CoreDataProperties.m */,
+				665393651C6528EE00D82F8A /* Answer.h */,
+				665393661C6528EE00D82F8A /* Answer.m */,
 				665393491C65056700D82F8A /* Player+CoreDataProperties.h */,
 				6653934A1C65056700D82F8A /* Player+CoreDataProperties.m */,
 				6653934B1C65056700D82F8A /* Player.h */,
@@ -101,14 +120,26 @@
 				6653934F1C65056700D82F8A /* Score.h */,
 				665393501C65056700D82F8A /* Score.m */,
 				665393391C64D73C00D82F8A /* Scoreboard.xcdatamodeld */,
+				6653935B1C6523FC00D82F8A /* Question+CoreDataProperties.h */,
+				6653935C1C6523FC00D82F8A /* Question+CoreDataProperties.m */,
+				6653935D1C6523FC00D82F8A /* Question.h */,
+				6653935E1C6523FC00D82F8A /* Question.m */,
 			);
 			name = Entities;
+			sourceTree = "<group>";
+		};
+		665393551C651FA300D82F8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				66CFE2F01C639CED00EC4B6C /* CoreData.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		6659C5691C5B92E0003C40B1 = {
 			isa = PBXGroup;
 			children = (
-				66CFE2F01C639CED00EC4B6C /* CoreData.framework */,
+				665393551C651FA300D82F8A /* Frameworks */,
 				6659C5741C5B92E1003C40B1 /* NiinjaDev */,
 				6659C5731C5B92E1003C40B1 /* Products */,
 			);
@@ -145,6 +176,8 @@
 				6659C5751C5B92E1003C40B1 /* Supporting Files */,
 				661F88B61C5BB64C00AB6C41 /* NIHero.h */,
 				661F88B71C5BB64C00AB6C41 /* NIHero.m */,
+				665393691C653B5800D82F8A /* NIQuizButton.h */,
+				6653936A1C653B5800D82F8A /* NIQuizButton.m */,
 				664BCD0E1C5D1137000636C8 /* NIWorldGenerator.h */,
 				664BCD0F1C5D1137000636C8 /* NIWorldGenerator.m */,
 				664BCD111C5D32F0000636C8 /* NIPointsLabel.h */,
@@ -260,18 +293,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				66CFE3221C63A4C200EC4B6C /* NIGameData.m in Sources */,
+				665393671C6528EE00D82F8A /* Answer+CoreDataProperties.m in Sources */,
 				6659C5821C5B92E1003C40B1 /* GameViewController.m in Sources */,
 				664BCD161C5D3C71000636C8 /* NIScoreMenuImage.m in Sources */,
 				665393521C65056700D82F8A /* Player.m in Sources */,
 				664BCD101C5D1137000636C8 /* NIWorldGenerator.m in Sources */,
+				665393621C6523FC00D82F8A /* Question.m in Sources */,
 				6659C57A1C5B92E1003C40B1 /* AppDelegate.m in Sources */,
 				6659C57D1C5B92E1003C40B1 /* GameScene.m in Sources */,
+				665393681C6528EE00D82F8A /* Answer.m in Sources */,
 				664BCD131C5D32F0000636C8 /* NIPointsLabel.m in Sources */,
 				665393531C65056700D82F8A /* Score+CoreDataProperties.m in Sources */,
 				661F88B81C5BB64C00AB6C41 /* NIHero.m in Sources */,
 				6659C5771C5B92E1003C40B1 /* main.m in Sources */,
 				66E1B9541C60072D006325EB /* StartupViewController.m in Sources */,
 				665393541C65056700D82F8A /* Score.m in Sources */,
+				665393611C6523FC00D82F8A /* Question+CoreDataProperties.m in Sources */,
+				6653936B1C653B5800D82F8A /* NIQuizButton.m in Sources */,
 				665393511C65056700D82F8A /* Player+CoreDataProperties.m in Sources */,
 				6653933B1C64D73C00D82F8A /* Scoreboard.xcdatamodeld in Sources */,
 			);

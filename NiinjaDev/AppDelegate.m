@@ -8,10 +8,13 @@
 
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
-#import "Player.h"
-#import "Score.h"
+
 #import "GameScene.h"
 
+#import "Player.h"
+#import "Score.h"
+#import "Question.h"
+#import "Answer.h"
 
 @interface AppDelegate ()
 
@@ -22,31 +25,50 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSManagedObjectContext *context = [self managedObjectContext];
-    Player *username = [NSEntityDescription
-                                       insertNewObjectForEntityForName:@"Player"
-                                       inManagedObjectContext:context];
-    [username setValue:@"Jane Doe" forKey:@"name"];
-    [username setValue:[NSNumber numberWithInt:1111] forKey:@"bestScore"];
+//    NSManagedObjectContext *context = [self managedObjectContext];
+//    Question *question = [NSEntityDescription
+//                          insertNewObjectForEntityForName:@"Question"
+//                          inManagedObjectContext:context];
+//    [question setValue:@" 11.) Arabic numerals originated in which country?" forKey:@"text"];
+//    
+//    Answer *answer1 = [NSEntityDescription
+//                       insertNewObjectForEntityForName:@"Answer"
+//                       inManagedObjectContext:context];
+//    [answer1 setValue:@"Persia" forKey:@"text"];
+//    [answer1 setValue:[NSNumber numberWithBool:NO]forKey:@"isTrue"];
+//    [answer1 setValue:question forKey:@"relationship"];
+//    Answer *answer2 = [NSEntityDescription
+//                       insertNewObjectForEntityForName:@"Answer"
+//                       inManagedObjectContext:context];
+//    [answer2 setValue:@"India" forKey:@"text"];
+//    [answer2 setValue:[NSNumber numberWithBool:YES]forKey:@"isTrue"];
+//    [answer2 setValue:question forKey:@"relationship"];
+//    Answer *answer3 = [NSEntityDescription
+//                       insertNewObjectForEntityForName:@"Answer"
+//                       inManagedObjectContext:context];
+//    [answer3 setValue:@"Egypt" forKey:@"text"];
+//    [answer3 setValue:[NSNumber numberWithBool:NO]forKey:@"isTrue"];
+//    [answer3 setValue:question forKey:@"relationship"];
+//    Answer *answer4 = [NSEntityDescription
+//                       insertNewObjectForEntityForName:@"Answer"
+//                       inManagedObjectContext:context];
+//    [answer4 setValue:@"Syria" forKey:@"text"];
+//    [answer4 setValue:[NSNumber numberWithBool:NO]forKey:@"isTrue"];
+//    [answer4 setValue:question forKey:@"relationship"];
+//
+//    NSError *error;
+//    if (![context save:&error]) {
+//        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+//    }
+//    
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    NSEntityDescription *entity = [NSEntityDescription
+//                                   entityForName:@"Player" inManagedObjectContext:context];
+//    [fetchRequest setEntity:entity];
+//    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     
-    Score *score = [NSEntityDescription
-                                          insertNewObjectForEntityForName:@"Score"
-                                          inManagedObjectContext:context];
-    [score setValue:[NSNumber numberWithInt:255] forKey:@"scoreValue"];
-    [score setValue:username forKey:@"owner"];
-
-    NSError *error;
-    if (![context save:&error]) {
-        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"Player" inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    
-    NSLog(@"Players count from AppDelegate :  %i", (int)fetchedObjects.count);
+//    
+//    NSLog(@"Players count from AppDelegate :  %i", (int)fetchedObjects.count);
 //    for (NSManagedObject *info in fetchedObjects) {
 //        NSLog(@"Name: %@", [info valueForKey:@"name"]);
 //        NSLog(@"Best Score: %@", [info valueForKey:@"bestScore"]);
@@ -54,6 +76,7 @@
 //    
     GameScene *scene = [[GameScene alloc] init];
     scene.managedObjectContext = self.managedObjectContext;
+    
     
     return YES;
 }
@@ -110,7 +133,7 @@
     // Create the coordinator and store
     
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Scoreboard.sqlite"];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"TestGameDataDB.sqlite"];
     NSError *error = nil;
     NSString *failureReason = @"There was an error creating or loading the application's saved data.";
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {

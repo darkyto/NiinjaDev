@@ -16,6 +16,10 @@
 
 @property (nonatomic, strong) NSArray *players;
 
+@property (nonatomic, strong) NSArray *allAnswers;
+
+@property (nonatomic, strong) NSArray *allQuestions;
+
 -(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;
 
 +(id)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;

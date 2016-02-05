@@ -11,12 +11,16 @@
 #import <CoreData/CoreData.h>
 #import "AppDelegate.h"
 
+#import "Answer.h"
+#import "Question.h"
+
 #import "NIGameData.h"
 
 #import "NIHero.h"
 #import "NIWorldGenerator.h"
 #import "NIPointsLabel.h"
 #import "NIScoreMenuImage.h"
+#import "NIQuizButton.h"
 
 #import "StartupViewController.h"
 
@@ -29,10 +33,11 @@
     UIView *quizView;
     UILabel *intro;
     UILabel *question;
-    UIButton *answerOne;
-    UIButton *answerTwo;
-    UIButton *answerThree;
-    UIButton *answerFour;
+    
+    NIQuizButton *answerOne;
+    NIQuizButton *answerTwo;
+    NIQuizButton *answerThree;
+    NIQuizButton *answerFour;
 }
 
 @property BOOL isStarted;
@@ -67,6 +72,8 @@
 
 @synthesize fetchedResultsController, managedObjectContext;
 @synthesize players;
+@synthesize allAnswers;
+@synthesize allQuestions;
 
 static NSString *GAME_FONT = @"Chalkduster";
 
@@ -117,14 +124,25 @@ double _changeDirectionCriticalPoint;
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     managedObjectContext = [appDelegate managedObjectContext];
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"Player" inManagedObjectContext:managedObjectContext];
-    [fetchRequest setEntity:entity];
     NSError *error;
-    self.players = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    NSLog(@"Players count from GameScene : %i", (int)self.players.count);
+        if (![managedObjectContext save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
     
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityAnswer = [NSEntityDescription
+                                   entityForName:@"Answer" inManagedObjectContext:managedObjectContext];
+    [fetchRequest setEntity:entityAnswer];
+    self.allAnswers = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    NSFetchRequest *fetchRequestNew = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityQuestion = [NSEntityDescription
+                                         entityForName:@"Question" inManagedObjectContext:managedObjectContext];
+    [fetchRequestNew setEntity:entityQuestion];
+    self.allQuestions = [managedObjectContext executeFetchRequest:fetchRequestNew error:&error];
+    
+    //NSLog(@"Answers count from GameScene :  %i", (int)allAnswers.count);
+    //NSLog(@"Questions count from GameScene :  %i", (int)allQuestions.count);
     
 }
 
@@ -164,9 +182,10 @@ double _changeDirectionCriticalPoint;
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
         // MARK: implement the logic where the snake is askiing tricky questions with the price of a life taken
-        // MARK: questions and answers added via NSData - now make global variable for times the snake has been
+        // MARK: questions and answers added via Core Data (NSData already enabled as a backup)
+        // now make global variable for times the snake has been
         // encountared and increse it with 1 to change the question every time;
-        int rand = arc4random_uniform(8);
+        int rand = arc4random_uniform(10);
         [self generateQuiz:rand];
 
     } else if ([contact.bodyA.node.name isEqualToString:@"Teleport"]) {
@@ -546,6 +565,22 @@ double _changeDirectionCriticalPoint;
 
 -(void) generateQuiz: (int) index {
     
+    Question *randomQuestion = self.allQuestions[index];
+    NSString *currentQuestion = [randomQuestion valueForKey:@"text"];
+    NSLog(@"%@", currentQuestion);
+    NSSet<Answer *> *questionAnswers = [randomQuestion valueForKey:@"questionAnswers"];
+    NSMutableArray *currentAnswers = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", nil];
+    NSMutableArray *currentTrueValues = [NSMutableArray arrayWithCapacity:4];
+    // NSLog(@"%i", currentAnswers.count);
+    int i = 0;
+    for (Answer *an in questionAnswers) {
+        currentAnswers[i] = [an valueForKey:@"text"];
+        currentTrueValues[i] = [an valueForKey:@"isTrue"];
+        NSLog(@"TRUE/FALSE : %@",currentTrueValues[i]);
+        i++;
+    
+    }
+    
     quizView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
                                                                 self.view.frame.size.height/8,
                                                                 self.view.frame.size.width/1.5,
@@ -570,9 +605,9 @@ double _changeDirectionCriticalPoint;
                                                                   self.view.frame.size.height/8 + intro.frame.size.height,
                                                                   self.view.frame.size.width/1.5,
                                                                   self.view.frame.size.height/10)];
-    //@" Who's the founder of C++!?"
-    NSLog(@"Question from NSData : %@",gameData.questions[index]);
-    question.text = gameData.questions[index];
+
+    // question.text = gameData.questions[index];  // NSData qorking scenario...
+    question.text = currentQuestion;
     question.backgroundColor = [UIColor redColor];
     question.adjustsFontSizeToFitWidth = NO;
     question.numberOfLines = 0;
@@ -580,48 +615,61 @@ double _changeDirectionCriticalPoint;
     question.font = [UIFont fontWithName:GAME_FONT size:14];
     question.textColor = [UIColor whiteColor];
     
-    answerOne = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerOne = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
-    // @"Bjarne Stroustrup"
-    [answerOne setTitle: gameData.answers[index+3] forState:UIControlStateNormal];
+
+    // [answerOne setTitle: gameData.answers[index+3] forState:UIControlStateNormal];  // NSData..
+    [answerOne setTitle:currentAnswers[0] forState:UIControlStateNormal];
+    [answerOne setValue:currentTrueValues[0]  forKey:@"isTrue"];
+    
     [answerOne addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerOne.backgroundColor = [UIColor redColor];
     answerOne.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
     
-    answerTwo = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    
+    answerTwo = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height + 10,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
     
     //@"Mmm.. Bill gates I guess?!"
-    [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal];
+    // [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal];
+    [answerTwo setTitle:currentAnswers[1] forState:UIControlStateNormal];
+    [answerTwo setValue:currentTrueValues[1]  forKey:@"isTrue"];
+    
     [answerTwo addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerTwo.backgroundColor = [UIColor redColor];
     answerTwo.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
     
     
-    answerThree = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerThree = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                        self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*2 + 20,
                                                                        self.view.frame.size.width/2,
                                                                        self.view.frame.size.height/12)];
     
-    //@"C++ .. is that Citroen!?"
-    [answerThree setTitle:gameData.answers[index+5] forState:UIControlStateNormal];
+
+    // [answerThree setTitle:gameData.answers[index+5] forState:UIControlStateNormal];
+    [answerThree setTitle:currentAnswers[2] forState:UIControlStateNormal];
+    [answerThree setValue:currentTrueValues[2]  forKey:@"isTrue"];
+    
     [answerThree addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerThree.backgroundColor = [UIColor redColor];
     answerThree.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
     
-    answerFour = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerFour = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                       self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*3 + 30,
                                                                       self.view.frame.size.width/2,
                                                                       self.view.frame.size.height/12)];
-    // @"Just take my Life.. OK!"
-    [answerFour setTitle:gameData.answers[index+6] forState:UIControlStateNormal];
+
+    // [answerFour setTitle:gameData.answers[index+6] forState:UIControlStateNormal];
+    [answerFour setTitle:currentAnswers[3] forState:UIControlStateNormal];
+    [answerFour setValue:currentTrueValues[3]  forKey:@"isTrue"];
+    
     [answerFour addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
     answerFour.backgroundColor = [UIColor redColor];
@@ -638,9 +686,10 @@ double _changeDirectionCriticalPoint;
 
 - (IBAction)answerClicked:(id)sender
 {
+    
     // MARK: now push all questions and answers to CoreData sqllite and then pass here the right answer
     // and also create buttons with answer atached through core data
-    if ([[sender currentTitle]  isEqual: @"All of the above"]) {
+    if ([[sender valueForKey:@"isTrue"]  isEqual: [NSNumber numberWithBool:YES]]) {
         
         self.paused = NO;
         [self removeQuizElements];
