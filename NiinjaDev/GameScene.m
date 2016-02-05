@@ -62,6 +62,9 @@
     NIPointsLabel *pointsLabel;
     NIScoreMenuImage *pointsImage;
     
+    NIPointsLabel *blueRunesLabel;
+    NIScoreMenuImage *blueRunesImage;
+    
     NIPointsLabel *firePointsLabel;
     NIScoreMenuImage *fireImage;
 
@@ -141,14 +144,12 @@ double _changeDirectionCriticalPoint;
     [fetchRequestNew setEntity:entityQuestion];
     self.allQuestions = [managedObjectContext executeFetchRequest:fetchRequestNew error:&error];
     
-    //NSLog(@"Answers count from GameScene :  %i", (int)allAnswers.count);
-    //NSLog(@"Questions count from GameScene :  %i", (int)allQuestions.count);
-    
 }
 
 -(void) willMoveFromView:(SKView *)view {
     [self.view removeGestureRecognizer: gestureRecognizerSwipeDown];
     [self.view removeGestureRecognizer: gestureRecognizerSwipeUp];
+    [self.view removeGestureRecognizer:gestureRecognizerDoubleTap];
 }
 
 -(void) swipeHandlerDown:(UISwipeGestureRecognizer *)recognizer {
@@ -181,17 +182,11 @@ double _changeDirectionCriticalPoint;
         //[hero stop];
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
-        // MARK: implement the logic where the snake is askiing tricky questions with the price of a life taken
-        // MARK: questions and answers added via Core Data (NSData already enabled as a backup)
-        // now make global variable for times the snake has been
-        // encountared and increse it with 1 to change the question every time;
         int rand = arc4random_uniform(10);
         [self generateQuiz:rand];
 
     } else if ([contact.bodyA.node.name isEqualToString:@"Teleport"]) {
-        // MARK: made the teleportation send the hero above ground...
-         // this can reset hero ot its inital level position after each fail - too user unfriendly!?
-        
+
         [hero removeFromParent];
         hero = [NIHero hero:@"greenman"];
         hero.alpha = 0.0;
@@ -255,7 +250,6 @@ double _changeDirectionCriticalPoint;
     
     gameData = [NIGameData initData];
     [gameData load];
-    // NSLog(@"GAME-DATA-LOAD : BEST SCORE is : %i", gameData.bestScore);
     
     bestLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
     bestLabel.position = CGPointMake(-160, 85);
@@ -270,7 +264,7 @@ double _changeDirectionCriticalPoint;
     bestLabelValue.name = @"bestScoreLabelValue";
     bestLabelValue.fontColor =[UIColor orangeColor];
     bestLabelValue.fontSize = 10;
-    [bestLabelValue updatePoints:gameData.bestScore];
+    [bestLabelValue updatePoints:gameData.bestScore]; // MARK: here i get archived value from NSData (make it Core Data later..)
     [self addChild:bestLabelValue];
     
     scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
@@ -296,13 +290,24 @@ double _changeDirectionCriticalPoint;
     pointsImage.yScale = 0.2;
     [self addChild:pointsImage];
     
+    blueRunesLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
+    blueRunesLabel.position = CGPointMake(140, 60);
+    blueRunesLabel.name = @"blueRuneLabel";
+    [self addChild:blueRunesLabel];
+    
+    blueRunesImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"7_gf_set_5"];
+    blueRunesImage.position = CGPointMake(170, 70);
+    blueRunesImage.xScale = 0.12;
+    blueRunesImage.yScale = 0.12;
+    [self addChild:blueRunesImage];
+    
     firePointsLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
-    firePointsLabel.position = CGPointMake(140, 60);
+    firePointsLabel.position = CGPointMake(140, 40);
     firePointsLabel.name = @"firePointsLabel";
     [self addChild:firePointsLabel];
     
     fireImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"Fire-1"];
-    fireImage.position = CGPointMake(170, 70);
+    fireImage.position = CGPointMake(170, 50);
     fireImage.xScale = 0.3;
     fireImage.yScale = 0.3;
     [self addChild:fireImage];
@@ -388,24 +393,18 @@ double _changeDirectionCriticalPoint;
     [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if (node.position.x < hero.position.x) {
             
-            // NSLog(@"I AM AT FIRE");
             firePointsLabel = (NIPointsLabel *)[self childNodeWithName:@"firePointsLabel"];
             [firePointsLabel increment];
-            NSLog(@"IS FirePointLabel.number good!? Lets see : %i", firePointsLabel.number);
             
             scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
             [scoreLabelValue incrementWith:15];
-            NSLog(@"IS scoreLabelValue.number good!? Lets see : %i", scoreLabelValue.number);
         }
     }];
-    
-    // scoreLabelValue
     
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x < hero.position.x) &
             (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
             
-            // NSLog(@"I AM AT POINTS");
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
             
@@ -425,12 +424,67 @@ double _changeDirectionCriticalPoint;
 
         }
     }];
+    
+    [world enumerateChildNodesWithName:@"blueBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( (node.position.x < hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
+            
+            blueRunesLabel = (NIPointsLabel *)[self childNodeWithName:@"blueRuneLabel"];
+            [blueRunesLabel increment];
+            
+            scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            [scoreLabelValue incrementWith:70];
+            
+            SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
+            pointsCollectedMessage.position = CGPointMake(node.position.x + hero.frame.size.width/3,
+                                                          node.position.y + hero.frame.size.height/2);
+            pointsCollectedMessage.text = @"+70 Points!";
+            pointsCollectedMessage.fontSize = 14;
+            pointsCollectedMessage.zPosition = 3;
+            pointsCollectedMessage.fontColor = [UIColor greenColor];
+            pointsCollectedMessage.name = @"pointsCollectedMessage";
+            [world addChild:pointsCollectedMessage];
+            [self animateWithScale:pointsCollectedMessage];
+            
+        }
+    }];
+    
+    [world enumerateChildNodesWithName:@"redBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( (node.position.x < hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
+            
+            scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+            [scoreLabelValue incrementWith:1000];
+            
+            _heroLifes++;
+            lifesRemainingImage = [NIScoreMenuImage scoreMenuImageWithNamedImage:@"red-greenman-1-0"];
+            lifesRemainingImage.position = CGPointMake(_heroLifes  * 20, 90);
+            lifesRemainingImage.xScale = 0.2;
+            lifesRemainingImage.yScale = 0.2;
+            lifesRemainingImage.name = [NSString stringWithFormat:@"Life-%i", _heroLifes];
+            [self addChild:lifesRemainingImage];
+            
+            
+            SKLabelNode *pointsCollectedMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
+            pointsCollectedMessage.position = CGPointMake(node.position.x + hero.frame.size.width/3,
+                                                          node.position.y + hero.frame.size.height/2);
+            pointsCollectedMessage.text = @"+1000 Points!";
+            pointsCollectedMessage.fontSize = 14;
+            pointsCollectedMessage.zPosition = 3;
+            pointsCollectedMessage.fontColor = [UIColor greenColor];
+            pointsCollectedMessage.name = @"pointsCollectedMessage";
+            [world addChild:pointsCollectedMessage];
+            [self animateWithScale:pointsCollectedMessage];
+            
+        }
+    }];
 }
 
 -(void) setBestScore {
     if (scoreLabelValue.number > bestLabelValue.number) {
         [bestLabelValue updatePoints:scoreLabelValue.number];
         
+        // implement Core Data here insted of NSData
         gameData.bestScore = bestLabelValue.number;
         [gameData save];
     }
@@ -449,6 +503,24 @@ double _changeDirectionCriticalPoint;
         node.name = @"pointsBonusRuneCanceled";
     }
  }];
+
+[world enumerateChildNodesWithName:@"redBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+    if (node.position.x < hero.position.x) {
+        node.name = @"redBonusRuneCanceled";
+    }
+}];
+  
+[world enumerateChildNodesWithName:@"blueBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+    if (node.position.x < hero.position.x) {
+        node.name = @"blueBonusRuneCanceled";
+    }
+}];
+
+[world enumerateChildNodesWithName:@"wrongMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+    if (node.position.x < hero.position.x - 100) {
+        node.name = @"wrongMessageCanceled";
+    }
+}];
     
 }
 
@@ -476,6 +548,21 @@ double _changeDirectionCriticalPoint;
             [node removeFromParent];
         }
     }];
+    
+    [world enumerateChildNodesWithName:@"blueBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( (node.position.x <= hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
+            [node removeFromParent];
+        }
+    }];
+    
+    [world enumerateChildNodesWithName:@"redBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        if ( (node.position.x <= hero.position.x) &
+            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
+            [node removeFromParent];
+        }
+    }];
+
 //
 //    [world enumerateChildNodesWithName:@"background" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
 //        if (node.position.x + node.frame.size.width < hero.position.x - self.frame.size.height/2 + node.frame.size.width/2) {
@@ -499,7 +586,9 @@ double _changeDirectionCriticalPoint;
         [node removeFromParent];
     }];
     
-
+    [world enumerateChildNodesWithName:@"wrongMessageCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+        [node removeFromParent];
+    }];
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -517,9 +606,11 @@ double _changeDirectionCriticalPoint;
   
     if (location.x <= _changeDirectionCriticalPoint) {
         [hero walkLeft];
+        //[hero startLeft];
         multiplierForDirection = -1;
     } else if (location.x > _changeDirectionCriticalPoint) {
         [hero walkRight];
+        //[hero startRight];
         multiplierForDirection = 1;
     }
     
@@ -576,7 +667,6 @@ double _changeDirectionCriticalPoint;
     for (Answer *an in questionAnswers) {
         currentAnswers[i] = [an valueForKey:@"text"];
         currentTrueValues[i] = [an valueForKey:@"isTrue"];
-        NSLog(@"TRUE/FALSE : %@",currentTrueValues[i]);
         i++;
     
     }
@@ -635,7 +725,6 @@ double _changeDirectionCriticalPoint;
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
     
-    //@"Mmm.. Bill gates I guess?!"
     // [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal];
     [answerTwo setTitle:currentAnswers[1] forState:UIControlStateNormal];
     [answerTwo setValue:currentTrueValues[1]  forKey:@"isTrue"];
@@ -646,7 +735,8 @@ double _changeDirectionCriticalPoint;
     answerTwo.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
     
     
-    answerThree = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerThree = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5
+                                                                 + question.frame.size.width/6,
                                                                        self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*2 + 20,
                                                                        self.view.frame.size.width/2,
                                                                        self.view.frame.size.height/12)];
@@ -686,9 +776,6 @@ double _changeDirectionCriticalPoint;
 
 - (IBAction)answerClicked:(id)sender
 {
-    
-    // MARK: now push all questions and answers to CoreData sqllite and then pass here the right answer
-    // and also create buttons with answer atached through core data
     if ([[sender valueForKey:@"isTrue"]  isEqual: [NSNumber numberWithBool:YES]]) {
         
         self.paused = NO;
@@ -700,7 +787,7 @@ double _changeDirectionCriticalPoint;
         rightAnswerMessage.text = @"+100 Points!";
         rightAnswerMessage.fontSize = 14;
         rightAnswerMessage.fontColor = [UIColor greenColor];
-        rightAnswerMessage.name = @"wrongAnswerMessage";
+        rightAnswerMessage.name = @"wrongMessage";
         [world addChild:rightAnswerMessage];
         [self animateWithScale:rightAnswerMessage];
         
@@ -727,7 +814,7 @@ double _changeDirectionCriticalPoint;
         wrongAnswerMessage.text = @"-30 Points!";
         wrongAnswerMessage.fontSize = 14;
         wrongAnswerMessage.fontColor = [UIColor redColor];
-        wrongAnswerMessage.name = @"wrongAnswerMessage";
+        wrongAnswerMessage.name = @"wrongMessage";
         [world addChild:wrongAnswerMessage];
         [self animateWithScale:wrongAnswerMessage];
         

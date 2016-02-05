@@ -67,9 +67,12 @@ NSArray *teleportFrames;
         ground.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height - ground.frame.size.height*2);
         [self.world addChild:ground];
         
-        SKSpriteNode *secretPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
-        secretPointsRune.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height -ground.frame.size.height);
-        [self.world addChild:secretPointsRune];
+        if (k % 2 == 1) {
+            SKSpriteNode *secretPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
+            secretPointsRune.position = CGPointMake((k * ground.frame.size.width), -ground.frame.size.height -ground.frame.size.height);
+            [self.world addChild:secretPointsRune];
+        }
+
         // if i can shoot this can be used as a practice room
         
         if (k % 3 == 1) {
@@ -78,11 +81,19 @@ NSArray *teleportFrames;
             [self.world addChild:snake];
         }
         
-        if (k % 6 == 1 & k > 10) {
+        if (k % 7 == 1 & k > 10) {
             // create teleport
             SKSpriteNode *teleport = [self setTeleportDoorWithName:@"Teleport"];
             teleport.position = CGPointMake(k * ground.frame.size.width, -ground.frame.size.height - ground.frame.size.height);
             [self.world addChild:teleport];
+        }
+        
+        if  (k % 8 == 1) {
+            
+            SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_5" andName:@"blueBonusRune"];
+            bonusPointsRune.position = CGPointMake((k * ground.frame.size.width),
+                                                    -ground.frame.size.height - ground.frame.size.height);
+            [self.world addChild:bonusPointsRune];
         }
     }
     
@@ -90,11 +101,40 @@ NSArray *teleportFrames;
     // ground, blocks, bonuses and enemies creation
     for (int i=0; i<60; i++)
     {
-
+        // The BONUS LIFE Rune at the end of the level and for testing urposes at the begining
+        if (i == 20 | i == 54) {
+            SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+            
+            SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_4" andName:@"redBonusRune"];
+            bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
+                                                   
+                                                   -ground.frame.size.height + bonusPointsRune.frame.size.height * 3);
+            [self.world addChild:bonusPointsRune];
+        }
+        
+        // build the end of level wall!
+        if (i == 57) {
+            // MARK: Create the end game portal here..
+        }
+        
+        if (i == 58) {
+            for (int z = 0; z < 10; z++) {
+                SKSpriteNode *wallUpper = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
+                wallUpper.position = CGPointMake((i * wallUpper.frame.size.width), + wallUpper.frame.size.height * z);
+                
+                SKSpriteNode *wallUnder = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
+                wallUnder.position = CGPointMake((i * wallUnder.frame.size.width), - wallUnder.frame.size.height * z);
+                
+                [self.world addChild:wallUpper];
+                [self.world addChild:wallUnder];
+            }
+        }
+        
+        
         // opening holes on every fifth block - all other is ground
         if ((i % 5 != 1)) {
             
-            if (i % 11 == 1) {
+            if (i % 9 == 1) {
                 SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
 
                 SKSpriteNode *snake = [self setSnakeObstacleWithName:@"snakeObstacle"];
@@ -110,7 +150,7 @@ NSArray *teleportFrames;
             }
             
             
-            if (i == 25) {
+            if (i == 25 | i == 50) {
                 // smaller ground blocks to climb up
                 for (int z = 0; z < 4; z++) {
                     
@@ -119,7 +159,7 @@ NSArray *teleportFrames;
                     [self.world addChild:ground];
                     
                     // Bonus runes
-                    if (z == 3) {
+                    if (z % 2 == 1) {
                         SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_3" andName:@"pointsBonusRune"];
                         bonusPointsRune.position = CGPointMake((i + z )* 24, z * 10);
                         [self.world addChild:bonusPointsRune];
@@ -152,7 +192,7 @@ NSArray *teleportFrames;
             [self.world addChild:fireAnimation];
         }
         
-        if (i % 5 != 1 & i % 2 != 1) {
+        if (i % 2 != 1 & i % 3 != 1 & i % 7 != 1){
             
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
             
@@ -160,6 +200,16 @@ NSArray *teleportFrames;
             bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
              
                                                    -ground.frame.size.height + bonusPointsRune.frame.size.height * 3);
+            [self.world addChild:bonusPointsRune];
+        }
+        
+        if  (i % 6 == 1) {
+            
+            SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+            
+            SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_5" andName:@"blueBonusRune"];
+            bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
+                                                   -ground.frame.size.height + bonusPointsRune.frame.size.height * 4);
             [self.world addChild:bonusPointsRune];
         }
     }
