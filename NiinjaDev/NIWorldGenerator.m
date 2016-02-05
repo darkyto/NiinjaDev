@@ -93,6 +93,7 @@ NSArray *teleportFrames;
             SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_5" andName:@"blueBonusRune"];
             bonusPointsRune.position = CGPointMake((k * ground.frame.size.width),
                                                     -ground.frame.size.height - ground.frame.size.height);
+           
             [self.world addChild:bonusPointsRune];
         }
     }
@@ -209,7 +210,7 @@ NSArray *teleportFrames;
             
             SKSpriteNode *bonusPointsRune = [self setBonusRuneWithFilepath:@"7_gf_set_5" andName:@"blueBonusRune"];
             bonusPointsRune.position = CGPointMake((i * ground.frame.size.width),
-                                                   -ground.frame.size.height + bonusPointsRune.frame.size.height * 4);
+                                                   -ground.frame.size.height + bonusPointsRune.frame.size.height * 5);
             [self.world addChild:bonusPointsRune];
         }
     }

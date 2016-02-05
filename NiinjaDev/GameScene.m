@@ -403,7 +403,7 @@ double _changeDirectionCriticalPoint;
     
     [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x < hero.position.x) &
-            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
+            (node.position.y >= hero.position.y - 50 & node.position.y <= hero.position.y + 50) )  {
             
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
@@ -426,9 +426,9 @@ double _changeDirectionCriticalPoint;
     }];
     
     [world enumerateChildNodesWithName:@"blueBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if ( (node.position.x < hero.position.x) &
-            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
-            
+        if ( (node.position.x <= hero.position.x) &
+            (node.position.y >= hero.position.y - 30 & node.position.y <= hero.position.y + 30) )  {
+            NSLog(@"I AM AT BLUE POINTS");
             blueRunesLabel = (NIPointsLabel *)[self childNodeWithName:@"blueRuneLabel"];
             [blueRunesLabel increment];
             
@@ -505,13 +505,13 @@ double _changeDirectionCriticalPoint;
  }];
 
 [world enumerateChildNodesWithName:@"redBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-    if (node.position.x < hero.position.x) {
+    if (node.position.x <= hero.position.x) {
         node.name = @"redBonusRuneCanceled";
     }
 }];
   
 [world enumerateChildNodesWithName:@"blueBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
-    if (node.position.x < hero.position.x) {
+    if (node.position.x <= hero.position.x) {
         node.name = @"blueBonusRuneCanceled";
     }
 }];
@@ -544,14 +544,14 @@ double _changeDirectionCriticalPoint;
 //
     [world enumerateChildNodesWithName:@"pointsBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x <= hero.position.x) &
-            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
+            (node.position.y >= hero.position.y - 50 & node.position.y <= hero.position.y + 50) ) {
             [node removeFromParent];
         }
     }];
     
     [world enumerateChildNodesWithName:@"blueBonusRuneCanceled" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x <= hero.position.x) &
-            (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) ) {
+            (node.position.y >= hero.position.y - 30 & node.position.y <= hero.position.y + 30) ) {
             [node removeFromParent];
         }
     }];
