@@ -136,6 +136,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6653936C1C6566B000D82F8A /* Atlases */ = {
+			isa = PBXGroup;
+			children = (
+				668E11C01C62C9D200D0D052 /* Teleport.atlas */,
+				668C0F8D1C60D3BC003AA207 /* Snake.atlas */,
+				668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */,
+				66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */,
+				661FCE401C5E480B005939C0 /* Fire.atlas */,
+				661F88F71C5C062900AB6C41 /* GreenMan.atlas */,
+			);
+			name = Atlases;
+			sourceTree = "<group>";
+		};
 		6659C5691C5B92E0003C40B1 = {
 			isa = PBXGroup;
 			children = (
@@ -156,15 +169,10 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
+				6653936C1C6566B000D82F8A /* Atlases */,
 				6653933C1C65043B00D82F8A /* Entities */,
 				66CFE31C1C63A3F500EC4B6C /* Data */,
-				668E11C01C62C9D200D0D052 /* Teleport.atlas */,
-				668C0F8D1C60D3BC003AA207 /* Snake.atlas */,
-				668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */,
 				66E1B9581C6014A5006325EB /* ViewControllers */,
-				66E1B94D1C5F7CDE006325EB /* GreenManRed.atlas */,
-				661FCE401C5E480B005939C0 /* Fire.atlas */,
-				661F88F71C5C062900AB6C41 /* GreenMan.atlas */,
 				6659C5781C5B92E1003C40B1 /* AppDelegate.h */,
 				6659C5791C5B92E1003C40B1 /* AppDelegate.m */,
 				6659C57B1C5B92E1003C40B1 /* GameScene.h */,
