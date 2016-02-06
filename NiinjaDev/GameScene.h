@@ -15,10 +15,10 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, strong) NSArray *players;
-
-@property (nonatomic, strong) NSArray *allAnswers;
+@property (nonatomic, strong) NSArray *playerScores;
 
 @property (nonatomic, strong) NSArray *allQuestions;
+@property (nonatomic, strong) NSArray *allAnswers;
 
 -(instancetype)initWithSize:(CGSize)size andUserChoiceHero:(NSString *)userChoiceHero;
 

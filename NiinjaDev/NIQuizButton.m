@@ -10,11 +10,11 @@
 
 @implementation NIQuizButton
 
+
 +(id)buttonWithFalseValue {
     NIQuizButton *btn = [NIQuizButton buttonWithType:UIButtonTypeCustom];
     btn.isTrue = 0;
     return  btn;
 }
-
 
 @end

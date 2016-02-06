@@ -19,9 +19,9 @@
         <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Player" inverseName="scores" inverseEntity="Player" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Player" positionX="-6273" positionY="71" width="128" height="28"/>
-        <element name="Score" positionX="-6075" positionY="63" width="128" height="28"/>
-        <element name="Question" positionX="-6264" positionY="194" width="128" height="73"/>
-        <element name="Answer" positionX="-6086" positionY="194" width="128" height="88"/>
+        <element name="Answer" positionX="-6084" positionY="164" width="128" height="88"/>
+        <element name="Player" positionX="-6273" positionY="72" width="135" height="88"/>
+        <element name="Question" positionX="-6264" positionY="197" width="128" height="73"/>
+        <element name="Score" positionX="-6093" positionY="72" width="128" height="73"/>
     </elements>
 </model>

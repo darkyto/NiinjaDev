@@ -43,6 +43,7 @@ static NSString *GAME_FONT = @"Chalkduster";
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Make sure your segue name in storyboard is the same as this line
+    // User choice will lead to game with selected hero
     if ([[segue identifier] isEqualToString:@"GreenmanSegue"])
     {
         

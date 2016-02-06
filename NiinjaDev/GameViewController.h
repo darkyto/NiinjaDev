@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSString *userChoiceHero;
 
+// Core Data properties
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 

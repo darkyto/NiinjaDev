@@ -25,6 +25,43 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+//    SEED PLayer and scores
+    
+//    NSManagedObjectContext *context = [self managedObjectContext];
+//    Player *playa = [NSEntityDescription
+//                            insertNewObjectForEntityForName:@"Player"
+//                            inManagedObjectContext:context];
+//    [playa setValue:@"Amon Ra" forKey:@"name"];
+//    [playa setValue:[NSNumber numberWithInteger:0] forKey:@"bestScore"];
+//    
+//    Score *sampleScoreOne = [NSEntityDescription
+//                     insertNewObjectForEntityForName:@"Score"
+//                     inManagedObjectContext:context];
+//    [sampleScoreOne setValue:[NSNumber numberWithInteger:70] forKey:@"scoreValue"];
+//    [sampleScoreOne setValue:playa forKey:@"owner"];
+//    
+//    Score *sampleScoreTwo = [NSEntityDescription
+//                              insertNewObjectForEntityForName:@"Score"
+//                              inManagedObjectContext:context];
+//    [sampleScoreTwo setValue:[NSNumber numberWithInteger:405] forKey:@"scoreValue"];
+//    [sampleScoreTwo setValue:playa forKey:@"owner"];
+//    
+//    Score *sampleScoreThree = [NSEntityDescription
+//                              insertNewObjectForEntityForName:@"Score"
+//                              inManagedObjectContext:context];
+//    [sampleScoreThree setValue:[NSNumber numberWithInteger:160] forKey:@"scoreValue"];
+//    [sampleScoreThree setValue:playa forKey:@"owner"];
+//    
+//    Score *sampleScoreFour = [NSEntityDescription
+//                              insertNewObjectForEntityForName:@"Score"
+//                              inManagedObjectContext:context];
+//    [sampleScoreFour setValue:[NSNumber numberWithInteger:225] forKey:@"scoreValue"];
+//    [sampleScoreFour setValue:playa forKey:@"owner"];
+
+
+    
+//    SEED Question and naswers (the snake quiz)
+    
 //    NSManagedObjectContext *context = [self managedObjectContext];
 //    Question *question = [NSEntityDescription
 //                          insertNewObjectForEntityForName:@"Question"
@@ -56,6 +93,10 @@
 //    [answer4 setValue:[NSNumber numberWithBool:NO]forKey:@"isTrue"];
 //    [answer4 setValue:question forKey:@"relationship"];
 //
+  
+    
+//    TEST the SEED
+    
 //    NSError *error;
 //    if (![context save:&error]) {
 //        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);

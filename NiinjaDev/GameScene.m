@@ -13,6 +13,8 @@
 
 #import "Answer.h"
 #import "Question.h"
+#import "Player.h"
+#import "Score.h"
 
 #import "NIGameData.h"
 
@@ -75,6 +77,7 @@
 
 @synthesize fetchedResultsController, managedObjectContext;
 @synthesize players;
+@synthesize playerScores;
 @synthesize allAnswers;
 @synthesize allQuestions;
 
@@ -110,20 +113,25 @@ double _changeDirectionCriticalPoint;
 
 -(void)didMoveToView:(SKView *)view {
     
+    // swipe down
     gestureRecognizerSwipeDown = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swipeHandlerDown:)];
     [gestureRecognizerSwipeDown setDirection:UISwipeGestureRecognizerDirectionDown];
     [view addGestureRecognizer:gestureRecognizerSwipeDown];
     
+    // swipe up
     gestureRecognizerSwipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeHandlerUp:)];
     [gestureRecognizerSwipeUp setDirection:(UISwipeGestureRecognizerDirectionUp)];
     [view addGestureRecognizer:gestureRecognizerSwipeUp];
 
+    // double touch
     gestureRecognizerDoubleTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapTap:)];
     [gestureRecognizerDoubleTap setNumberOfTapsRequired:2];
     [view addGestureRecognizer:gestureRecognizerDoubleTap];
     
+    // the point where the touch should change the movement direction
     _changeDirectionCriticalPoint = self.frame.size.height/6;
     
+    // using Core Data with sqlite
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     managedObjectContext = [appDelegate managedObjectContext];
     
@@ -144,6 +152,25 @@ double _changeDirectionCriticalPoint;
     [fetchRequestNew setEntity:entityQuestion];
     self.allQuestions = [managedObjectContext executeFetchRequest:fetchRequestNew error:&error];
     
+//    NSFetchRequest *fetchRequestPlayer = [[NSFetchRequest alloc] init];
+//    NSEntityDescription *entityAPlayer = [NSEntityDescription
+//                                         entityForName:@"Player" inManagedObjectContext:managedObjectContext];
+//    [fetchRequest setEntity:entityAPlayer];
+    //    self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];77
+    
+//    Player *currentPlaya = self.players[0];
+//    NSNumber *currentBestScore = [currentPlaya valueForKey:@"bestScore"];
+//    if (bestLabelValue.number < (int)currentBestScore) {
+//        NSLog(@" We have a better best score to save in Core Data");
+//    }
+    
+
+    NSFetchRequest *fetchRequestPlayer = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entityPlayer = [NSEntityDescription
+                                   entityForName:@"Player" inManagedObjectContext:managedObjectContext];
+    [fetchRequestPlayer setEntity:entityPlayer];
+    self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];
+
 }
 
 -(void) willMoveFromView:(SKView *)view {
@@ -175,8 +202,8 @@ double _changeDirectionCriticalPoint;
 
 -(void)didBeginContact:(SKPhysicsContact *)contact {
  
-    NSLog(@"CONTACT BODY-A : %@", contact.bodyA.node.name);
-    NSLog(@"CONTACT BODY-B : %@", contact.bodyB.node.name);
+//    NSLog(@"CONTACT BODY-A : %@", contact.bodyA.node.name);
+//    NSLog(@"CONTACT BODY-B : %@", contact.bodyB.node.name);
     
     if ([contact.bodyA.node.name isEqualToString:@"snakeObstacle"]) {
         //[hero stop];
@@ -385,7 +412,8 @@ double _changeDirectionCriticalPoint;
     world.position = CGPointMake(world.position.x - positionInTheScne.x - _changeDirectionCriticalPoint,
                                  world.position.y - positionInTheScne.y - self.frame.size.width/10);
     
-    // - positionInTheScne.y (delete it to remove screen dynamic movement by y)
+    // - positionInTheScne.y - self.frame.size.width/10
+    // (delete it to remove screen dynamic movement by y but will stay only at floor level)
 }
 
 -(void) handlePoints {
@@ -424,11 +452,12 @@ double _changeDirectionCriticalPoint;
 
         }
     }];
+
     
     [world enumerateChildNodesWithName:@"blueBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x <= hero.position.x) &
             (node.position.y >= hero.position.y - 30 & node.position.y <= hero.position.y + 30) )  {
-            NSLog(@"I AM AT BLUE POINTS");
+
             blueRunesLabel = (NIPointsLabel *)[self childNodeWithName:@"blueRuneLabel"];
             [blueRunesLabel increment];
             
@@ -481,24 +510,60 @@ double _changeDirectionCriticalPoint;
 }
 
 -(void) setBestScore {
+    
+    Player *currentPlaya = self.players[0];
+    NSNumber *currentBestScore = [currentPlaya valueForKey:@"bestScore"];
+    
     if (scoreLabelValue.number > bestLabelValue.number) {
+        
         [bestLabelValue updatePoints:scoreLabelValue.number];
         
         // implement Core Data here insted of NSData
         gameData.bestScore = bestLabelValue.number;
         [gameData save];
     }
+    
+    
+    if ((int)currentBestScore < bestLabelValue.number) {
+
+        NSError *error = nil;
+        Player * currentPlayer = nil;
+        
+        //Set up to get the thing you want to update
+        NSFetchRequest * request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
+        
+        //Ask for it
+        currentPlayer = [[managedObjectContext executeFetchRequest:request error:&error] firstObject];
+
+        if (error) {
+            NSLog(@"Error fetching context at (save bestScore)");
+        }
+        
+        if (!currentPlayer) {
+            NSLog(@"No player to save bestScore to..");
+        }
+
+        [currentPlayer setValue:[NSNumber numberWithInteger:bestLabelValue.number] forKey:@"bestScore"];
+        
+        error = nil;
+        if (![managedObjectContext save:&error]) {
+            NSLog(@"Error saving to context at (save bestScore)");
+        }
+    }
+    
+
 }
 
 -(void) handleGeneration {
     
- [world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+[world enumerateChildNodesWithName:@"fireObstacle" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
      if (node.position.x < hero.position.x) {
          node.name = @"fireObstacleCanceled";
      }
  }];
     
- [world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
+[world enumerateChildNodesWithName:@"pointsBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
     if (node.position.x < hero.position.x) {
         node.name = @"pointsBonusRuneCanceled";
     }
@@ -575,7 +640,7 @@ double _changeDirectionCriticalPoint;
             [node removeFromParent];
         }
     }];
-    
+
     [world enumerateChildNodesWithName:@"fireBurnMessage" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( node.position.x <= hero.position.x - 50) {
             [node removeFromParent];
@@ -658,7 +723,7 @@ double _changeDirectionCriticalPoint;
     
     Question *randomQuestion = self.allQuestions[index];
     NSString *currentQuestion = [randomQuestion valueForKey:@"text"];
-    NSLog(@"%@", currentQuestion);
+    // NSLog(@"%@", currentQuestion);
     NSSet<Answer *> *questionAnswers = [randomQuestion valueForKey:@"questionAnswers"];
     NSMutableArray *currentAnswers = [NSMutableArray arrayWithObjects:@"", @"", @"", @"", nil];
     NSMutableArray *currentTrueValues = [NSMutableArray arrayWithCapacity:4];
@@ -670,6 +735,7 @@ double _changeDirectionCriticalPoint;
         i++;
     
     }
+
     
     quizView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
                                                                 self.view.frame.size.height/8,
