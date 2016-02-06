@@ -11,9 +11,13 @@
 @implementation NIQuizButton
 
 
-+(id)buttonWithFalseValue {
-    NIQuizButton *btn = [NIQuizButton buttonWithType:UIButtonTypeCustom];
++(id)initWithFrameAndFalseValue :(CGRect) frame {
+    
+    NIQuizButton *btn = [[NIQuizButton alloc] initWithFrame:frame];
     btn.isTrue = 0;
+    btn.backgroundColor = [UIColor redColor];
+    btn.titleLabel.font = [UIFont fontWithName:@"Chalkduster" size:14];
+    
     return  btn;
 }
 

@@ -12,6 +12,6 @@
 
 @property int isTrue;
 
-+(id)buttonWithFalseValue;
++(id)initWithFrameAndFalseValue :(CGRect) frame;
 
 @end

@@ -19,7 +19,7 @@
 + (id)initData {
     NIGameData *data = [[NIGameData alloc] init];
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *filename = @"scores.data";
+    NSString *filename = @"scoresNew.data";
     data.filepath = [path stringByAppendingString:filename];
     return data;
 }

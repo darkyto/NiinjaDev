@@ -152,25 +152,29 @@ double _changeDirectionCriticalPoint;
     [fetchRequestNew setEntity:entityQuestion];
     self.allQuestions = [managedObjectContext executeFetchRequest:fetchRequestNew error:&error];
     
-//    NSFetchRequest *fetchRequestPlayer = [[NSFetchRequest alloc] init];
-//    NSEntityDescription *entityAPlayer = [NSEntityDescription
-//                                         entityForName:@"Player" inManagedObjectContext:managedObjectContext];
-//    [fetchRequest setEntity:entityAPlayer];
-    //    self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];77
-    
-//    Player *currentPlaya = self.players[0];
-//    NSNumber *currentBestScore = [currentPlaya valueForKey:@"bestScore"];
-//    if (bestLabelValue.number < (int)currentBestScore) {
-//        NSLog(@" We have a better best score to save in Core Data");
-//    }
-    
-
     NSFetchRequest *fetchRequestPlayer = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entityPlayer = [NSEntityDescription
-                                   entityForName:@"Player" inManagedObjectContext:managedObjectContext];
-    [fetchRequestPlayer setEntity:entityPlayer];
+    NSEntityDescription *entityPlayers = [NSEntityDescription
+                                         entityForName:@"Player" inManagedObjectContext:managedObjectContext];
+    [fetchRequestPlayer setEntity:entityPlayers];
     self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];
+    
 
+    // MARK: all this below is just to sort the scores and use them for the scoreboard at the finish page.. move it later when page is ready
+    Player *current = self.players[1];
+
+    NSArray *currentScores = [current valueForKey:@"scores"];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
+                                        initWithKey: @"scoreValue" ascending:NO];
+    NSArray *sortedArray = [currentScores sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat: @"scoreValue > 0"];
+    NSArray *filteredAndSortedArray = [sortedArray filteredArrayUsingPredicate: pred];
+    
+    int i = 1;
+    for (Score *sc in filteredAndSortedArray) {
+        NSLog(@"Score#%i + %@", i, sc.scoreValue);
+        i++;
+    }
+    
 }
 
 -(void) willMoveFromView:(SKView *)view {
@@ -291,7 +295,8 @@ double _changeDirectionCriticalPoint;
     bestLabelValue.name = @"bestScoreLabelValue";
     bestLabelValue.fontColor =[UIColor orangeColor];
     bestLabelValue.fontSize = 10;
-    [bestLabelValue updatePoints:gameData.bestScore]; // MARK: here i get archived value from NSData (make it Core Data later..)
+    [bestLabelValue updatePoints:gameData.bestScore];
+
     [self addChild:bestLabelValue];
     
     scoreLabel = [NIPointsLabel pointsLabelWithFontNamed:GAME_FONT];
@@ -394,6 +399,8 @@ double _changeDirectionCriticalPoint;
     [self animateWithPulse:tapToRestLabel];
     
     [self setBestScore];
+    [self saveNewScoreForPlayer];
+    
 }
 
 -(void)didSimulatePhysics {
@@ -509,11 +516,53 @@ double _changeDirectionCriticalPoint;
     }];
 }
 
+-(void) saveNewScoreForPlayer {
+    NSError *error = nil;
+    Player *current = nil;
+    
+    //Set up to get the thing you want to update
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
+    
+    current = [[managedObjectContext executeFetchRequest:request error:&error] objectAtIndex:1];
+    
+    Score *newScoreToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Score" inManagedObjectContext:managedObjectContext];
+    [newScoreToSave setValue:[NSNumber numberWithInteger:scoreLabelValue.number] forKey:@"scoreValue"];
+    [newScoreToSave setValue:current forKey:@"owner"];
+
+    //Set up to get the thing you want to update
+
+    if (error) {
+        NSLog(@"Error fetching context at (saveNewScoreForPlayer)");
+    }
+    
+    if (!newScoreToSave) {
+        NSLog(@"No score to save..");
+    }
+    
+    error = nil;
+    if (![managedObjectContext save:&error]) {
+        NSLog(@"Error saving to context at (saveNewScoreForPlayer)");
+    }
+    
+    // Scores are updated on game over in sqlite via Core Data
+    for(NSNumber *score in current.scores) {
+        NSLog(@"CORE scores for curent user : %@", [score valueForKey:@"scoreValue"]);
+    }
+}
+
 -(void) setBestScore {
     
-    Player *currentPlaya = self.players[0];
-    NSNumber *currentBestScore = [currentPlaya valueForKey:@"bestScore"];
+    NSError *error = nil;
+    Player *current = nil;
     
+    //Set up to get the thing you want to update
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
+    
+    //Ask for it
+    current = [[managedObjectContext executeFetchRequest:request error:&error] objectAtIndex:1];
+
     if (scoreLabelValue.number > bestLabelValue.number) {
         
         [bestLabelValue updatePoints:scoreLabelValue.number];
@@ -523,35 +572,30 @@ double _changeDirectionCriticalPoint;
         [gameData save];
     }
     
-    
-    if ((int)currentBestScore < bestLabelValue.number) {
-
+    if ([NSNumber numberWithInteger:bestLabelValue.number ] > current.bestScore) {
+       
         NSError *error = nil;
-        Player * currentPlayer = nil;
+        Player *current = nil;
         
         //Set up to get the thing you want to update
         NSFetchRequest * request = [[NSFetchRequest alloc] init];
         [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
-        
-        //Ask for it
-        currentPlayer = [[managedObjectContext executeFetchRequest:request error:&error] firstObject];
-
+        current = [[managedObjectContext executeFetchRequest:request error:&error] objectAtIndex:1];
         if (error) {
             NSLog(@"Error fetching context at (save bestScore)");
         }
         
-        if (!currentPlayer) {
+        if (!current) {
             NSLog(@"No player to save bestScore to..");
         }
-
-        [currentPlayer setValue:[NSNumber numberWithInteger:bestLabelValue.number] forKey:@"bestScore"];
+        
+        [current setValue:[NSNumber numberWithInteger:bestLabelValue.number] forKey:@"bestScore"];
         
         error = nil;
         if (![managedObjectContext save:&error]) {
             NSLog(@"Error saving to context at (save bestScore)");
         }
     }
-    
 
 }
 
@@ -735,7 +779,6 @@ double _changeDirectionCriticalPoint;
         i++;
     
     }
-
     
     quizView = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
                                                                 self.view.frame.size.height/8,
@@ -756,14 +799,12 @@ double _changeDirectionCriticalPoint;
     intro.font = [UIFont fontWithName:GAME_FONT size:14];
     intro.textColor = [UIColor brownColor];
     
-    
     question = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
                                                                   self.view.frame.size.height/8 + intro.frame.size.height,
                                                                   self.view.frame.size.width/1.5,
                                                                   self.view.frame.size.height/10)];
-
-    // question.text = gameData.questions[index];  // NSData qorking scenario...
-    question.text = currentQuestion;
+    // question.text = gameData.questions[index];  // NSData qorking scenario... Update : Core Data enabled!
+    question.text = currentQuestion; // Core Data
     question.backgroundColor = [UIColor redColor];
     question.adjustsFontSizeToFitWidth = NO;
     question.numberOfLines = 0;
@@ -771,73 +812,50 @@ double _changeDirectionCriticalPoint;
     question.font = [UIFont fontWithName:GAME_FONT size:14];
     question.textColor = [UIColor whiteColor];
     
-    answerOne = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerOne = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
-
-    // [answerOne setTitle: gameData.answers[index+3] forState:UIControlStateNormal];  // NSData..
     [answerOne setTitle:currentAnswers[0] forState:UIControlStateNormal];
     [answerOne setValue:currentTrueValues[0]  forKey:@"isTrue"];
-    
     [answerOne addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
-    answerOne.backgroundColor = [UIColor redColor];
-    answerOne.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
+
     
-    
-    answerTwo = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+    answerTwo = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height + 10,
                                                                      self.view.frame.size.width/2,
                                                                      self.view.frame.size.height/12)];
-    
-    // [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal];
+    // [answerTwo setTitle:gameData.answers[index+4] forState:UIControlStateNormal]; // NSData can be used here as well..going to CoreData
     [answerTwo setTitle:currentAnswers[1] forState:UIControlStateNormal];
     [answerTwo setValue:currentTrueValues[1]  forKey:@"isTrue"];
-    
     [answerTwo addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
-    answerTwo.backgroundColor = [UIColor redColor];
-    answerTwo.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
+
     
     
-    answerThree = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5
+    answerThree = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5
                                                                  + question.frame.size.width/6,
                                                                        self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*2 + 20,
                                                                        self.view.frame.size.width/2,
                                                                        self.view.frame.size.height/12)];
-    
-
-    // [answerThree setTitle:gameData.answers[index+5] forState:UIControlStateNormal];
     [answerThree setTitle:currentAnswers[2] forState:UIControlStateNormal];
     [answerThree setValue:currentTrueValues[2]  forKey:@"isTrue"];
-    
     [answerThree addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
-    answerThree.backgroundColor = [UIColor redColor];
-    answerThree.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
-    
-    answerFour = [[NIQuizButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
-                                                                      self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*3 + 30,
-                                                                      self.view.frame.size.width/2,
-                                                                      self.view.frame.size.height/12)];
 
-    // [answerFour setTitle:gameData.answers[index+6] forState:UIControlStateNormal];
+
+
+    answerFour = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5 + question.frame.size.width/6,
+                                                                     self.view.frame.size.height/8 + intro.frame.size.height + question.frame.size.height*1.5 + answerOne.frame.size.height*3 + 30,
+                                                                     self.view.frame.size.width/2,
+                                                                     self.view.frame.size.height/12)];
     [answerFour setTitle:currentAnswers[3] forState:UIControlStateNormal];
     [answerFour setValue:currentTrueValues[3]  forKey:@"isTrue"];
-    
     [answerFour addTarget:self action:@selector(answerClicked:)
         forControlEvents:UIControlEventTouchUpInside];
-    answerFour.backgroundColor = [UIColor redColor];
-    answerFour.titleLabel.font = [UIFont fontWithName:GAME_FONT size:14];
-    
-    
-    [self.view addSubview:intro];
-    [self.view addSubview:question];
-    [self.view addSubview:answerOne];
-    [self.view addSubview:answerTwo];
-    [self.view addSubview:answerThree];
-    [self.view addSubview:answerFour];
+
+    [self addQuizElements];
 }
 
 - (IBAction)answerClicked:(id)sender
@@ -857,7 +875,7 @@ double _changeDirectionCriticalPoint;
         [world addChild:rightAnswerMessage];
         [self animateWithScale:rightAnswerMessage];
         
-        scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
+        scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
         [scoreLabelValue incrementWith:100];
 
     }
@@ -887,6 +905,15 @@ double _changeDirectionCriticalPoint;
         scoreLabelValue =(NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
         [scoreLabelValue incrementWith:-30];
     }
+}
+
+- (void) addQuizElements {
+    [self.view addSubview:intro];
+    [self.view addSubview:question];
+    [self.view addSubview:answerOne];
+    [self.view addSubview:answerTwo];
+    [self.view addSubview:answerThree];
+    [self.view addSubview:answerFour];
 }
 
 - (void)removeQuizElements {
