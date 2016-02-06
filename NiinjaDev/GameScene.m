@@ -555,8 +555,8 @@ double _changeDirectionCriticalPoint;
     
     NSError *error = nil;
     Player *current = nil;
-    
-    //Set up to get the thing you want to update
+
+
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
     
@@ -571,6 +571,7 @@ double _changeDirectionCriticalPoint;
         gameData.bestScore = bestLabelValue.number;
         [gameData save];
     }
+    
     
     if ([NSNumber numberWithInteger:bestLabelValue.number ] > current.bestScore) {
        
