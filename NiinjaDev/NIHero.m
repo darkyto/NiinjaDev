@@ -72,7 +72,7 @@ NSArray *heroWalkingFrames;
     hero.physicsBody.categoryBitMask = heroCategory;
     // hero.physicsBody.contactTestBitMask = heroCategory | obstacleCategory;
     hero.physicsBody.contactTestBitMask = obstacleCategory | groundCategory | backgroundCategory | bonusCategory;
-
+    
 
     return hero;
 }
@@ -119,6 +119,7 @@ NSArray *heroWalkingFrames;
         } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
             [self.physicsBody applyImpulse:CGVectorMake(30, 50)];
         }
+        [self runAction:[SKAction playSoundFileNamed:@"onJump.wav" waitForCompletion:NO]];
         self.isJummping = YES;
     }
 
@@ -131,6 +132,7 @@ NSArray *heroWalkingFrames;
         } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
             [self.physicsBody applyImpulse:CGVectorMake(-30, 50)];
         }
+        [self runAction:[SKAction playSoundFileNamed:@"onJump.wav" waitForCompletion:NO]];
         self.isJummping = YES;
     }
 }

@@ -30,6 +30,14 @@
 		6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5831C5B92E1003C40B1 /* Main.storyboard */; };
 		6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5861C5B92E1003C40B1 /* Assets.xcassets */; };
 		6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6659C5881C5B92E1003C40B1 /* LaunchScreen.storyboard */; };
+		668A6B771C67739D003CB0A6 /* onHurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B731C67739D003CB0A6 /* onHurt.wav */; };
+		668A6B781C67739D003CB0A6 /* onJump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B741C67739D003CB0A6 /* onJump.wav */; };
+		668A6B791C67739D003CB0A6 /* onNewLife.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B751C67739D003CB0A6 /* onNewLife.wav */; };
+		668A6B7A1C67739D003CB0A6 /* onPickCoin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B761C67739D003CB0A6 /* onPickCoin.wav */; };
+		668A6B7F1C6779D3003CB0A6 /* Lost-Jungle_Looping.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B7B1C6779D3003CB0A6 /* Lost-Jungle_Looping.mp3 */; };
+		668A6B801C6779D3003CB0A6 /* onGameOver.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B7C1C6779D3003CB0A6 /* onGameOver.wav */; };
+		668A6B811C6779D3003CB0A6 /* onRightAnswer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B7D1C6779D3003CB0A6 /* onRightAnswer.wav */; };
+		668A6B821C6779D3003CB0A6 /* onWrongAnswer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 668A6B7E1C6779D3003CB0A6 /* onWrongAnswer.wav */; };
 		668C0F8C1C60CA59003AA207 /* AlienNinja.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */; };
 		668C0F8E1C60D3BC003AA207 /* Snake.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668C0F8D1C60D3BC003AA207 /* Snake.atlas */; };
 		668E11C11C62C9D200D0D052 /* Teleport.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 668E11C01C62C9D200D0D052 /* Teleport.atlas */; };
@@ -81,6 +89,14 @@
 		6659C5861C5B92E1003C40B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6659C5891C5B92E1003C40B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6659C58B1C5B92E1003C40B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		668A6B731C67739D003CB0A6 /* onHurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onHurt.wav; sourceTree = "<group>"; };
+		668A6B741C67739D003CB0A6 /* onJump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onJump.wav; sourceTree = "<group>"; };
+		668A6B751C67739D003CB0A6 /* onNewLife.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onNewLife.wav; sourceTree = "<group>"; };
+		668A6B761C67739D003CB0A6 /* onPickCoin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onPickCoin.wav; sourceTree = "<group>"; };
+		668A6B7B1C6779D3003CB0A6 /* Lost-Jungle_Looping.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Lost-Jungle_Looping.mp3"; sourceTree = "<group>"; };
+		668A6B7C1C6779D3003CB0A6 /* onGameOver.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onGameOver.wav; sourceTree = "<group>"; };
+		668A6B7D1C6779D3003CB0A6 /* onRightAnswer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onRightAnswer.wav; sourceTree = "<group>"; };
+		668A6B7E1C6779D3003CB0A6 /* onWrongAnswer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = onWrongAnswer.wav; sourceTree = "<group>"; };
 		668C0F8B1C60CA59003AA207 /* AlienNinja.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AlienNinja.atlas; sourceTree = "<group>"; };
 		668C0F8D1C60D3BC003AA207 /* Snake.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Snake.atlas; sourceTree = "<group>"; };
 		668E11C01C62C9D200D0D052 /* Teleport.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Teleport.atlas; sourceTree = "<group>"; };
@@ -169,6 +185,7 @@
 		6659C5741C5B92E1003C40B1 /* NiinjaDev */ = {
 			isa = PBXGroup;
 			children = (
+				668A6B721C677319003CB0A6 /* SoundEfects */,
 				6653936C1C6566B000D82F8A /* Atlases */,
 				6653933C1C65043B00D82F8A /* Entities */,
 				66CFE31C1C63A3F500EC4B6C /* Data */,
@@ -202,6 +219,21 @@
 				6659C5761C5B92E1003C40B1 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		668A6B721C677319003CB0A6 /* SoundEfects */ = {
+			isa = PBXGroup;
+			children = (
+				668A6B7B1C6779D3003CB0A6 /* Lost-Jungle_Looping.mp3 */,
+				668A6B7C1C6779D3003CB0A6 /* onGameOver.wav */,
+				668A6B7D1C6779D3003CB0A6 /* onRightAnswer.wav */,
+				668A6B7E1C6779D3003CB0A6 /* onWrongAnswer.wav */,
+				668A6B731C67739D003CB0A6 /* onHurt.wav */,
+				668A6B741C67739D003CB0A6 /* onJump.wav */,
+				668A6B751C67739D003CB0A6 /* onNewLife.wav */,
+				668A6B761C67739D003CB0A6 /* onPickCoin.wav */,
+			);
+			name = SoundEfects;
 			sourceTree = "<group>";
 		};
 		66CFE31C1C63A3F500EC4B6C /* Data */ = {
@@ -281,13 +313,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				668A6B791C67739D003CB0A6 /* onNewLife.wav in Resources */,
+				668A6B7A1C67739D003CB0A6 /* onPickCoin.wav in Resources */,
+				668A6B7F1C6779D3003CB0A6 /* Lost-Jungle_Looping.mp3 in Resources */,
+				668A6B771C67739D003CB0A6 /* onHurt.wav in Resources */,
 				668C0F8E1C60D3BC003AA207 /* Snake.atlas in Resources */,
 				668C0F8C1C60CA59003AA207 /* AlienNinja.atlas in Resources */,
 				661FCE411C5E480B005939C0 /* Fire.atlas in Resources */,
 				668E11C11C62C9D200D0D052 /* Teleport.atlas in Resources */,
+				668A6B811C6779D3003CB0A6 /* onRightAnswer.wav in Resources */,
 				6659C58A1C5B92E1003C40B1 /* LaunchScreen.storyboard in Resources */,
+				668A6B821C6779D3003CB0A6 /* onWrongAnswer.wav in Resources */,
 				66E1B94E1C5F7CDE006325EB /* GreenManRed.atlas in Resources */,
+				668A6B801C6779D3003CB0A6 /* onGameOver.wav in Resources */,
 				6659C5871C5B92E1003C40B1 /* Assets.xcassets in Resources */,
+				668A6B781C67739D003CB0A6 /* onJump.wav in Resources */,
 				661F88F81C5C062900AB6C41 /* GreenMan.atlas in Resources */,
 				6659C5851C5B92E1003C40B1 /* Main.storyboard in Resources */,
 			);

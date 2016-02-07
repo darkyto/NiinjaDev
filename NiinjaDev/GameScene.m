@@ -79,6 +79,9 @@
 }
 
 @synthesize fetchedResultsController, managedObjectContext;
+
+@synthesize audioPlayer;
+
 @synthesize players;
 @synthesize playerScores;
 @synthesize allAnswers;
@@ -103,7 +106,9 @@ double _changeDirectionCriticalPoint;
         } else if ([userChoiceHero isEqualToString:@"ninja"]) {
             [self createContent : @"ninja"];
         }
-      
+        
+        [self addLoopingMusicToBackground:@"/Lost-Jungle_Looping.mp3" ];
+        //[audioPlayer play];
     }
     
     return self;
@@ -213,7 +218,8 @@ double _changeDirectionCriticalPoint;
     NSLog(@"CONTACT BODY-B : %@", contact.bodyB.node.name);
     
     // to prevent hero from jumping non-stop
-    if ([contact.bodyA.node.name isEqualToString: @"back"] | [contact.bodyB.node.name isEqualToString: @"back"]) {
+    if ([contact.bodyA.node.name isEqualToString: @"back"] | [contact.bodyB.node.name isEqualToString: @"back"]
+         | [contact.bodyA.node.name isEqualToString: @"hellGround"] | [contact.bodyB.node.name isEqualToString: @"hellGround"]) {
         [hero land];
     } else if ([contact.bodyA.node.name isEqualToString:@"snakeObstacle"]) {
         //[hero stop];
@@ -235,6 +241,7 @@ double _changeDirectionCriticalPoint;
     else {
         if (_heroLifes > _initialHeroFails) {
             _initialHeroFails++;
+            [self runAction:[SKAction playSoundFileNamed:@"onHurt.wav" waitForCompletion:NO]];
             NSString *lifeImageString = [NSString stringWithFormat:@"Life-%i", _initialHeroFails];
             NIScoreMenuImage *lifeBurned = (NIScoreMenuImage *) [self childNodeWithName:lifeImageString];
             [lifeBurned removeFromParent];
@@ -259,6 +266,7 @@ double _changeDirectionCriticalPoint;
     
 
     if (_initialHeroFails >= _heroLifes) {
+        [self runAction:[SKAction playSoundFileNamed:@"onGameOver.wav" waitForCompletion:NO]];
         SKLabelNode *fireBurnMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
         fireBurnMessage.position = CGPointMake(hero.position.x + hero.frame.size.width/3,
                                                hero.position.y + hero.frame.size.height/2);
@@ -375,6 +383,7 @@ double _changeDirectionCriticalPoint;
     [[self childNodeWithName:@"tapToBeginLabel"] removeFromParent];
     
     [hero start];
+    // [self runAction:[SKAction playSoundFileNamed:@"Lost-Jungle_Looping.mp3" waitForCompletion:NO]];
 }
 
 
@@ -447,6 +456,8 @@ double _changeDirectionCriticalPoint;
         if ( (node.position.x < hero.position.x) &
             (node.position.y >= hero.position.y - 50 & node.position.y <= hero.position.y + 50) )  {
             
+            [self runAction:[SKAction playSoundFileNamed:@"onPickCoin.wav" waitForCompletion:NO]];
+            
             pointsLabel = (NIPointsLabel *)[self childNodeWithName:@"pointsLabel"];
             [pointsLabel increment];
             
@@ -472,6 +483,8 @@ double _changeDirectionCriticalPoint;
         if ( (node.position.x <= hero.position.x) &
             (node.position.y >= hero.position.y - 30 & node.position.y <= hero.position.y + 30) )  {
 
+            [self runAction:[SKAction playSoundFileNamed:@"onPickCoin.wav" waitForCompletion:NO]];
+            
             blueRunesLabel = (NIPointsLabel *)[self childNodeWithName:@"blueRuneLabel"];
             [blueRunesLabel increment];
             
@@ -495,6 +508,8 @@ double _changeDirectionCriticalPoint;
     [world enumerateChildNodesWithName:@"redBonusRune" usingBlock:^(SKNode * _Nonnull node, BOOL * _Nonnull stop) {
         if ( (node.position.x < hero.position.x) &
             (node.position.y >= hero.position.y - 20 & node.position.y <= hero.position.y + 20) )  {
+            
+            [self runAction:[SKAction playSoundFileNamed:@"onNewLife.wav" waitForCompletion:NO]];
             
             scoreLabelValue = (NIPointsLabel *)[self childNodeWithName:@"scoreLabelValue"];
             [scoreLabelValue incrementWith:1000];
@@ -867,7 +882,7 @@ double _changeDirectionCriticalPoint;
         
         self.paused = NO;
         [self removeQuizElements];
-        
+        [self runAction:[SKAction playSoundFileNamed:@"onRightAnswer.wav" waitForCompletion:NO]];
         SKLabelNode *rightAnswerMessage = [SKLabelNode labelNodeWithFontNamed:GAME_FONT];
         rightAnswerMessage.position = CGPointMake(hero.position.x + hero.frame.size.width/3,
                                                   hero.position.y + hero.frame.size.height/2);
@@ -889,7 +904,7 @@ double _changeDirectionCriticalPoint;
 
         self.paused = NO;
         [self removeQuizElements];
-        
+        [self runAction:[SKAction playSoundFileNamed:@"onWrongAnswer.wav" waitForCompletion:NO]];
         _initialHeroFails++;
         NSString *lifeImageString = [NSString stringWithFormat:@"Life-%i", _initialHeroFails];
         NIScoreMenuImage *lifeBurned = (NIScoreMenuImage *) [self childNodeWithName:lifeImageString];
@@ -919,7 +934,7 @@ double _changeDirectionCriticalPoint;
     [self.view addSubview:answerFour];
 }
 
-- (void)removeQuizElements {
+- (void) removeQuizElements {
     [quizView removeFromSuperview];
     [intro removeFromSuperview];
     [question removeFromSuperview];
@@ -927,6 +942,30 @@ double _changeDirectionCriticalPoint;
     [answerTwo removeFromSuperview];
     [answerThree removeFromSuperview];
     [answerFour removeFromSuperview];
+}
+
+-(void) addLoopingMusicToBackground: (NSString*)path {
+    NSString* resourcePath = [[NSBundle mainBundle] resourcePath];
+    resourcePath = [resourcePath stringByAppendingString:path];
+    NSLog(@"Path to play: %@", resourcePath);
+    NSError* err;
+    
+    //Initialize our player pointing to the path to our resource
+    audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:
+              [NSURL fileURLWithPath:resourcePath] error:&err];
+    
+    if( err ){
+        //bail!
+        NSLog(@"Failed with reason: %@", [err localizedDescription]);
+    }
+    else{
+        //set our delegate and begin playback
+        audioPlayer.delegate = self;
+        [audioPlayer play];
+        audioPlayer.numberOfLoops = -1;
+        audioPlayer.currentTime = 0;
+        audioPlayer.volume = 0.3;
+    }
 }
 
 

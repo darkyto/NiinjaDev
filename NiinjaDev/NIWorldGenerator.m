@@ -102,6 +102,21 @@ NSArray *teleportFrames;
     // ground, blocks, bonuses and enemies creation
     for (int i=0; i<60; i++)
     {
+//        if (i == 0) {
+//
+//                for (int z = 0; z < 10; z++) {
+//                    SKSpriteNode *wallUpper = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
+//                    wallUpper.position = CGPointMake((i * wallUpper.frame.size.width * 2), + wallUpper.frame.size.height * z);
+//                    
+//                    SKSpriteNode *wallUnder = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
+//                    wallUnder.position = CGPointMake((i * wallUnder.frame.size.width), - wallUnder.frame.size.height * z);
+//                    
+//                    [self.world addChild:wallUpper];
+//                    [self.world addChild:wallUnder];
+//                }
+//
+//        }
+        
         // The BONUS LIFE Rune at the end of the level and for testing urposes at the begining
         if (i == 20 | i == 54) {
             SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
