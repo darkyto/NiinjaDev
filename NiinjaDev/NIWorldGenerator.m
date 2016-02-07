@@ -102,20 +102,6 @@ NSArray *teleportFrames;
     // ground, blocks, bonuses and enemies creation
     for (int i=0; i<60; i++)
     {
-//        if (i == 0) {
-//
-//                for (int z = 0; z < 10; z++) {
-//                    SKSpriteNode *wallUpper = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
-//                    wallUpper.position = CGPointMake((i * wallUpper.frame.size.width * 2), + wallUpper.frame.size.height * z);
-//                    
-//                    SKSpriteNode *wallUnder = [self setBigGroundBlockWithFilepath:@"back" andName:@"back"];
-//                    wallUnder.position = CGPointMake((i * wallUnder.frame.size.width), - wallUnder.frame.size.height * z);
-//                    
-//                    [self.world addChild:wallUpper];
-//                    [self.world addChild:wallUnder];
-//                }
-//
-//        }
         
         // The BONUS LIFE Rune at the end of the level and for testing urposes at the begining
         if (i == 20 | i == 54) {
@@ -130,7 +116,13 @@ NSArray *teleportFrames;
         
         // build the end of level wall!
         if (i == 57) {
-            // MARK: Create the end game portal here..
+            SKSpriteNode *ground = [SKSpriteNode spriteNodeWithImageNamed:@"back"];
+            
+            SKSpriteNode *finalPortale = [self setTeleportDoorWithName:@"finalTeleport"];
+            finalPortale.position = CGPointMake((i * ground.frame.size.width), -ground.frame.size.height + finalPortale.frame.size.height * 3);
+            finalPortale.xScale = 2;
+            finalPortale.yScale = 2;
+            [self.world addChild:finalPortale];
         }
         
         if (i == 58) {

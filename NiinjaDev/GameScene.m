@@ -43,6 +43,13 @@
     NIQuizButton *answerTwo;
     NIQuizButton *answerThree;
     NIQuizButton *answerFour;
+    
+    UIView *finalPopupUp;
+    UILabel *finalIntro;
+    UILabel *scoreboardTitle;
+    NIQuizButton *scoreOne;
+    NIQuizButton *scoreTwo;
+    NIQuizButton *scoreThree;
 }
 
 @property BOOL isStarted;
@@ -166,23 +173,6 @@ double _changeDirectionCriticalPoint;
     [fetchRequestPlayer setEntity:entityPlayers];
     self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];
     
-
-//    // MARK: all this below is just to sort the scores and use them for the scoreboard at the finish page.. move it later when page is ready
-//    Player *current = self.players[1];
-//
-//    NSArray *currentScores = [current valueForKey:@"scores"];
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
-//                                        initWithKey: @"scoreValue" ascending:NO];
-//    NSArray *sortedArray = [currentScores sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-//    NSPredicate *pred = [NSPredicate predicateWithFormat: @"scoreValue > 0"];
-//    NSArray *filteredAndSortedArray = [sortedArray filteredArrayUsingPredicate: pred];
-//    
-//    int i = 1;
-//    for (Score *sc in filteredAndSortedArray) {
-//        NSLog(@"Score#%i + %@", i, sc.scoreValue);
-//        i++;
-//    }
-//    
 }
 
 -(void) willMoveFromView:(SKView *)view {
@@ -220,8 +210,11 @@ double _changeDirectionCriticalPoint;
     // to prevent hero from jumping non-stop
     if ([contact.bodyA.node.name isEqualToString: @"back"] | [contact.bodyB.node.name isEqualToString: @"back"]
          | [contact.bodyA.node.name isEqualToString: @"hellGround"] | [contact.bodyB.node.name isEqualToString: @"hellGround"]) {
+        
         [hero land];
+        
     } else if ([contact.bodyA.node.name isEqualToString:@"snakeObstacle"]) {
+        
         //[hero stop];
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
@@ -237,9 +230,16 @@ double _changeDirectionCriticalPoint;
         [hero start];
         hero.position = CGPointMake(contact.bodyA.node.position.x, contact.bodyA.node.position.y + 300);
         [world addChild:hero];
-    }
-    else {
+        
+    } else if ([contact.bodyA.node.name isEqualToString:@"finalTeleport"]) {
+        
+        self.paused = YES;
+        [self generateFinalPopup:1];
+        [self gameOver];
+        
+    } else {
         if (_heroLifes > _initialHeroFails) {
+            
             _initialHeroFails++;
             [self runAction:[SKAction playSoundFileNamed:@"onHurt.wav" waitForCompletion:NO]];
             NSString *lifeImageString = [NSString stringWithFormat:@"Life-%i", _initialHeroFails];
@@ -968,5 +968,104 @@ double _changeDirectionCriticalPoint;
     }
 }
 
+-(void) generateFinalPopup : (int)playerIndex {
+    
+        // MARK: all this below is just to sort the scores and use them for the scoreboard at the finish page.. move it later when page is ready
+    Player *current = self.players[playerIndex];
+    NSString *playerName = [current valueForKey:@"name"];
+    NSArray *currentScores = [current valueForKey:@"scores"];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey: @"scoreValue" ascending:NO];
+    
+    NSArray *sortedArray = [currentScores sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    NSPredicate *pred = [NSPredicate predicateWithFormat: @"scoreValue > 0"];
+    NSArray *filteredAndSortedArray = [sortedArray filteredArrayUsingPredicate: pred];
+    
+    int i = 1;
+    for (Score *sc in filteredAndSortedArray) {
+        NSLog(@"Score#%i + %@", i, sc.scoreValue);
+        i++;
+    }
+
+    finalPopupUp = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
+                                                        self.view.frame.size.height/8,
+                                                        self.view.frame.size.width/1.5,
+                                                        self.view.frame.size.height/1.3)];
+    finalPopupUp.backgroundColor = [UIColor darkGrayColor];
+   
+    
+    finalIntro = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
+                                                      self.view.frame.size.height/8,
+                                                      self.view.frame.size.width/1.5,
+                                                      self.view.frame.size.height/6)];
+    finalIntro.text = @" Congratulations my green friend - you have successfully recovered enought money and gems to continue our jorney.. pop in!";
+    finalIntro.backgroundColor = [UIColor whiteColor];
+    finalIntro.adjustsFontSizeToFitWidth = NO;
+    finalIntro.numberOfLines = 0;
+    finalIntro.textAlignment = NSTextAlignmentCenter;
+    finalIntro.font = [UIFont fontWithName:GAME_FONT size:14];
+    finalIntro.textColor = [UIColor brownColor];
+    
+    scoreboardTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width/3.5,
+                                                         self.view.frame.size.height/8 + finalIntro.frame.size.height,
+                                                         self.view.frame.size.width/1.5,
+                                                         self.view.frame.size.height/10)];
+
+    scoreboardTitle.text = playerName; // Core Data player
+    scoreboardTitle.backgroundColor = [UIColor redColor];
+    scoreboardTitle.adjustsFontSizeToFitWidth = NO;
+    scoreboardTitle.numberOfLines = 0;
+    scoreboardTitle.textAlignment = NSTextAlignmentCenter;
+    scoreboardTitle.font = [UIFont fontWithName:GAME_FONT size:14];
+    scoreboardTitle.textColor = [UIColor whiteColor];
+    
+    scoreOne = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5 + scoreboardTitle.frame.size.width/6,
+                                                                    self.view.frame.size.height/8 + finalIntro.frame.size.height + scoreboardTitle.frame.size.height*1.5,
+                                                                    self.view.frame.size.width/2,
+                                                                    self.view.frame.size.height/12)];
+    
+    NSString *gold = [NSString stringWithFormat:@"Gold: %@", [filteredAndSortedArray[0] valueForKey:@"scoreValue"]];
+    [scoreOne setTitle:gold forState:UIControlStateNormal];
+    [scoreOne addTarget:self action:@selector(onFinalClick)
+           forControlEvents:UIControlEventTouchUpInside];
+    
+
+    scoreTwo = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5 + scoreboardTitle.frame.size.width/6,
+                                                                    self.view.frame.size.height/8 + finalIntro.frame.size.height + scoreboardTitle.frame.size.height*1.5 + scoreOne.frame.size.height + 10,
+                                                                    self.view.frame.size.width/2,
+                                                                    self.view.frame.size.height/12)];
+    [scoreTwo setTitle:filteredAndSortedArray[1] forState:UIControlStateNormal];
+    [scoreTwo addTarget:self action:@selector(onFinalClick)
+       forControlEvents:UIControlEventTouchUpInside];
+    
+    NSString *silver = [NSString stringWithFormat:@"Silver: %@", [filteredAndSortedArray[1] valueForKey:@"scoreValue"]];
+    [scoreTwo setTitle:silver forState:UIControlStateNormal];
+    
+    
+    scoreThree = [NIQuizButton initWithFrameAndFalseValue:CGRectMake(self.view.frame.size.width/3.5
+                                                                      + scoreboardTitle.frame.size.width/6,
+                                                                      self.view.frame.size.height/8 + finalIntro.frame.size.height + scoreboardTitle.frame.size.height*1.5 + scoreOne.frame.size.height*2 + 20,
+                                                                      self.view.frame.size.width/2,
+                                                                      self.view.frame.size.height/12)];
+    NSString *bronz = [NSString stringWithFormat:@"Bronz: %@", [filteredAndSortedArray[2] valueForKey:@"scoreValue"]];
+    [scoreThree setTitle:bronz forState:UIControlStateNormal];
+    [scoreThree addTarget:self action:@selector(onFinalClick)
+       forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:finalPopupUp];
+    [self.view addSubview:finalIntro];
+    [self.view addSubview:scoreboardTitle];
+    [self.view addSubview:scoreOne];
+    [self.view addSubview:scoreTwo];
+    [self.view addSubview:scoreThree];
+}
+
+-(void) onFinalClick {
+    [finalPopupUp removeFromSuperview];
+    [finalIntro removeFromSuperview];
+    [scoreboardTitle removeFromSuperview];
+    [scoreOne removeFromSuperview];
+    [scoreTwo removeFromSuperview];
+    [scoreThree removeFromSuperview];
+}
 
 @end
