@@ -26,6 +26,9 @@
 
 #import "StartupViewController.h"
 
+// #import "NiinjaDev-Bridging-Header.h"
+
+
 @interface GameScene()<UIGestureRecognizerDelegate> {
     
     UISwipeGestureRecognizer *gestureRecognizerSwipeDown;
@@ -159,22 +162,22 @@ double _changeDirectionCriticalPoint;
     self.players = [managedObjectContext executeFetchRequest:fetchRequestPlayer error:&error];
     
 
-    // MARK: all this below is just to sort the scores and use them for the scoreboard at the finish page.. move it later when page is ready
-    Player *current = self.players[1];
-
-    NSArray *currentScores = [current valueForKey:@"scores"];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
-                                        initWithKey: @"scoreValue" ascending:NO];
-    NSArray *sortedArray = [currentScores sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    NSPredicate *pred = [NSPredicate predicateWithFormat: @"scoreValue > 0"];
-    NSArray *filteredAndSortedArray = [sortedArray filteredArrayUsingPredicate: pred];
-    
-    int i = 1;
-    for (Score *sc in filteredAndSortedArray) {
-        NSLog(@"Score#%i + %@", i, sc.scoreValue);
-        i++;
-    }
-    
+//    // MARK: all this below is just to sort the scores and use them for the scoreboard at the finish page.. move it later when page is ready
+//    Player *current = self.players[1];
+//
+//    NSArray *currentScores = [current valueForKey:@"scores"];
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc]
+//                                        initWithKey: @"scoreValue" ascending:NO];
+//    NSArray *sortedArray = [currentScores sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//    NSPredicate *pred = [NSPredicate predicateWithFormat: @"scoreValue > 0"];
+//    NSArray *filteredAndSortedArray = [sortedArray filteredArrayUsingPredicate: pred];
+//    
+//    int i = 1;
+//    for (Score *sc in filteredAndSortedArray) {
+//        NSLog(@"Score#%i + %@", i, sc.scoreValue);
+//        i++;
+//    }
+//    
 }
 
 -(void) willMoveFromView:(SKView *)view {
@@ -206,10 +209,13 @@ double _changeDirectionCriticalPoint;
 
 -(void)didBeginContact:(SKPhysicsContact *)contact {
  
-//    NSLog(@"CONTACT BODY-A : %@", contact.bodyA.node.name);
-//    NSLog(@"CONTACT BODY-B : %@", contact.bodyB.node.name);
+    NSLog(@"CONTACT BODY-A : %@", contact.bodyA.node.name);
+    NSLog(@"CONTACT BODY-B : %@", contact.bodyB.node.name);
     
-    if ([contact.bodyA.node.name isEqualToString:@"snakeObstacle"]) {
+    // to prevent hero from jumping non-stop
+    if ([contact.bodyA.node.name isEqualToString: @"back"] | [contact.bodyB.node.name isEqualToString: @"back"]) {
+        [hero land];
+    } else if ([contact.bodyA.node.name isEqualToString:@"snakeObstacle"]) {
         //[hero stop];
         self.paused = YES;
         contact.bodyA.node.name = @"snakeForCancelation";
@@ -376,8 +382,9 @@ double _changeDirectionCriticalPoint;
 
     GameScene *scene = [GameScene initWithSize:CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) andUserChoiceHero:@"greenman"];
     scene.scaleMode = SKSceneScaleModeAspectFill;
-
+    
     [self.view presentScene:scene];
+
 }
 
 -(void)gameOver {
@@ -520,7 +527,6 @@ double _changeDirectionCriticalPoint;
     NSError *error = nil;
     Player *current = nil;
     
-    //Set up to get the thing you want to update
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
     
@@ -529,8 +535,6 @@ double _changeDirectionCriticalPoint;
     Score *newScoreToSave = [NSEntityDescription insertNewObjectForEntityForName:@"Score" inManagedObjectContext:managedObjectContext];
     [newScoreToSave setValue:[NSNumber numberWithInteger:scoreLabelValue.number] forKey:@"scoreValue"];
     [newScoreToSave setValue:current forKey:@"owner"];
-
-    //Set up to get the thing you want to update
 
     if (error) {
         NSLog(@"Error fetching context at (saveNewScoreForPlayer)");
@@ -546,9 +550,9 @@ double _changeDirectionCriticalPoint;
     }
     
     // Scores are updated on game over in sqlite via Core Data
-    for(NSNumber *score in current.scores) {
-        NSLog(@"CORE scores for curent user : %@", [score valueForKey:@"scoreValue"]);
-    }
+//    for(NSNumber *score in current.scores) {
+//        NSLog(@"CORE scores for curent user : %@", [score valueForKey:@"scoreValue"]);
+//    }
 }
 
 -(void) setBestScore {
@@ -560,14 +564,12 @@ double _changeDirectionCriticalPoint;
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Player" inManagedObjectContext:managedObjectContext]];
     
-    //Ask for it
     current = [[managedObjectContext executeFetchRequest:request error:&error] objectAtIndex:1];
 
     if (scoreLabelValue.number > bestLabelValue.number) {
         
         [bestLabelValue updatePoints:scoreLabelValue.number];
         
-        // implement Core Data here insted of NSData
         gameData.bestScore = bestLabelValue.number;
         [gameData save];
     }

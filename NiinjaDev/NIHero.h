@@ -14,8 +14,11 @@
 
 -(void) walkRight; // tap right of hero
 -(void) walkLeft;  // tap left of hero
+
 -(void) jumpRight; // double-tap right of hero
 -(void) jumpLeft;  // double-tap left of hero
+-(void) land; // hero lands - to control the number of jumps he can make...
+
 -(void) makeHeroSmaller; // swipe up-down
 -(void) makeHeroLarger;  // swipe down-up
 

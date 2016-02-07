@@ -8,6 +8,10 @@
 
 #import "NIHero.h"
 
+@interface NIHero ()
+@property BOOL isJummping;
+@end
+
 @implementation NIHero
 
 static const uint32_t heroCategory = 0x1 << 0;
@@ -62,79 +66,80 @@ NSArray *heroWalkingFrames;
         
     }
 
-    
-    // MARK : maybe the hero will pick a certain RUNE and it will change its density (heavier/lighter)
-    // MARK : maybe the hero will pick a KALASHNIKOV to enable SHOOT option !?
-    // hero.physicsBody.density = 1;
+    // hero.physicsBody.density = 0.5;
     hero.physicsBody.allowsRotation = NO;
     
     hero.physicsBody.categoryBitMask = heroCategory;
     // hero.physicsBody.contactTestBitMask = heroCategory | obstacleCategory;
-    hero.physicsBody.contactTestBitMask = obstacleCategory | (groundCategory & backgroundCategory & bonusCategory );
+    hero.physicsBody.contactTestBitMask = obstacleCategory | groundCategory | backgroundCategory | bonusCategory;
 
 
     return hero;
 }
 
--(void)start  {
+-(void) start  {
     SKAction *incrementRight = [SKAction moveByX:0.6 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
 
--(void)startRight  {
+-(void) startRight  {
     SKAction *incrementRight = [SKAction moveByX:0.6 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
 
--(void)startLeft  {
+-(void) startLeft  {
     SKAction *incrementRight = [SKAction moveByX:-0.6 y:0 duration:0.02];
     SKAction *moveRight = [SKAction repeatActionForever:incrementRight];
     [self runAction:moveRight];
 }
 
--(void)stop {
+-(void) stop {
     [self removeAllActions];
 }
 
--(void)walkRight {
+-(void) walkRight {
     SKAction *incrementRight = [SKAction moveByX:10 y:0 duration:0];
     [hero runAction:incrementRight];
 
-    return;
 }
 
--(void)walkLeft {
+-(void) walkLeft {
     SKAction *incrementLeft = [SKAction moveByX:-25 y:0 duration:0];
     [hero runAction:incrementLeft];
-    
-    return;
+
 }
 
--(void)jumpRight {
+-(void) jumpRight {
     
-    if ([hero.name  isEqual: _GREENMAN_NAME]) {
-        [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
-    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
-        [self.physicsBody applyImpulse:CGVectorMake(30, 50)];
+    if (!self.isJummping) {
+        if ([hero.name  isEqual: _GREENMAN_NAME]) {
+            [self.physicsBody applyImpulse:CGVectorMake(30, 80)];
+        } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
+            [self.physicsBody applyImpulse:CGVectorMake(30, 50)];
+        }
+        self.isJummping = YES;
     }
 
-    
-    return;
 }
 
--(void)jumpLeft {
-    if ([hero.name  isEqual: _GREENMAN_NAME]) {
-        [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
-    } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
-        [self.physicsBody applyImpulse:CGVectorMake(-30, 50)];
+-(void) jumpLeft {
+    if (!self.isJummping) {
+        if ([hero.name  isEqual: _GREENMAN_NAME]) {
+            [self.physicsBody applyImpulse:CGVectorMake(-30, 80)];
+        } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
+            [self.physicsBody applyImpulse:CGVectorMake(-30, 50)];
+        }
+        self.isJummping = YES;
     }
-
-    return;
 }
 
--(void)makeHeroSmaller {
+-(void) land {
+    self.isJummping = NO;
+}
+
+-(void) makeHeroSmaller {
     if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self animateSizerWithScale:0.4];
     } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
@@ -143,7 +148,7 @@ NSArray *heroWalkingFrames;
     
 }
 
--(void)makeHeroLarger {
+-(void) makeHeroLarger {
     if ([hero.name  isEqual: _GREENMAN_NAME]) {
         [self animateSizerWithScale:0.8];
     } else if ([hero.name  isEqual: _ALIENNINJA_NAME])  {
