@@ -255,8 +255,8 @@ NSArray *teleportFrames;
     
     SKTexture *fteleportexture = teleportFrames[0];
     SKSpriteNode *fteleportAnimationNode = [SKSpriteNode spriteNodeWithTexture:fteleportexture];
-    fteleportAnimationNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fteleportAnimationNode.frame.size.width/2,
-                                                                                      fteleportAnimationNode.frame.size.width/2)];
+    fteleportAnimationNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(fteleportAnimationNode.frame.size.width/4,
+                                                                                      fteleportAnimationNode.frame.size.height)];
     fteleportAnimationNode.physicsBody.dynamic = YES;
     fteleportAnimationNode.physicsBody.allowsRotation = NO;
     fteleportAnimationNode.physicsBody.categoryBitMask = obstacleCategory;
@@ -321,6 +321,7 @@ NSArray *teleportFrames;
     ground.physicsBody.dynamic = NO;
     ground.name = @"back";
     ground.physicsBody.categoryBitMask = groundCategory;
+    ground.name = nodeName;
     
     return ground;
 }
